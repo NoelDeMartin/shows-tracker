@@ -1,2 +1,38 @@
 app:
     title: 'Shows Tracker'
+    footer: 'Track your favorite TV shows! 📺✨'
+shows:
+    index:
+        title: 'My Shows'
+        empty: "You haven't added any shows yet."
+        add_first: 'Add Your First Show'
+    create:
+        title: 'Add New Show'
+    edit:
+        title: 'Edit Show'
+    show:
+        delete_confirm: 'Are you sure you want to delete this show? This action cannot be undone.'
+        delete_confirmAccept: 'Delete Show'
+        description: 'Description'
+        seasons: 'Seasons'
+        season: 'Season'
+        episodes: 'Episodes'
+        rating: 'Rating'
+    form:
+        name: 'Name'
+        description: 'Description'
+        seasons: 'Seasons'
+        episodes: 'Episodes'
+        rating: 'Rating (0-5)'
+        completed: 'Completed'
+        cancel: 'Cancel'
+        create: 'Create'
+        update: 'Update'
+    status:
+        completed: 'Completed'
+        watching: 'Watching'
+    actions:
+        add: 'Add Show'
+        edit: 'Edit'
+        delete: 'Delete'
+        back: 'Back to Shows'
