@@ -12,7 +12,10 @@ export default defineConfig({
     base: process.env.NODE_ENV === 'production' ? '/shows-tracker/' : '/',
     publicDir: fileURLToPath(new URL('./src/assets/public/', import.meta.url)),
     plugins: [
-        Aerogel({ name: 'Shows Tracker' }),
+        Aerogel({
+            name: 'Shows Tracker',
+            baseUrl: 'https://noeldemartin.github.io/shows-tracker/',
+        }),
         Components({
             dts: 'src/types/components.d.ts',
             resolvers: [AerogelResolver(), IconsResolver()],
