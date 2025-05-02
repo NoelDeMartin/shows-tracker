@@ -4,10 +4,16 @@
             <h2 class="flex items-center text-2xl font-bold">
                 {{ $t('shows.index.title') }}
             </h2>
-            <Button v-if="shows.length > 0" route="shows.create">
-                <i-mdi-plus class="size-4" />
-                {{ $t('shows.actions.add') }}
-            </Button>
+            <div class="flex gap-2">
+                <Button variant="secondary" @click="$ui.modal(SearchShowModal)">
+                    <i-mdi-magnify class="size-4" />
+                    {{ $t('shows.actions.search') }}
+                </Button>
+                <Button v-if="shows.length > 0" route="shows.create">
+                    <i-mdi-plus class="size-4" />
+                    {{ $t('shows.actions.add') }}
+                </Button>
+            </div>
         </div>
 
         <div v-if="shows.length === 0" class="rounded-lg border-2 border-dashed p-8 py-8 text-center">
@@ -15,9 +21,18 @@
             <p class="mb-4 text-lg">
                 {{ $t('shows.index.empty') }}
             </p>
-            <Button class="inline transform transition-transform duration-300 hover:scale-105" route="shows.create">
-                {{ $t('shows.index.add_first') }}
-            </Button>
+            <div class="flex flex-col justify-center gap-4 sm:flex-row">
+                <Button class="transform transition-transform duration-300 hover:scale-105" route="shows.create">
+                    {{ $t('shows.index.add_first') }}
+                </Button>
+                <Button
+                    variant="secondary"
+                    class="transform transition-transform duration-300 hover:scale-105"
+                    @click="$ui.modal(SearchShowModal)"
+                >
+                    {{ $t('shows.actions.search') }}
+                </Button>
+            </div>
         </div>
 
         <div v-else class="grid gap-6 md:grid-cols-2">
@@ -67,6 +82,7 @@
 <script setup lang="ts">
 import { useModelCollection } from '@aerogel/plugin-soukai';
 
+import SearchShowModal from '@/components/modals/SearchShowModal.vue';
 import Show from '@/models/Show';
 
 const shows = useModelCollection(Show);

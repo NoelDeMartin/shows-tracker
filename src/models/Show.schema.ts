@@ -20,5 +20,10 @@ export default defineSolidModelSchema({
             type: FieldType.Key,
             rdfProperty: 'review',
         },
+        externalUrls: {
+            type: FieldType.Array,
+            rdfProperty: 'schema:sameAs',
+            items: { type: FieldType.String },
+        },
     },
 });

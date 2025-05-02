@@ -132,4 +132,35 @@ describe('App', () => {
         cy.contains('Better Call Saul').should('be.visible');
     });
 
+    it('Can search for shows and add them to my list', () => {
+        // Mock the TMDB API response
+        cy.intercept('GET', 'https://api.themoviedb.org/3/search/tv*', {
+            fixture: 'tmdb-search-results.json',
+        }).as('searchShows');
+
+        // Open search modal
+        cy.contains('Search Shows').click();
+
+        // Search for a show
+        cy.get('input[type="search"]').type('stranger');
+
+        // Wait for the API call
+        cy.wait('@searchShows');
+
+        // Should see search results
+        cy.contains('Stranger Things').should('be.visible');
+
+        // Add the show to my list
+        cy.contains('Add to My Shows').click();
+
+        // The modal should close and the added show should be in my list
+        cy.contains('Stranger Things').should('be.visible');
+
+        // Verify that if we search again, the show is marked as already added
+        cy.contains('Search Shows').click();
+        cy.get('input[type="search"]').type('stranger');
+        cy.wait('@searchShows');
+        cy.contains('Already in My Shows').should('be.visible');
+    });
+
 });
