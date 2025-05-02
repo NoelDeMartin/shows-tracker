@@ -23,7 +23,7 @@ export default defineSolidModelSchema({
         externalUrls: {
             type: FieldType.Array,
             rdfProperty: 'schema:sameAs',
-            items: { type: FieldType.String },
+            items: FieldType.Key,
         },
     },
 });

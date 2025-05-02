@@ -136,9 +136,9 @@ async function searchShows() {
     error.value = '';
 
     try {
-        const shows = await TheMovieDatabase.searchShows(searchQuery.value);
+        const results = await TheMovieDatabase.searchShows(searchQuery.value);
 
-        searchResults.value = shows.filter((show) => show.name && show.overview);
+        searchResults.value = results.filter((show) => show.name && show.overview);
     } catch (err) {
         error.value = translate('shows.search.error');
     } finally {
@@ -166,7 +166,7 @@ async function addShow(tmdbShow: TMDBShow, close: () => void) {
             externalUrls: [getTmdbUrl(tmdbShow.id)],
         });
 
-        UI.toast(translate('shows.search.toast_added', { name: tmdbShow.name }));
+        UI.toast(translate('shows.search.toast_added', { name: show.name }));
 
         close();
     });
