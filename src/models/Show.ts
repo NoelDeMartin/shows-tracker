@@ -1,7 +1,9 @@
 import { urlFileName } from '@noeldemartin/utils';
-import type { BelongsToOneRelation, Relation } from 'soukai';
+import type { Relation } from 'soukai';
+import type { SolidBelongsToManyRelation, SolidBelongsToOneRelation } from 'soukai-solid';
 
 import Review from '@/models/Review';
+import Season from '@/models/Season';
 
 import Model from './Show.schema';
 
@@ -11,7 +13,9 @@ export default class Show extends Model {
     public static history = true;
 
     declare public review?: Review;
-    declare public relatedReview: BelongsToOneRelation<Show, Review, typeof Review>;
+    declare public relatedReview: SolidBelongsToOneRelation<Show, Review, typeof Review>;
+    declare public seasons?: Season[];
+    declare public relatedSeasons: SolidBelongsToManyRelation<Show, Season, typeof Season>;
 
     public get completed(): boolean {
         return !!this.endDate;
@@ -27,12 +31,10 @@ export default class Show extends Model {
 
     public set rating(value: number | null) {
         if (value === null) {
-            this.reviewUrl = undefined;
+            // TODO implement this.relatedReview.detach()
+            // This should remove review, rating, and set reviewUrl to null
 
-            this.review?.rating?.delete();
-            this.review?.delete();
-
-            return;
+            throw new Error('belongsToOne detach not implemented');
         }
 
         const review = this.review ?? this.relatedReview.attach();
@@ -46,7 +48,11 @@ export default class Show extends Model {
     }
 
     public reviewRelationship(): Relation {
-        return this.belongsToOne(Review).usingSameDocument();
+        return this.belongsToOne(Review).usingSameDocument().onDelete('cascade');
+    }
+
+    public seasonsRelationship(): Relation {
+        return this.belongsToMany(Season).usingSameDocument().onDelete('cascade');
     }
 
 }

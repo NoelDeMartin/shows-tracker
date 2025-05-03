@@ -64,10 +64,10 @@
                 </p>
 
                 <div class="mt-3 flex items-center gap-4 text-sm text-gray-500">
-                    <span v-if="show.seasons" class="flex items-center gap-1">
+                    <span v-if="show.seasons?.length" class="flex items-center gap-1">
                         <i-mdi-television class="size-4" />
-                        {{ show.seasons }}
-                        {{ show.seasons !== 1 ? $t('shows.show.seasons') : $t('shows.show.season') }}
+                        {{ show.seasons.length }}
+                        {{ show.seasons.length !== 1 ? $t('shows.show.seasons') : $t('shows.show.season') }}
                     </span>
                     <span v-if="show.rating" class="flex items-center gap-1 text-[#ffca28]">
                         <i-mdi-star class="size-4" />

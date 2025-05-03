@@ -8,17 +8,14 @@ export default defineSolidModelSchema({
         name: FieldType.String,
         description: FieldType.String,
         endDate: FieldType.Date,
-        seasons: {
-            type: FieldType.Number,
-            rdfProperty: 'numberOfSeasons',
-        },
-        episodes: {
-            type: FieldType.Number,
-            rdfProperty: 'numberOfEpisodes',
-        },
         reviewUrl: {
             type: FieldType.Key,
             rdfProperty: 'review',
+        },
+        seasonUrls: {
+            type: FieldType.Array,
+            rdfProperty: 'containsSeason',
+            items: FieldType.Key,
         },
         externalUrls: {
             type: FieldType.Array,

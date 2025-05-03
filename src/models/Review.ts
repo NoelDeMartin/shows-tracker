@@ -10,7 +10,7 @@ export default class Review extends Model {
     declare public relatedRating: BelongsToOneRelation<Review, Rating, typeof Rating>;
 
     public ratingRelationship(): Relation {
-        return this.belongsToOne(Rating).usingSameDocument();
+        return this.belongsToOne(Rating).usingSameDocument().onDelete('cascade');
     }
 
 }

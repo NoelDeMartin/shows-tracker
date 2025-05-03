@@ -104,6 +104,7 @@ import { useModelCollection } from '@aerogel/plugin-soukai';
 
 import Show from '@/models/Show';
 import TheMovieDatabase from '@/services/TheMovieDatabase';
+import { renderISO8601Duration } from '@/utils/iso8601';
 import type { TMDBShow } from '@/services/TheMovieDatabase';
 
 let searchTimeout: number | null = null;
@@ -152,23 +153,62 @@ function getTmdbUrl(id: number): string {
 
 function isShowAdded(id: number): boolean {
     const tmdbUrl = getTmdbUrl(id);
-
     return shows.value.some((show) => show.externalUrls?.includes(tmdbUrl));
 }
 
 async function addShow(tmdbShow: TMDBShow, close: () => void) {
+    close();
+
     await UI.loading(translate('shows.search.adding'), async () => {
-        const show = await Show.create({
-            name: tmdbShow.name,
-            description: tmdbShow.overview || '',
-            seasons: tmdbShow.number_of_seasons || 0,
-            episodes: tmdbShow.number_of_episodes || 0,
-            externalUrls: [getTmdbUrl(tmdbShow.id)],
-        });
+        // Fetch detailed show information including seasons
+        const showDetails = await TheMovieDatabase.getShowDetails(tmdbShow.id);
+
+        // Create the show
+        const show = new Show();
+        show.name = showDetails.name;
+        show.description = showDetails.overview || '';
+        show.externalUrls = [getTmdbUrl(showDetails.id)];
+
+        // Create seasons and episodes
+        if (showDetails.seasons && showDetails.seasons.length > 0) {
+            // Filter out special seasons (like season 0)
+            const regularSeasons = showDetails.seasons.filter((season) => season.season_number > 0);
+
+            for (const tmdbSeason of regularSeasons) {
+                // Create season
+                const season = show.relatedSeasons.attach({ number: tmdbSeason.season_number });
+
+                // Fetch detailed season information including episodes
+                const seasonDetails = await TheMovieDatabase.getSeasonDetails(showDetails.id, tmdbSeason.season_number);
+
+                if (seasonDetails.episodes && seasonDetails.episodes.length > 0) {
+                    for (const tmdbEpisode of seasonDetails.episodes) {
+                        const episode = season.relatedEpisodes.attach({
+                            number: tmdbEpisode.episode_number,
+                            name: tmdbEpisode.name,
+                        });
+
+                        if (tmdbEpisode.overview) {
+                            episode.description = tmdbEpisode.overview;
+                        }
+
+                        // Convert runtime minutes to duration string (e.g. "42m")
+                        if (tmdbEpisode.runtime) {
+                            episode.duration = renderISO8601Duration({ minutes: tmdbEpisode.runtime });
+                        }
+
+                        // Set air date if available
+                        if (tmdbEpisode.air_date) {
+                            episode.publishedAt = new Date(tmdbEpisode.air_date);
+                        }
+                    }
+                }
+            }
+        }
+
+        await show.save();
 
         UI.toast(translate('shows.search.toast_added', { name: show.name }));
-
-        close();
     });
 }
 
