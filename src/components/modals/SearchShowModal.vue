@@ -73,12 +73,7 @@
                             <div class="mt-2 flex items-center gap-4 text-sm text-gray-500">
                                 <span v-if="show.number_of_seasons" class="flex items-center gap-1">
                                     <i-mdi-television class="size-4" />
-                                    {{ show.number_of_seasons }}
-                                    {{
-                                        show.number_of_seasons !== 1
-                                            ? $t('shows.show.seasons')
-                                            : $t('shows.show.season')
-                                    }}
+                                    {{ $t('shows.show.seasons_count', show.number_of_seasons) }}
                                 </span>
                                 <span v-if="show.vote_average" class="flex items-center gap-1 text-[#ffca28]">
                                     <i-mdi-star class="size-4" />

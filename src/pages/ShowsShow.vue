@@ -1,9 +1,14 @@
 <template>
     <Page>
         <div class="mb-6 flex items-center justify-between">
-            <h2 class="text-2xl font-bold">
-                {{ show.name }}
-            </h2>
+            <div class="flex gap-2">
+                <h2 class="text-2xl font-bold">
+                    {{ show.name }}
+                </h2>
+                <span class="rounded-full px-3 py-1 text-sm font-medium text-white" :class="`bg-status-${show.status}`">
+                    {{ $t(`shows.status.${show.status}`) }}
+                </span>
+            </div>
             <div class="flex gap-2">
                 <Button variant="secondary" route="shows.edit" :route-params="{ show: show.slug }">
                     <i-mdi-pencil class="size-4" />
@@ -86,35 +91,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="grid gap-6 md:grid-cols-2">
-                <div v-if="show.rating" class="flex items-center gap-2">
-                    <h3 class="text-lg font-medium">
-                        {{ $t('shows.show.rating') }}:
-                    </h3>
-                    <div class="flex items-center text-[#ffca28]">
-                        <i-mdi-star v-for="i in Math.floor(show.rating)" :key="i" class="size-6" />
-                        <i-mdi-star-half v-if="show.rating % 1 !== 0" class="size-6" />
-                        <span class="ml-1 text-lg font-medium text-gray-900"> {{ show.rating }}/5 </span>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-2">
-                    <h3 class="text-lg font-medium">
-                        {{ $t('shows.show.status') }}:
-                    </h3>
-                    <span
-                        class="rounded-full px-3 py-1 text-sm font-medium text-white"
-                        :class="
-                            show.completed
-                                ? 'bg-gradient-to-r from-[#66bb6a] to-[#43a047]'
-                                : 'bg-gradient-to-r from-[#42a5f5] to-[#2196f3]'
-                        "
-                    >
-                        {{ show.completed ? $t('shows.status.completed') : $t('shows.status.watching') }}
-                    </span>
-                </div>
-            </div>
         </div>
     </Page>
 </template>
@@ -165,6 +141,7 @@ async function deleteShow() {
 }
 
 onMounted(async () => {
+    await show.loadRelationIfUnloaded('watchAction');
     await show.loadRelationIfUnloaded('seasons');
 
     if (show.seasons) {

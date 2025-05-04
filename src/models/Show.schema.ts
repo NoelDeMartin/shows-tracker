@@ -7,6 +7,7 @@ export default defineSolidModelSchema({
     fields: {
         name: FieldType.String,
         description: FieldType.String,
+        startDate: FieldType.Date,
         endDate: FieldType.Date,
         reviewUrl: {
             type: FieldType.Key,

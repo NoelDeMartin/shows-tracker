@@ -49,13 +49,9 @@
                     </h3>
                     <span
                         class="rounded-full px-3 py-1 text-xs font-bold text-white shadow-sm"
-                        :class="
-                            show.completed
-                                ? 'bg-gradient-to-r from-[#66bb6a] to-[#43a047]'
-                                : 'bg-gradient-to-r from-[#42a5f5] to-[#2196f3]'
-                        "
+                        :class="`bg-status-${show.status}`"
                     >
-                        {{ show.completed ? $t('shows.status.completed') : $t('shows.status.watching') }}
+                        {{ $t(`shows.status.${show.status}`) }}
                     </span>
                 </div>
 
@@ -66,12 +62,7 @@
                 <div class="mt-3 flex items-center gap-4 text-sm text-gray-500">
                     <span v-if="show.seasons?.length" class="flex items-center gap-1">
                         <i-mdi-television class="size-4" />
-                        {{ show.seasons.length }}
-                        {{ show.seasons.length !== 1 ? $t('shows.show.seasons') : $t('shows.show.season') }}
-                    </span>
-                    <span v-if="show.rating" class="flex items-center gap-1 text-[#ffca28]">
-                        <i-mdi-star class="size-4" />
-                        {{ show.rating }}/5
+                        {{ $t('shows.show.seasons_count', show.seasons.length) }}
                     </span>
                 </div>
             </HeadlessButton>
@@ -80,10 +71,13 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 
 import SearchShowModal from '@/components/modals/SearchShowModal.vue';
 import Show from '@/models/Show';
 
 const shows = useModelCollection(Show);
+
+onMounted(() => Promise.all(shows.value.map((show) => show.loadRelationIfUnloaded('watchAction'))));
 </script>

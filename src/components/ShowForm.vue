@@ -1,6 +1,13 @@
 <template>
     <div class="relative rounded-2xl bg-white p-8 shadow-lg">
         <Form class="space-y-4" :form @submit="save">
+            <Select
+                name="status"
+                :label="$t('shows.form.status')"
+                :options="watchStatuses"
+                :render-option="(status) => $t(`shows.status.${status}`)"
+            />
+
             <Input name="name" :label="$t('shows.form.name')" />
             <TextArea name="description" :label="$t('shows.form.description')" rows="4" />
 
@@ -90,16 +97,6 @@
                 </button>
             </div>
 
-            <Input
-                name="rating"
-                min="0"
-                max="5"
-                step="0.5"
-                :label="$t('shows.form.rating')"
-            />
-
-            <Checkbox name="completed" :label="$t('shows.form.completed')" />
-
             <div class="flex justify-end gap-4">
                 <Button variant="secondary" @click="$emit('cancel')">
                     {{ $t('shows.form.cancel') }}
@@ -118,10 +115,11 @@
 
 <script setup lang="ts">
 import { onMounted, shallowRef } from 'vue';
-import { UI, booleanInput, numberInput, requiredStringInput, stringInput, useForm } from '@aerogel/core';
+import { UI, enumInput, requiredStringInput, stringInput, translate, useForm } from '@aerogel/core';
 
 import Show from '@/models/Show';
 import Season from '@/models/Season';
+import { watchStatuses } from '@/models/WatchAction';
 import type Episode from '@/models/Episode';
 
 const { show } = defineProps<{ show?: Show }>();
@@ -133,8 +131,7 @@ const emit = defineEmits<{
 const form = useForm({
     name: requiredStringInput(show?.name ?? ''),
     description: stringInput(show?.description ?? ''),
-    rating: numberInput(show?.rating ?? 0),
-    completed: booleanInput(show?.completed ?? false),
+    status: enumInput(watchStatuses, show?.status ?? 'pending'),
 });
 const seasons = shallowRef<Season[]>([]);
 
@@ -176,15 +173,18 @@ function removeEpisode(season: Season, episode: Episode) {
 }
 
 async function save() {
-    UI.loading('Saving...', async () => {
+    UI.loading(translate('shows.form.saving'), async () => {
         const updatedShow = show ?? new Show();
-        const { completed, rating, ...data } = form.data();
+        const { status, ...attributes } = form.data();
 
-        updatedShow.completed = completed ?? false;
-        updatedShow.rating = rating ?? null;
-        updatedShow.setAttributes(data);
+        updatedShow.setAttributes(attributes);
 
-        // TODO implement updatedShow.relatedSeasons.sync(seasons.value);
+        // Create or update the WatchAction
+        const watchAction = updatedShow.watchAction ?? updatedShow.relatedWatchAction.attach();
+
+        watchAction.status = status ?? undefined;
+
+        // Handle seasons
         for (const season of seasons.value) {
             updatedShow.relatedSeasons.attach(season);
         }
@@ -196,7 +196,17 @@ async function save() {
 }
 
 onMounted(async () => {
-    seasons.value = (await show?.loadRelationIfUnloaded('seasons')) ?? [];
+    if (!show) {
+        return;
+    }
+
+    // Load watchAction to get the current status
+    await show.loadRelationIfUnloaded('watchAction');
+
+    form.status = show.status;
+
+    // Load seasons and episodes
+    seasons.value = (await show.loadRelationIfUnloaded<Season[]>('seasons')) ?? [];
 
     await Promise.all(seasons.value.map((season) => season.loadRelationIfUnloaded('episodes')));
 });
