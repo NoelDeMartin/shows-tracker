@@ -38,10 +38,12 @@ describe('App', () => {
 
         // Assert - Should be redirected to index page with the new show
         cy.contains('Breaking Bad').should('be.visible');
-        cy.contains('Completed').should('be.visible');
+        // Check for completed status icon element by title
+        cy.get('[title="Completed"]').should('be.visible');
 
         // Navigate to show details to verify seasons and episodes
         cy.contains('Breaking Bad').click();
+        // On the details page, status text is still visible next to the icon
         cy.contains('Completed').should('be.visible');
         cy.contains('Season 1').should('be.visible');
         cy.contains('1. Pilot')
@@ -174,13 +176,14 @@ describe('App', () => {
 
         // Assert - All shows should be visible with their statuses
         cy.contains('Breaking Bad').should('be.visible');
-        cy.contains('Watching').should('be.visible');
+        // Check for icon badges by their title attribute
+        cy.get('[title="Watching"]').should('be.visible');
 
         cy.contains('Better Call Saul').should('be.visible');
-        cy.contains('Completed').should('be.visible');
+        cy.get('[title="Completed"]').should('be.visible');
 
         cy.contains('Lost').should('be.visible');
-        cy.contains('Dropped').should('be.visible');
+        cy.get('[title="Dropped"]').should('be.visible');
 
         // Check details of first show
         cy.contains('Breaking Bad').click();
@@ -231,7 +234,8 @@ describe('App', () => {
 
         // The modal should close and the added show should be in my list
         cy.contains('Stranger Things').should('be.visible');
-        cy.contains('Plan to Watch').should('be.visible');
+        // Check for Plan to Watch icon
+        cy.get('[title="Plan to Watch"]').should('be.visible');
 
         // Navigate to the show details page
         cy.contains('Stranger Things').click();

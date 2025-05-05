@@ -1,17 +1,17 @@
 <template>
-    <details :open class="group overflow-hidden rounded-lg border border-gray-200">
+    <details :open class="group overflow-hidden rounded-md border border-gray-200">
         <summary
-            class="flex cursor-pointer items-center justify-between bg-gray-50 px-4 py-3 transition-colors hover:bg-gray-100"
+            class="flex cursor-pointer items-center justify-between bg-gray-50 px-3 py-2 transition-colors hover:bg-gray-100"
         >
-            <h4 class="flex items-center font-medium">
-                <i-mdi-chevron-right class="mr-2 size-5 transform transition-transform group-open:rotate-90" />
+            <h4 class="flex items-center text-sm font-medium">
+                <i-mdi-chevron-right class="mr-1.5 size-4 transform transition-transform group-open:rotate-90" />
                 {{ $t('shows.show.season') }} {{ season.number }}
-                <span class="ml-2 text-sm text-gray-500">
+                <span class="ml-1.5 text-xs text-gray-500">
                     ({{ episodes.length }} {{ $t('shows.show.episodes') }})
                 </span>
                 <span
                     v-if="watchedEpisodesLength > 0"
-                    class="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800"
+                    class="ml-1.5 rounded-full bg-green-100 px-1.5 py-0.5 text-xs font-medium text-green-800"
                 >
                     {{ watchedEpisodesLength }}/{{ episodes.length }}
                     {{ $t('shows.episode.watched') }}
@@ -19,7 +19,7 @@
             </h4>
             <button
                 v-if="episodes.length && watchedEpisodesLength < episodes.length"
-                class="rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 hover:bg-green-100"
+                class="rounded bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 hover:bg-green-100"
                 :title="$t('shows.season.mark_all_watched')"
                 @click.prevent="episodes.forEach((episode) => episode.watch())"
             >
@@ -28,10 +28,10 @@
         </summary>
 
         <ul v-if="episodes.length" class="divide-y divide-gray-100">
-            <li v-for="episode in episodes" :key="episode.id" class="p-4 transition-colors hover:bg-gray-50">
+            <li v-for="episode in episodes" :key="episode.id" class="p-2.5 transition-colors hover:bg-gray-50">
                 <div>
                     <div class="flex items-center justify-between">
-                        <h5 class="flex items-center gap-2 font-medium">
+                        <h5 class="flex items-center gap-1.5 text-sm font-medium">
                             <button
                                 class="flex items-center justify-center rounded-full transition-colors"
                                 :class="
@@ -48,34 +48,34 @@
                                 "
                                 @click="episode.toggle()"
                             >
-                                <i-mdi-check-circle-outline v-if="!episode.watchAction" class="size-5" />
-                                <i-mdi-check-circle v-else class="size-5" />
+                                <i-mdi-check-circle-outline v-if="!episode.watchAction" class="size-4" />
+                                <i-mdi-check-circle v-else class="size-4" />
                             </button>
                             <span class="text-gray-500">{{ episode.number }}.</span>
                             {{ episode.name }}
                         </h5>
 
-                        <div class="flex items-center gap-3 text-sm text-gray-500">
-                            <div v-if="episode.duration" class="flex items-center gap-1">
-                                <i-mdi-clock-outline class="size-4" />
+                        <div class="flex items-center gap-2 text-xs text-gray-500">
+                            <div v-if="episode.duration" class="flex items-center gap-0.5">
+                                <i-mdi-clock-outline class="size-3.5" />
                                 {{ renderHumanReadableDuration(parseISO8601Duration(episode.duration) ?? {}) }}
                             </div>
 
-                            <div v-if="episode.publishedAt" class="flex items-center gap-1">
-                                <i-mdi-calendar class="size-4" />
+                            <div v-if="episode.publishedAt" class="flex items-center gap-0.5">
+                                <i-mdi-calendar class="size-3.5" />
                                 {{ formatDate(episode.publishedAt) }}
                             </div>
                         </div>
                     </div>
 
-                    <div v-if="episode.description" class="mt-2 text-sm text-gray-600">
+                    <div v-if="episode.description" class="mt-1 text-xs text-gray-600">
                         {{ episode.description }}
                     </div>
                 </div>
             </li>
         </ul>
 
-        <div v-else class="p-4 text-sm text-gray-500">
+        <div v-else class="p-2.5 text-xs text-gray-500">
             {{ $t('shows.show.no_episodes') }}
         </div>
     </details>

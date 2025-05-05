@@ -99,18 +99,19 @@ describe('Episode Watching Functionality', () => {
     it('Changes show status from "Plan to Watch" to "Watching" when marking an episode as watched', () => {
         // Verify show is created with "Plan to Watch" status
         cy.contains('Firefly').should('be.visible');
-        cy.contains('Plan to Watch').should('be.visible');
+        // Check for Plan to Watch icon
+        cy.get('[title="Plan to Watch"]').should('be.visible');
 
         // Go to the show detail page
         cy.contains('Firefly').click();
 
-        // Verify "Plan to Watch" status
+        // On the detail page, we can still check for the text since it's displayed next to the icon
         cy.contains('Plan to Watch').should('be.visible');
 
         // Mark the episode as watched
         cy.contains('1. Pilot').parent().find('button').first().click();
 
-        // Verify the status has changed to "Watching"
+        // Verify the status has changed to "Watching" (text is still visible on detail page)
         cy.contains('Watching').should('be.visible');
         cy.contains('Plan to Watch').should('not.exist');
     });

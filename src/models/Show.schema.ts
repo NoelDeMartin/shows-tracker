@@ -9,9 +9,9 @@ export default defineSolidModelSchema({
         description: FieldType.String,
         startDate: FieldType.Date,
         endDate: FieldType.Date,
-        reviewUrl: {
+        imageUrl: {
             type: FieldType.Key,
-            rdfProperty: 'review',
+            rdfProperty: 'image',
         },
         seasonUrls: {
             type: FieldType.Array,

@@ -41,6 +41,7 @@ shows:
         create: 'Create'
         update: 'Update'
         saving: 'Saving...'
+        image_url: 'Image URL'
     status:
         completed: 'Completed'
         watching: 'Watching'
