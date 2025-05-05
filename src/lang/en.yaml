@@ -42,6 +42,9 @@ shows:
         update: 'Update'
         saving: 'Saving...'
         image_url: 'Image URL'
+        external_urls: 'External URLs'
+        add_url: 'Add URL'
+        url_placeholder: 'Enter URL (e.g., https://www.themoviedb.org/tv/12345)'
     status:
         completed: 'Completed'
         watching: 'Watching'
@@ -60,6 +63,7 @@ shows:
         delete: 'Delete'
         back: 'Back to Shows'
         search: 'Search Shows'
+        update: 'Update Shows'
     search:
         title: 'Search Shows'
         placeholder: 'Search for a show...'
@@ -72,6 +76,8 @@ shows:
         error: 'Failed to search shows. Please try again.'
         toast_added: '{name} added to your shows!'
         episode: 'Episode'
+    update:
+        success: 'Shows updated successfully!'
     episode:
         mark_as_watched: 'Mark as watched'
         watched_on: 'Watched on {date}'

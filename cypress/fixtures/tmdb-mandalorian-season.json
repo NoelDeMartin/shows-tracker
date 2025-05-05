@@ -1,0 +1,28 @@
+{
+    "id": 112233,
+    "name": "Season 1",
+    "season_number": 1,
+    "episode_count": 2,
+    "air_date": "2019-11-12",
+    "overview": "The first season of the Star Wars show follows the Mandalorian bounty hunter.",
+    "episodes": [
+        {
+            "id": 1829094,
+            "name": "Chapter 1: The Mandalorian",
+            "episode_number": 1,
+            "season_number": 1,
+            "air_date": "2019-11-12",
+            "runtime": 39,
+            "overview": "A Mandalorian bounty hunter tracks a target for a well-paying client."
+        },
+        {
+            "id": 1829095,
+            "name": "Chapter 2: The Child",
+            "episode_number": 2,
+            "season_number": 1,
+            "air_date": "2019-11-15",
+            "runtime": 32,
+            "overview": "Target in-hand, the Mandalorian must now contend with scavengers."
+        }
+    ]
+}

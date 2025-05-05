@@ -49,7 +49,7 @@
                                 <div class="flex gap-2">
                                     <img
                                         v-if="show.poster_path"
-                                        :src="getTmdbImageUrl(show.poster_path)"
+                                        :src="$tmdb.showImageUrl(show)"
                                         :alt="show.name"
                                         class="h-16 w-12 rounded object-cover"
                                     >
@@ -63,7 +63,7 @@
                                     </div>
                                 </div>
                                 <button
-                                    v-if="!isShowAdded(show.id)"
+                                    v-if="!isShowAdded(show)"
                                     class="ml-2 inline-flex shrink-0 items-center rounded-full bg-pink-500 px-2 py-0.5 text-xs font-medium text-white hover:bg-pink-600"
                                     @click="addShow(show, close)"
                                 >
@@ -103,13 +103,13 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue';
-import { UI, translate } from '@aerogel/core';
+import { Errors, UI, translate } from '@aerogel/core';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 
+import Catalog from '@/services/Catalog';
 import Show from '@/models/Show';
-import TheMovieDatabase from '@/services/TheMovieDatabase';
-import { renderISO8601Duration } from '@/utils/iso8601';
-import type { TMDBShow } from '@/services/TheMovieDatabase';
+import TMDB from '@/services/TMDB';
+import type { TMDBShow } from '@/services/TMDB';
 
 let searchTimeout: number | null = null;
 const searchQuery = ref('');
@@ -141,85 +141,29 @@ async function searchShows() {
     error.value = '';
 
     try {
-        const results = await TheMovieDatabase.searchShows(searchQuery.value);
+        const results = await TMDB.searchShows(searchQuery.value);
 
         searchResults.value = results.filter((show) => show.name && show.overview);
     } catch (err) {
         error.value = translate('shows.search.error');
+
+        Errors.report(err);
     } finally {
         isLoading.value = false;
     }
 }
 
-function getTmdbUrl(id: number): string {
-    return `https://www.themoviedb.org/tv/${id}`;
-}
+function isShowAdded(show: TMDBShow): boolean {
+    const tmdbUrl = TMDB.showUrl(show);
 
-function getTmdbImageUrl(posterPath: string): string {
-    return `https://image.tmdb.org/t/p/w500${posterPath}`;
-}
-
-function isShowAdded(id: number): boolean {
-    const tmdbUrl = getTmdbUrl(id);
-    return shows.value.some((show) => show.externalUrls?.includes(tmdbUrl));
+    return shows.value.some((_show) => _show.externalUrls?.includes(tmdbUrl));
 }
 
 async function addShow(tmdbShow: TMDBShow, close: () => void) {
     close();
 
     await UI.loading(translate('shows.search.adding'), async () => {
-        // Fetch detailed show information including seasons
-        const showDetails = await TheMovieDatabase.getShowDetails(tmdbShow.id);
-
-        // Create the show
-        const show = new Show();
-        show.name = showDetails.name;
-        show.description = showDetails.overview || '';
-        show.externalUrls = [getTmdbUrl(showDetails.id)];
-
-        // Set image URL if poster path exists
-        if (showDetails.poster_path) {
-            show.imageUrl = getTmdbImageUrl(showDetails.poster_path);
-        }
-
-        // Create seasons and episodes
-        if (showDetails.seasons && showDetails.seasons.length > 0) {
-            // Filter out special seasons (like season 0)
-            const regularSeasons = showDetails.seasons.filter((season) => season.season_number > 0);
-
-            for (const tmdbSeason of regularSeasons) {
-                // Create season
-                const season = show.relatedSeasons.attach({ number: tmdbSeason.season_number });
-
-                // Fetch detailed season information including episodes
-                const seasonDetails = await TheMovieDatabase.getSeasonDetails(showDetails.id, tmdbSeason.season_number);
-
-                if (seasonDetails.episodes && seasonDetails.episodes.length > 0) {
-                    for (const tmdbEpisode of seasonDetails.episodes) {
-                        const episode = season.relatedEpisodes.attach({
-                            number: tmdbEpisode.episode_number,
-                            name: tmdbEpisode.name,
-                        });
-
-                        if (tmdbEpisode.overview) {
-                            episode.description = tmdbEpisode.overview;
-                        }
-
-                        // Convert runtime minutes to duration string (e.g. "42m")
-                        if (tmdbEpisode.runtime) {
-                            episode.duration = renderISO8601Duration({ minutes: tmdbEpisode.runtime });
-                        }
-
-                        // Set air date if available
-                        if (tmdbEpisode.air_date) {
-                            episode.publishedAt = new Date(tmdbEpisode.air_date);
-                        }
-                    }
-                }
-            }
-        }
-
-        await show.save();
+        const show = await Catalog.addShow(tmdbShow);
 
         UI.toast(translate('shows.search.toast_added', { name: show.name }));
     });

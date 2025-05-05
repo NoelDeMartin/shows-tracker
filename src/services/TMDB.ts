@@ -1,6 +1,6 @@
 import { Service } from '@aerogel/core';
 import { facade } from '@noeldemartin/utils';
-import { array, extend, nullable, number, object, optional, string } from '@zod/mini';
+import { array, extend, nullable, number, object, optional, string, enum as zodEnum } from '@zod/mini';
 import type { infer as ZodInfer, ZodMiniType } from '@zod/mini';
 
 const TMDBShowSchema = object({
@@ -8,6 +8,7 @@ const TMDBShowSchema = object({
     name: string(),
     overview: optional(nullable(string())),
     first_air_date: optional(string()),
+    last_air_date: optional(string()),
     poster_path: optional(nullable(string())),
     number_of_seasons: optional(number()),
     number_of_episodes: optional(number()),
@@ -33,7 +34,10 @@ const TMDBEpisodeSchema = object({
     runtime: optional(nullable(number())),
 });
 
-const TMDBShowExtraSchema = object({ seasons: array(TMDBSeasonSchema) });
+const TMDBShowExtraSchema = object({
+    seasons: array(TMDBSeasonSchema),
+    status: zodEnum(['Ended', 'Canceled', 'Planned', 'Pilot', 'Returning Series', 'In Production']),
+});
 const TMDBShowDetailsSchema = extend(TMDBShowSchema, TMDBShowExtraSchema);
 
 const TMDBSeasonExtraSchema = object({ episodes: array(TMDBEpisodeSchema) });
@@ -52,7 +56,7 @@ export type TMDBEpisode = ZodInfer<typeof TMDBEpisodeSchema>;
 export type TMDBShowDetails = ZodInfer<typeof TMDBShowSchema> & ZodInfer<typeof TMDBShowExtraSchema>;
 export type TMDBSeasonDetails = ZodInfer<typeof TMDBSeasonSchema> & ZodInfer<typeof TMDBSeasonExtraSchema>;
 
-export class TheMovieDatabaseService extends Service {
+export class TMDBService extends Service {
 
     private apiKey = import.meta.env.VITE_TMDB_API_KEY as string;
     private baseUrl = 'https://api.themoviedb.org/3';
@@ -60,6 +64,14 @@ export class TheMovieDatabaseService extends Service {
         api_key: this.apiKey,
         language: 'en-US',
     };
+
+    public showUrl(show: TMDBShow): string {
+        return `https://www.themoviedb.org/tv/${show.id}`;
+    }
+
+    public showImageUrl(show: TMDBShow): string | undefined {
+        return show.poster_path ?? `https://image.tmdb.org/t/p/w500${show.poster_path}`;
+    }
 
     public async searchShows(query: string): Promise<TMDBShow[]> {
         const response = await this.request(SearchShowsResponseSchema, 'search/tv', { query });
@@ -109,4 +121,4 @@ export class TheMovieDatabaseService extends Service {
 
 }
 
-export default facade(TheMovieDatabaseService);
+export default facade(TMDBService);

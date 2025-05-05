@@ -12,6 +12,37 @@
             <TextArea name="description" :label="$t('shows.form.description')" rows="3" />
             <Input name="imageUrl" :label="$t('shows.form.image_url')" />
 
+            <!-- External URLs section -->
+            <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-medium">
+                        {{ $t('shows.form.external_urls') }}
+                    </h3>
+                </div>
+
+                <div class="space-y-2">
+                    <div v-for="(url, index) in externalUrls" :key="index" class="flex items-center gap-2">
+                        <Input
+                            v-model="externalUrls[index]"
+                            class="flex-1"
+                            :placeholder="$t('shows.form.url_placeholder')"
+                        />
+                        <button type="button" class="text-red-500 hover:text-red-700" @click="removeExternalUrl(index)">
+                            <i-mdi-close class="size-4" />
+                        </button>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="inline-flex items-center rounded border border-gray-300 bg-white px-2 py-1 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+                        @click="addExternalUrl"
+                    >
+                        <i-mdi-plus class="mr-1 size-3.5" />
+                        {{ $t('shows.form.add_url') }}
+                    </button>
+                </div>
+            </div>
+
             <!-- Seasons section -->
             <div class="space-y-2">
                 <div class="flex items-center justify-between">
@@ -133,7 +164,7 @@
 </template>
 
 <script setup lang="ts">
-import { shallowRef } from 'vue';
+import { ref, shallowRef } from 'vue';
 import { UI, enumInput, requiredStringInput, stringInput, translate, useForm } from '@aerogel/core';
 
 import Show from '@/models/Show';
@@ -153,7 +184,8 @@ const form = useForm({
     imageUrl: stringInput(show?.imageUrl ?? ''),
     status: enumInput(watchStatuses, show?.status ?? 'pending'),
 });
-const seasons = shallowRef<Season[]>([]);
+const seasons = shallowRef<Season[]>(show?.seasons ?? []);
+const externalUrls = ref<string[]>(show?.externalUrls ?? []);
 
 function addSeason() {
     const newSeason = new Season({ number: seasons.value.length + 1 });
@@ -195,12 +227,23 @@ function removeEpisode(season: Season, episode: Episode) {
     seasons.value = seasons.value.slice(0);
 }
 
+function addExternalUrl() {
+    externalUrls.value.push('');
+}
+
+function removeExternalUrl(index: number) {
+    externalUrls.value.splice(index, 1);
+}
+
 async function save() {
     UI.loading(translate('shows.form.saving'), async () => {
         const updatedShow = show ?? new Show();
         const { status, ...attributes } = form.data();
 
         updatedShow.setAttributes(attributes);
+
+        // Set external URLs
+        updatedShow.externalUrls = externalUrls.value.filter((url) => url.trim() !== '');
 
         // Create or update the WatchAction
         const watchAction = updatedShow.watchAction ?? updatedShow.relatedWatchAction.attach();

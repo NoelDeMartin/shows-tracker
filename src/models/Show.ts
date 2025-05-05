@@ -37,8 +37,26 @@ export default class Show extends Model {
         return urlFileName(this.url);
     }
 
+    public get tmdbId(): number | null {
+        // Look for TMDB URL in the external URLs
+        const tmdbUrl = this.externalUrls.find((url) => url.includes('themoviedb.org/tv/'));
+
+        if (!tmdbUrl) {
+            return null;
+        }
+
+        // Extract ID from URL like https://www.themoviedb.org/tv/123456
+        const match = tmdbUrl.match(/\/tv\/(\d+)/);
+
+        return match && parseInt(match[1], 10);
+    }
+
     public get sortedSeasons(): Season[] {
         return arraySorted(this.seasons ?? [], 'number');
+    }
+
+    public get episodes(): Episode[] {
+        return (this.seasons ?? []).flatMap((season) => season.episodes ?? []);
     }
 
     public get nextEpisode(): Episode | null {

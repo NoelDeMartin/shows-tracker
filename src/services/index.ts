@@ -1,7 +1,9 @@
-import TheMovieDatabase from './TheMovieDatabase';
+import Catalog from './Catalog';
+import TMDB from './TMDB';
 
 export const services = {
-    $tmdb: TheMovieDatabase,
+    $catalog: Catalog,
+    $tmdb: TMDB,
 };
 
 export type AppServices = typeof services;

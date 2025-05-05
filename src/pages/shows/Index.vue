@@ -9,6 +9,15 @@
                     <i-mdi-magnify class="size-4" />
                     {{ $t('shows.actions.search') }}
                 </Button>
+                <Button
+                    variant="secondary"
+                    class="py-1.5"
+                    :disabled="isUpdating"
+                    @click="updateShows"
+                >
+                    <i-mdi-refresh class="size-4" :class="{ 'animate-spin': isUpdating }" />
+                    {{ $t('shows.actions.update') }}
+                </Button>
                 <Button v-if="shows.length > 0" route="shows.create" class="py-1.5">
                     <i-mdi-plus class="size-4" />
                     {{ $t('shows.actions.add') }}
@@ -121,15 +130,33 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
+import { Errors, UI, translate } from '@aerogel/core';
 
 import SearchShowModal from '@/components/modals/SearchShowModal.vue';
 import Show from '@/models/Show';
+import Catalog from '@/services/Catalog';
 
 const shows = useModelCollection(Show);
+const isUpdating = ref(false);
 
 function onImageError(event: Event) {
     const img = event.target as HTMLImageElement;
     img.style.display = 'none';
+}
+
+async function updateShows() {
+    isUpdating.value = true;
+
+    try {
+        await Catalog.update();
+
+        UI.toast(translate('shows.update.success'));
+    } catch (error) {
+        Errors.report(error);
+    } finally {
+        isUpdating.value = false;
+    }
 }
 </script>
