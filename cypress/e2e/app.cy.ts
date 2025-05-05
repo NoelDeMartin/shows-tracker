@@ -23,6 +23,7 @@ describe('App', () => {
         cy.contains('Add Season').click();
 
         // Add episodes to the season
+        cy.contains('Season 1').click();
         cy.contains('Add Episode').click();
         cy.get('input[placeholder*="Episode name"]').first().type('Pilot');
         cy.get('textarea[placeholder*="Episode description"]').first().type('Walter White begins his journey.');
@@ -66,6 +67,7 @@ describe('App', () => {
         cy.contains('Add Season').click();
 
         // Add episodes to the season
+        cy.contains('Season 1').click();
         cy.contains('Add Episode').click();
         cy.get('input[placeholder*="Episode name"]').first().type('Chapter One: The Vanishing of Will Byers');
 
@@ -99,6 +101,7 @@ describe('App', () => {
 
         // Add a season with episodes
         cy.contains('Add Season').click();
+        cy.contains('Season 1').click();
         cy.contains('Add Episode').click();
         cy.get('input[placeholder*="Episode name"]').first().type('Pilot');
 

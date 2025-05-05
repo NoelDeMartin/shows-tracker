@@ -17,7 +17,7 @@ shows:
         seasons: 'Seasons'
         seasons_count: '1 Season | {n} Seasons'
         season: 'Season'
-        episodes: 'Episodes'
+        episodes: 'episodes'
         episode: 'Episode'
         no_episodes: 'No episodes added yet'
         rating: 'Rating'
@@ -71,3 +71,13 @@ shows:
         error: 'Failed to search shows. Please try again.'
         toast_added: '{name} added to your shows!'
         episode: 'Episode'
+    episode:
+        mark_as_watched: 'Mark as watched'
+        watched_on: 'Watched on {date}'
+        watched: 'Watched'
+        episode: 'Episode'
+        not_watched: 'Not watched'
+        next_to_watch: 'Next episode to watch'
+        all_watched: 'All episodes watched'
+    season:
+        mark_all_watched: 'Mark all as watched'

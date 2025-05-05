@@ -17,7 +17,9 @@ export default defineConfig({
             baseUrl: 'https://noeldemartin.github.io/shows-tracker/',
         }),
         Components({
+            deep: true,
             dts: 'src/types/components.d.ts',
+            dirs: ['src/components', 'src/pages'],
             resolvers: [AerogelResolver(), IconsResolver()],
         }),
         I18n({ include: fileURLToPath(new URL('./src/lang/**/*.yaml', import.meta.url)) }),

@@ -65,19 +65,39 @@
                         {{ $t('shows.show.seasons_count', show.seasons.length) }}
                     </span>
                 </div>
+
+                <!-- Next Unwatched Episode Section -->
+                <div v-if="show.nextEpisode" class="mt-3 rounded-lg border border-blue-100 bg-blue-50 p-3">
+                    <h4 class="mb-1 font-medium text-blue-700">
+                        {{ $t('shows.episode.next_to_watch') }}:
+                    </h4>
+                    <div class="flex items-center justify-between">
+                        <p class="text-sm text-blue-600">
+                            {{ show.nextEpisode.shortName }}: {{ show.nextEpisode.name }}
+                        </p>
+                        <button
+                            class="rounded-md bg-green-500 px-3 py-1 text-xs font-medium text-white hover:bg-green-600"
+                            @click.stop.prevent="show.nextEpisode.watch()"
+                        >
+                            {{ $t('shows.episode.mark_as_watched') }}
+                        </button>
+                    </div>
+                </div>
+                <div v-else class="mt-3 rounded-lg border border-green-100 bg-green-50 p-3">
+                    <p class="text-sm text-green-600">
+                        {{ $t('shows.episode.all_watched') }}
+                    </p>
+                </div>
             </HeadlessButton>
         </div>
     </Page>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 
 import SearchShowModal from '@/components/modals/SearchShowModal.vue';
 import Show from '@/models/Show';
 
 const shows = useModelCollection(Show);
-
-onMounted(() => Promise.all(shows.value.map((show) => show.loadRelationIfUnloaded('watchAction'))));
 </script>

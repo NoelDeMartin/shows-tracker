@@ -3,10 +3,10 @@ import { getTrackedModels } from '@aerogel/plugin-soukai';
 
 import Show from '@/models/Show';
 
-import ShowsCreate from './ShowsCreate.vue';
-import ShowsEdit from './ShowsEdit.vue';
-import ShowsIndex from './ShowsIndex.vue';
-import ShowsShow from './ShowsShow.vue';
+import ShowsCreate from './shows/Create.vue';
+import ShowsEdit from './shows/Edit.vue';
+import ShowsIndex from './shows/Index.vue';
+import ShowsShow from './shows/show/Show.vue';
 
 export const bindings = defineRouteBindings({
     show(slug) {
