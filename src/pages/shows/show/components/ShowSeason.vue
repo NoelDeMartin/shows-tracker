@@ -42,7 +42,7 @@
                                 :title="
                                     episode.watchAction
                                         ? $t('shows.episode.watched_on', {
-                                            date: formatDate(episode.watchAction.date),
+                                            date: formatDate(episode.watchAction.date, { month: 'short' }),
                                         })
                                         : $t('shows.episode.mark_as_watched')
                                 "
@@ -63,7 +63,7 @@
 
                             <div v-if="episode.publishedAt" class="flex items-center gap-0.5">
                                 <i-mdi-calendar class="size-3.5" />
-                                {{ formatDate(episode.publishedAt) }}
+                                {{ formatDate(episode.publishedAt, { month: 'short' }) }}
                             </div>
                         </div>
                     </div>
@@ -86,6 +86,7 @@ import { computed } from 'vue';
 import { computedModels } from '@aerogel/plugin-soukai';
 
 import Episode from '@/models/Episode';
+import { formatDate } from '@/utils/dates';
 import { parseISO8601Duration, renderHumanReadableDuration } from '@/utils/iso8601';
 import type Season from '@/models/Season';
 
@@ -95,16 +96,4 @@ const { season } = defineProps<{
 }>();
 const episodes = computedModels(Episode, () => season.sortedEpisodes);
 const watchedEpisodesLength = computed(() => episodes.value.filter((episode) => episode.watched).length);
-
-function formatDate(date: Date | undefined): string {
-    if (!date) {
-        return '';
-    }
-
-    return date.toLocaleDateString(undefined, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-    });
-}
 </script>

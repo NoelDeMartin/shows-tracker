@@ -1,7 +1,7 @@
-describe('Episode Watching Functionality', () => {
+describe('Episodes', () => {
 
     beforeEach(() => {
-        cy.visit('/');
+        cy.visit('/shows');
 
         // Set up a show with multiple seasons and episodes
         createStubs();

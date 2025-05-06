@@ -41,15 +41,11 @@
             <div class="mb-4 flex flex-col gap-4 sm:flex-row">
                 <!-- Show image if available -->
                 <div v-if="show.imageUrl" class="sm:w-1/5">
-                    <img
-                        :src="show.imageUrl"
-                        :alt="show.name"
-                        class="h-auto w-full rounded-md object-cover shadow-sm"
-                        @error="onImageError"
-                    >
+                    <ShowImage :src="show.imageUrl" class="h-auto w-full rounded-md object-cover shadow-sm" />
                 </div>
 
                 <div class="flex-1">
+                    <!-- Show Description -->
                     <div v-if="show.description" class="mb-4">
                         <h3 class="mb-1 text-base font-medium">
                             {{ $t('shows.show.description') }}
@@ -57,6 +53,65 @@
                         <p class="text-sm text-gray-700">
                             {{ show.description }}
                         </p>
+                    </div>
+
+                    <!-- Show Metadata -->
+                    <div class="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <!-- Air Dates -->
+                        <div v-if="show.startDate || show.endDate" class="rounded-md bg-gray-50 p-3">
+                            <h4 class="mb-1 text-sm font-medium text-gray-700">
+                                {{ $t('shows.show.air_dates') }}
+                            </h4>
+                            <div v-if="show.startDate" class="flex items-center gap-1 text-sm text-gray-600">
+                                <i-mdi-calendar-start class="size-4 text-gray-500" />
+                                <span>{{ $t('shows.show.start_date') }}: {{ formatDate(show.startDate) }}</span>
+                            </div>
+                            <div v-if="show.endDate" class="flex items-center gap-1 text-sm text-gray-600">
+                                <i-mdi-calendar-end class="size-4 text-gray-500" />
+                                <span>{{ $t('shows.show.end_date') }}: {{ formatDate(show.endDate) }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Episodes Info -->
+                        <div class="rounded-md bg-gray-50 p-3">
+                            <h4 class="mb-1 text-sm font-medium text-gray-700">
+                                {{ $t('shows.show.episodes_info') }}
+                            </h4>
+                            <div class="text-sm text-gray-600">
+                                <div class="flex items-center gap-1">
+                                    <i-mdi-television class="size-4 text-gray-500" />
+                                    <span>{{ $t('shows.show.seasons_count', show.sortedSeasons.length) }}</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <i-mdi-movie-open class="size-4 text-gray-500" />
+                                    <span>{{ $t('shows.show.total_episodes', show.episodes.length) }}</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <i-mdi-check-circle class="size-4 text-gray-500" />
+                                    <span>{{ $t('shows.show.watched_episodes', watchedEpisodesLength) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- External URLs -->
+                    <div v-if="show.externalUrls && show.externalUrls.length > 0" class="mb-4">
+                        <h3 class="mb-1 text-base font-medium">
+                            {{ $t('shows.show.external_urls') }}
+                        </h3>
+                        <div class="space-y-1">
+                            <div v-for="(url, index) in show.externalUrls" :key="index" class="flex items-center gap-1">
+                                <i-mdi-link class="size-4 text-gray-500" />
+                                <a
+                                    :href="url"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                                >
+                                    {{ getDisplayUrl(url) }}
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,20 +135,30 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { computedModel } from '@aerogel/plugin-soukai';
 import { Router } from '@aerogel/plugin-routing';
 import { UI, translate } from '@aerogel/core';
+import { urlParse } from '@noeldemartin/utils';
 
+import { formatDate } from '@/utils/dates';
 import type Show from '@/models/Show';
 
+const DOMAINS = {
+    'themoviedb.org': 'The Movie Database (TMDB)',
+    'imdb.com': 'IMDB',
+};
+
 const { show } = defineProps<{ show: Show }>();
+const watchedEpisodesLength = computed(() => show.episodes.filter((episode) => episode.watched).length);
 
 // TODO fix Aerogel so that route models are reactive out of the box.
 const computedShow = computedModel(() => show);
 
-function onImageError(event: Event) {
-    const img = event.target as HTMLImageElement;
-    img.style.display = 'none';
+function getDisplayUrl(url: string): string {
+    const { domain } = urlParse(url) ?? {};
+
+    return DOMAINS[domain as keyof typeof DOMAINS] ?? url;
 }
 
 async function deleteShow() {

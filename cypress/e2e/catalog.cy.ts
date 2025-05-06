@@ -1,29 +1,26 @@
-describe('Show Updates', () => {
+describe('Catalog', () => {
 
-    beforeEach(() => cy.visit('/'));
+    beforeEach(() => cy.visit('/shows'));
 
     it('Updates shows with new episodes', () => {
-        // Create a test show with a season and episode
-        cy.contains('Add Your First Show').click();
-        cy.get('input[name="name"]').type('The Mandalorian');
-        cy.get('textarea[name="description"]').type('A lone bounty hunter travels the outer reaches of the galaxy.');
-        cy.comboboxSelect('Status', 'Watching');
+        // Create a test show with a season and episode programmatically
+        cy.model('Show').then(async (Show) => {
+            const show = await Show.create({
+                name: 'The Mandalorian',
+                description: 'A lone bounty hunter travels the outer reaches of the galaxy.',
+                externalUrls: ['https://www.themoviedb.org/tv/82856'],
+            });
 
-        // Add external URL for TMDB
-        cy.contains('External URLs').should('be.visible');
-        cy.contains('Add URL').click();
-        cy.get('input[placeholder*="Enter URL"]').type('https://www.themoviedb.org/tv/82856');
+            // Create a watch action with "watching" status
+            await show.relatedWatchAction.create({ status: 'watching' });
 
-        // Add a season
-        cy.contains('Add Season').click();
-
-        // Add episode to the season
-        cy.contains('Season 1').click();
-        cy.contains('Add Episode').click();
-        cy.get('input[placeholder*="Episode name"]').first().type('Chapter 1: The Mandalorian');
-
-        // Submit the form
-        cy.contains('Create').click();
+            // Add a season with an episode
+            const season = await show.relatedSeasons.create({ number: 1 });
+            await season.relatedEpisodes.create({
+                number: 1,
+                name: 'Chapter 1: The Mandalorian',
+            });
+        });
 
         // Verify show was created
         cy.contains('The Mandalorian').should('be.visible');
@@ -60,54 +57,43 @@ describe('Show Updates', () => {
     });
 
     it('Only updates shows with "watching" status and fewer than 3 unwatched episodes', () => {
-        // Create show with "completed" status (shouldn't be updated)
-        cy.contains('Add Your First Show').click();
-        cy.get('input[name="name"]').type('Completed Show');
-        cy.comboboxSelect('Status', 'Completed');
+        // Create test shows programmatically
+        cy.model('Show').then(async (Show) => {
+            // Create completed show (shouldn't be updated)
+            const completedShow = await Show.create({
+                name: 'Completed Show',
+                externalUrls: ['https://www.themoviedb.org/tv/11111'],
+            });
+            await completedShow.relatedWatchAction.create({ status: 'completed' });
 
-        // Add external URL
-        cy.contains('Add URL').click();
-        cy.get('input[placeholder*="Enter URL"]').type('https://www.themoviedb.org/tv/11111');
+            // Create watching show with 3 unwatched episodes (shouldn't be updated)
+            const manyEpisodesShow = await Show.create({
+                name: 'Many Episodes Show',
+                externalUrls: ['https://www.themoviedb.org/tv/22222'],
+            });
+            await manyEpisodesShow.relatedWatchAction.create({ status: 'watching' });
 
-        cy.contains('Create').click();
+            const manyEpisodesShowSeason = await manyEpisodesShow.relatedSeasons.create({ number: 1 });
+            for (let i = 1; i <= 3; i++) {
+                await manyEpisodesShowSeason.relatedEpisodes.create({
+                    number: i,
+                    name: `Episode ${i}`,
+                });
+            }
 
-        // Create show with "watching" status but already has 3 unwatched episodes
-        cy.contains('Add Show').click();
-        cy.get('input[name="name"]').type('Many Episodes Show');
-        cy.comboboxSelect('Status', 'Watching');
+            // Create eligible show with one unwatched episode (should be updated)
+            const eligibleShow = await Show.create({
+                name: 'Eligible Show',
+                externalUrls: ['https://www.themoviedb.org/tv/33333'],
+            });
+            await eligibleShow.relatedWatchAction.create({ status: 'watching' });
 
-        // Add external URL
-        cy.contains('Add URL').click();
-        cy.get('input[placeholder*="Enter URL"]').type('https://www.themoviedb.org/tv/22222');
-
-        // Add season with 3 episodes
-        cy.contains('Add Season').click();
-        cy.contains('Season 1').click();
-
-        // Add 3 episodes
-        for (let i = 1; i <= 3; i++) {
-            cy.contains('Add Episode').click();
-            cy.get('input[placeholder*="Episode name"]')
-                .eq(i - 1)
-                .type(`Episode ${i}`);
-        }
-
-        cy.contains('Create').click();
-
-        // Create eligible show for update
-        cy.contains('Add Show').click();
-        cy.get('input[name="name"]').type('Eligible Show');
-        cy.comboboxSelect('Status', 'Watching');
-
-        // Add external URL
-        cy.contains('Add URL').click();
-        cy.get('input[placeholder*="Enter URL"]').type('https://www.themoviedb.org/tv/33333');
-
-        cy.contains('Add Season').click();
-        cy.contains('Season 1').click();
-        cy.contains('Add Episode').click();
-        cy.get('input[placeholder*="Episode name"]').first().type('Episode 1');
-        cy.contains('Create').click();
+            const eligibleShowSeason = await eligibleShow.relatedSeasons.create({ number: 1 });
+            await eligibleShowSeason.relatedEpisodes.create({
+                number: 1,
+                name: 'Episode 1',
+            });
+        });
 
         // Set up mocks - Not expecting these to be called due to filtering
         cy.intercept('GET', 'https://api.themoviedb.org/3/tv/11111**', {

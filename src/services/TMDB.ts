@@ -70,7 +70,7 @@ export class TMDBService extends Service {
     }
 
     public showImageUrl(show: TMDBShow): string | undefined {
-        return show.poster_path ?? `https://image.tmdb.org/t/p/w500${show.poster_path}`;
+        return show.poster_path ? `https://image.tmdb.org/t/p/w500${show.poster_path}` : undefined;
     }
 
     public async searchShows(query: string): Promise<TMDBShow[]> {

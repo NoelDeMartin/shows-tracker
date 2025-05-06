@@ -1,6 +1,12 @@
 app:
     title: 'Shows Tracker'
     footer: 'Track your favorite TV shows! 📺✨'
+home:
+    title: "What's new?"
+    view_all_shows: 'View All Shows'
+    no_watching_shows: 'No shows with new episodes'
+    browse_shows: 'Browse My Shows'
+    new_episodes: '{n} new episodes'
 shows:
     index:
         title: 'My Shows'
@@ -22,6 +28,13 @@ shows:
         no_episodes: 'No episodes added yet'
         rating: 'Rating'
         status: 'Status'
+        air_dates: 'Air Dates'
+        start_date: 'First aired'
+        end_date: 'Last aired'
+        episodes_info: 'Episode Statistics'
+        total_episodes: '{n} Total Episodes'
+        watched_episodes: '{n} Watched'
+        external_urls: 'External Links'
     form:
         name: 'Name'
         description: 'Description'

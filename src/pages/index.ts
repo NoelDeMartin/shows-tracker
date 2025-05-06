@@ -3,6 +3,7 @@ import { getTrackedModels } from '@aerogel/plugin-soukai';
 
 import Show from '@/models/Show';
 
+import Home from './Home.vue';
 import ShowsCreate from './shows/Create.vue';
 import ShowsEdit from './shows/Edit.vue';
 import ShowsIndex from './shows/Index.vue';
@@ -18,7 +19,7 @@ export const bindings = defineRouteBindings({
 });
 
 export default defineRoutes([
-    { name: 'home', path: '/', redirect: '/shows' },
+    { name: 'home', path: '/', component: Home },
     { name: 'shows.index', path: '/shows', component: ShowsIndex },
     { name: 'shows.show', path: '/shows/:show', component: ShowsShow },
     { name: 'shows.create', path: '/shows/create', component: ShowsCreate },

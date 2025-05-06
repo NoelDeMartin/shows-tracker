@@ -1,9 +1,9 @@
-describe('App', () => {
+describe('Shows', () => {
 
-    beforeEach(() => cy.visit('/'));
+    beforeEach(() => cy.visit('/shows'));
 
     it('Shows empty state when no shows exist', () => {
-        // Assert
+        // Assert shows index empty state
         cy.contains('You haven\'t added any shows yet.');
         cy.contains('Add Your First Show').should('be.visible');
     });
