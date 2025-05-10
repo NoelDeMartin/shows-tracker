@@ -1,7 +1,7 @@
 <template>
     <Page>
         <div class="mb-4 flex items-center justify-between">
-            <h2 class="flex items-center text-xl font-bold">
+            <h2 class="text-xl font-bold">
                 {{ $t('shows.index.title') }}
             </h2>
             <div class="flex gap-2">

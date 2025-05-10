@@ -28,12 +28,12 @@ describe('Catalog', () => {
         // Mock TMDB response for updates
         cy.intercept('GET', 'https://api.themoviedb.org/3/tv/82856**', {
             statusCode: 200,
-            fixture: 'tmdb-mandalorian-details.json',
+            fixture: 'tmdb/mandalorian-details.json',
         }).as('showDetails');
 
         cy.intercept('GET', 'https://api.themoviedb.org/3/tv/82856/season/1**', {
             statusCode: 200,
-            fixture: 'tmdb-mandalorian-season.json',
+            fixture: 'tmdb/mandalorian-season.json',
         }).as('seasonDetails');
 
         // Click the Update button

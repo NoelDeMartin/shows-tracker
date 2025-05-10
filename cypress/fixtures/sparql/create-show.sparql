@@ -1,0 +1,54 @@
+INSERT DATA {
+
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it>
+        a schema:TVSeries ;
+        schema:name "Breaking Bad" ;
+        schema:description "A high school chemistry teacher turned methamphetamine manufacturer." ;
+        schema:containsSeason <#[[season][.*]]> ;
+        schema:sameAs <https://www.themoviedb.org/tv/1396> .
+
+    <#it-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#it> ;
+        crdt:createdAt "[[.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[watch-action][.*]]>
+        a schema:WatchAction ;
+        schema:actionStatus schema:ActiveActionStatus ;
+        schema:object <#it> .
+
+    <#[[watch-action][.*]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[watch-action][.*]]> ;
+        crdt:createdAt "[[.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[season][.*]]>
+        a schema:TVSeason ;
+        schema:seasonNumber 1 ;
+        schema:episode <#[[episode][.*]]> .
+
+    <#[[season][.*]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[season][.*]]> ;
+        crdt:createdAt "[[.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[episode][.*]]>
+        a schema:TVEpisode ;
+        schema:episodeNumber 1 ;
+        schema:name "Pilot" ;
+        schema:description "Walter White begins his journey." ;
+        schema:duration "PT58M" .
+
+    <#[[episode][.*]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[episode][.*]]> ;
+        crdt:createdAt "[[.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[.*]]"^^xsd:dateTime .
+}

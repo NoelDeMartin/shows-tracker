@@ -1,0 +1,3 @@
+<#it-metadata> a <https://vocab.noeldemartin.com/crdt/Tombstone>;
+    <https://vocab.noeldemartin.com/crdt/resource> <#it>;
+    <https://vocab.noeldemartin.com/crdt/deletedAt> "[[.*]]"^^<http://www.w3.org/2001/XMLSchema#dateTime>.

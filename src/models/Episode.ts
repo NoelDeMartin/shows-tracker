@@ -15,6 +15,8 @@ const formatNumber = (value?: Nullable<number>) => (value || 0).toString().padSt
 
 export default class Episode extends Model {
 
+    public static history = true;
+
     public static boot(name?: string): void {
         super.boot(name);
 

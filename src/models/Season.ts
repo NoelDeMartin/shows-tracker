@@ -10,6 +10,8 @@ import Model from './Season.schema';
 
 export default class Season extends Model {
 
+    public static history = true;
+
     public static boot(name?: string): void {
         super.boot(name);
 

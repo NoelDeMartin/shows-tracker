@@ -200,17 +200,17 @@ describe('Shows', () => {
     it('Can search for shows and add them to my list with default pending status', () => {
         // Mock the TMDB API responses
         cy.intercept('GET', 'https://api.themoviedb.org/3/search/tv*', {
-            fixture: 'tmdb-search-results.json',
+            fixture: 'tmdb/search-results.json',
         }).as('searchShows');
 
         // Mock the show details request
         cy.intercept('GET', 'https://api.themoviedb.org/3/tv/*', {
-            fixture: 'tmdb-show-details.json',
+            fixture: 'tmdb/show-details.json',
         }).as('showDetails');
 
         // Mock the seasons request
         cy.intercept('GET', 'https://api.themoviedb.org/3/tv/*/season/*', {
-            fixture: 'tmdb-season-details.json',
+            fixture: 'tmdb/season-details.json',
         }).as('seasonDetails');
 
         // Open search modal

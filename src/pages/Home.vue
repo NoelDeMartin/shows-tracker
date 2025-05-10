@@ -1,9 +1,9 @@
 <template>
     <Page>
         <div class="mb-6 flex justify-between">
-            <h1 class="text-2xl font-bold">
+            <h2 class="text-xl font-bold">
                 {{ $t('home.title') }}
-            </h1>
+            </h2>
             <ShowsUpdateButton />
         </div>
 

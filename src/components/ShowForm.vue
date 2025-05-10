@@ -240,7 +240,10 @@ async function save() {
         const updatedShow = show ?? new Show();
         const { status, ...attributes } = form.data();
 
-        updatedShow.setAttributes(attributes);
+        updatedShow.setAttributes({
+            ...attributes,
+            imageUrl: attributes.imageUrl || null,
+        });
 
         // Set external URLs
         updatedShow.externalUrls = externalUrls.value.filter((url) => url.trim() !== '');

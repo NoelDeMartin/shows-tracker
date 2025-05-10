@@ -10,6 +10,8 @@ export type WatchStatus = (typeof watchStatuses)[number];
 
 export default class WatchAction extends Model {
 
+    public static history = true;
+
     declare public show?: Show;
     declare public episode?: Episode;
 

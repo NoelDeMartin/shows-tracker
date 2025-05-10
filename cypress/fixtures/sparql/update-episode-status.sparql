@@ -1,0 +1,54 @@
+DELETE DATA {
+
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#[[showWatchAction][.*]]> schema:actionStatus schema:PotentialActionStatus .
+    <#[[showWatchAction][.*]]-metadata> crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+};
+
+INSERT DATA {
+
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#[[showWatchAction][.*]]> schema:actionStatus schema:ActiveActionStatus .
+
+    <#[[episodeWatchAction][.*]]>
+        a schema:WatchAction ;
+        schema:endTime "[[updatedAt][.*]]"^^xsd:dateTime ;
+        schema:object <#[[episode][.*]]> .
+
+    <#[[showWatchAction][.*]]-metadata> crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
+
+    <#[[episodeWatchAction][.*]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[episodeWatchAction][.*]]> ;
+        crdt:createdAt "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
+
+    <#[[showWatchAction][.*]]-operation-[[operation-1][.*]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[showWatchAction][.*]]> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:object ;
+        crdt:value <#it> .
+
+    <#[[showWatchAction][.*]]-operation-[[operation-2][.*]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[showWatchAction][.*]]> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:actionStatus ;
+        crdt:value schema:PotentialActionStatus .
+
+    <#[[showWatchAction][.*]]-operation-[[operation-3][.*]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[showWatchAction][.*]]> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:actionStatus ;
+        crdt:value schema:ActiveActionStatus .
+
+}

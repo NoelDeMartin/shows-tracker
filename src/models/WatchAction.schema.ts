@@ -2,7 +2,7 @@ import { FieldType } from 'soukai';
 import { defineSolidModelSchema } from 'soukai-solid';
 import { invert } from '@noeldemartin/utils';
 import type { Nullable } from '@noeldemartin/utils';
-import type { ModelKey } from 'soukai';
+import { ModelKey } from 'soukai';
 
 import type { WatchStatus } from '@/models/WatchAction';
 
@@ -28,9 +28,13 @@ export default defineSolidModelSchema({
         status: {
             rdfProperty: 'actionStatus',
             type: FieldType.Key,
-            serialize(value?: Nullable<{ '@id': WatchStatus }>): { '@id': string } | undefined {
+            serialize(value?: Nullable<{ '@id': WatchStatus } | ModelKey>): { '@id': string } | ModelKey | undefined {
                 if (!value) {
                     return;
+                }
+
+                if (value instanceof ModelKey) {
+                    return new ModelKey(WATCH_STATUSES_INVERTED[value.toString()]);
                 }
 
                 return { '@id': WATCH_STATUSES_INVERTED[value['@id']] };
