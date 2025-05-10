@@ -1,8 +1,7 @@
-import { FieldType } from 'soukai';
+import { FieldType, ModelKey } from 'soukai';
 import { defineSolidModelSchema } from 'soukai-solid';
 import { invert } from '@noeldemartin/utils';
 import type { Nullable } from '@noeldemartin/utils';
-import { ModelKey } from 'soukai';
 
 import type { WatchStatus } from '@/models/WatchAction';
 

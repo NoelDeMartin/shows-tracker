@@ -1,4 +1,3 @@
-import { escapeRegexText } from '@noeldemartin/utils';
 import { podUrl, webId } from '@aerogel/cypress';
 
 describe('Solid', () => {
