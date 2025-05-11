@@ -14,7 +14,13 @@ export default defineConfig({
     plugins: [
         Aerogel({
             name: 'Shows Tracker',
+            description: 'Keep track of your favorite shows',
             baseUrl: 'https://noeldemartin.github.io/shows-tracker/',
+            themeColor: '#ff4081',
+            icons: {
+                '192x192': 'android-chrome-192x192.png',
+                '512x512': 'android-chrome-512x512.png',
+            },
         }),
         Components({
             deep: true,
