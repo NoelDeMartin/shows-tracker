@@ -1,12 +1,36 @@
 <template>
     <Page>
-        <div class="mb-4 flex items-center justify-between">
-            <div class="flex items-center gap-2">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap items-center gap-2">
                 <h2 class="text-xl font-bold">
+                    <DropdownMenu v-if="$ui.mobile" align="end">
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            :title="$t('task.actions')"
+                            :aria-label="$t('task.actions')"
+                        >
+                            <i-zondicons-dots-horizontal-triple class="size-5" />
+                        </Button>
+                        <template #options>
+                            <DropdownMenuOptions>
+                                <DropdownMenuOption
+                                    @select="$router.push({ name: 'shows.edit', params: { show: show.slug } })"
+                                >
+                                    <i-mdi-pencil class="size-4" />
+                                    <span>{{ $t('shows.actions.edit') }}</span>
+                                </DropdownMenuOption>
+                                <DropdownMenuOption @select="deleteShow()">
+                                    <i-mdi-delete class="size-4" />
+                                    <span>{{ $t('shows.actions.delete') }}</span>
+                                </DropdownMenuOption>
+                            </DropdownMenuOptions>
+                        </template>
+                    </DropdownMenu>
                     {{ show.name }}
                 </h2>
                 <div
-                    class="flex h-8 w-8 items-center justify-center rounded-full text-white shadow-sm"
+                    class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white shadow-sm"
                     :class="`bg-status-${show.status}`"
                     :title="$t(`shows.status.${computedShow.status}`)"
                 >
@@ -16,11 +40,11 @@
                     <i-mdi-calendar-clock v-else-if="show.status === 'pending'" class="size-4" />
                 </div>
                 <!-- Display status text next to icon -->
-                <span class="text-sm font-medium text-gray-600">
+                <span class="hidden text-sm font-medium text-gray-600 md:block">
                     {{ $t(`shows.status.${computedShow.status}`) }}
                 </span>
             </div>
-            <div class="flex gap-2">
+            <div v-if="!$ui.mobile" class="flex gap-2">
                 <Button
                     variant="secondary"
                     route="shows.edit"
@@ -40,7 +64,7 @@
         <div class="rounded-lg bg-white p-4 shadow-sm">
             <div class="mb-4 flex flex-col gap-4 sm:flex-row">
                 <!-- Show image if available -->
-                <div v-if="show.imageUrl" class="sm:w-1/5">
+                <div v-if="show.imageUrl" class="mx-auto w-full max-w-[180px] sm:mx-0 sm:w-1/5">
                     <ShowImage :src="show.imageUrl" class="h-auto w-full rounded-md object-cover shadow-sm" />
                 </div>
 
@@ -101,12 +125,12 @@
                         </h3>
                         <div class="space-y-1">
                             <div v-for="(url, index) in show.externalUrls" :key="index" class="flex items-center gap-1">
-                                <i-mdi-link class="size-4 text-gray-500" />
+                                <i-mdi-link class="size-4 shrink-0 text-gray-500" />
                                 <a
                                     :href="url"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                                    class="text-sm break-all text-blue-600 hover:text-blue-800 hover:underline"
                                 >
                                     {{ getDisplayUrl(url) }}
                                 </a>

@@ -1,5 +1,5 @@
 <template>
-    <div class="relative rounded-lg bg-white p-6 shadow-sm">
+    <div class="relative rounded-lg bg-white p-4 shadow-sm sm:p-6">
         <Form class="space-y-3" :form @submit="save">
             <Select
                 name="status"
@@ -27,7 +27,11 @@
                             class="flex-1"
                             :placeholder="$t('shows.form.url_placeholder')"
                         />
-                        <button type="button" class="text-red-500 hover:text-red-700" @click="removeExternalUrl(index)">
+                        <button
+                            type="button"
+                            class="shrink-0 text-red-500 hover:text-red-700"
+                            @click="removeExternalUrl(index)"
+                        >
                             <i-mdi-close class="size-4" />
                         </button>
                     </div>
@@ -65,7 +69,7 @@
                     class="group rounded border border-gray-200"
                 >
                     <summary
-                        class="flex cursor-pointer items-center justify-between p-3 transition-colors hover:bg-gray-50"
+                        class="flex cursor-pointer items-center justify-between p-2 transition-colors hover:bg-gray-50 sm:p-3"
                     >
                         <h4 class="flex items-center text-sm font-medium">
                             <i-mdi-chevron-right
@@ -79,7 +83,7 @@
                         <div class="flex items-center">
                             <button
                                 type="button"
-                                class="text-red-500 hover:text-red-700"
+                                class="shrink-0 text-red-500 hover:text-red-700"
                                 @click.prevent="removeSeason(season)"
                             >
                                 <i-mdi-delete class="size-4" />
@@ -87,7 +91,7 @@
                         </div>
                     </summary>
 
-                    <div class="border-t border-gray-200 p-3">
+                    <div class="border-t border-gray-200 p-2 sm:p-3">
                         <div class="space-y-2">
                             <div
                                 v-for="(episode, episodeKey) in season.episodes"
@@ -103,7 +107,7 @@
                                     >
                                     <button
                                         type="button"
-                                        class="text-red-500 hover:text-red-700"
+                                        class="shrink-0 text-red-500 hover:text-red-700"
                                         @click="removeEpisode(season, episode)"
                                     >
                                         <i-mdi-close class="size-4" />
@@ -118,7 +122,7 @@
                                         rows="2"
                                     />
 
-                                    <div class="grid grid-cols-2 gap-2">
+                                    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
                                         <input
                                             v-model="episode.duration"
                                             class="rounded border-gray-300 text-xs focus:border-[#ff4081] focus:ring-[#ff4081]"
@@ -147,7 +151,7 @@
                 </details>
             </div>
 
-            <div class="flex justify-end gap-3 pt-1">
+            <div class="flex flex-wrap justify-end gap-3 pt-1">
                 <Button variant="secondary" class="py-1.5" @click="$emit('cancel')">
                     {{ $t('shows.form.cancel') }}
                 </Button>

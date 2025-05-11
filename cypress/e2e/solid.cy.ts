@@ -148,7 +148,7 @@ describe('Solid', () => {
         cy.contains('Firefly').click();
 
         // Act - Mark episode as watched
-        cy.contains('1. Serenity').parent().find('button').first().click();
+        cy.contains('Serenity').parent().find('button').first().click();
         cy.waitSync();
 
         // Assert - Verify the episode was synced
@@ -286,7 +286,7 @@ describe('Solid', () => {
         cy.contains('This show was preloaded in the pod.').should('be.visible');
         cy.contains('Watching').should('be.visible');
         cy.contains('Season 1').should('be.visible');
-        cy.contains('1. Preloaded Episode').should('be.visible');
+        cy.contains('Preloaded Episode').should('be.visible');
     });
 
     it('Syncs show deletion', () => {

@@ -1,18 +1,15 @@
 <template>
     <Page>
-        <div class="mb-4 flex items-center justify-between">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
             <h2 class="text-xl font-bold">
                 {{ $t('shows.index.title') }}
             </h2>
-            <div class="flex gap-2">
-                <Button variant="secondary" class="py-1.5" @click="$ui.modal(SearchShowModal)">
-                    <i-mdi-magnify class="size-4" />
-                    {{ $t('shows.actions.search') }}
-                </Button>
+            <div v-if="shows.length > 0" class="flex gap-2">
+                <ShowsSearchButton />
                 <ShowsUpdateButton />
-                <Button v-if="shows.length > 0" route="shows.create" class="py-1.5">
+                <Button route="shows.create" class="py-1.5">
                     <i-mdi-plus class="size-4" />
-                    {{ $t('shows.actions.add') }}
+                    <span class="hidden sm:block">{{ $t('shows.actions.add') }}</span>
                 </Button>
             </div>
         </div>
@@ -50,11 +47,11 @@
                 <div class="p-3">
                     <!-- Header with title and status icon -->
                     <div class="mb-2 flex items-start justify-between">
-                        <h3 class="text-base font-semibold">
+                        <h3 class="text-base font-semibold break-words">
                             {{ show.name }}
                         </h3>
                         <div
-                            class="flex h-6 w-6 items-center justify-center rounded-full text-white shadow-sm"
+                            class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-white shadow-sm"
                             :class="`bg-status-${show.status}`"
                             :title="$t(`shows.status.${show.status}`)"
                         >
@@ -88,17 +85,17 @@
 
                     <!-- Next Unwatched Episode Section -->
                     <div v-if="show.nextEpisode" class="mt-2 rounded-md border border-blue-100 bg-blue-50 p-2">
-                        <div class="flex items-center justify-between">
-                            <div>
+                        <div class="flex flex-wrap items-start justify-between gap-2">
+                            <div class="flex-1">
                                 <p class="text-xs font-medium text-blue-700">
                                     {{ $t('shows.episode.next_to_watch') }}:
                                 </p>
-                                <p class="text-xs text-blue-600">
+                                <p class="text-xs break-words text-blue-600">
                                     {{ show.nextEpisode.shortName }}: {{ show.nextEpisode.name }}
                                 </p>
                             </div>
                             <button
-                                class="ml-1 rounded bg-green-500 px-2 py-1 text-xs font-medium text-white hover:bg-green-600"
+                                class="ml-1 shrink-0 rounded bg-green-500 px-2 py-1 text-xs font-medium text-white hover:bg-green-600"
                                 @click.stop.prevent="show.nextEpisode.watch()"
                             >
                                 {{ $t('shows.episode.mark_as_watched') }}

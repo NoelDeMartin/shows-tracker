@@ -46,14 +46,14 @@ describe('Shows', () => {
         // On the details page, status text is still visible next to the icon
         cy.contains('Completed').should('be.visible');
         cy.contains('Season 1').should('be.visible');
-        cy.contains('1. Pilot')
+        cy.contains('Pilot')
             .should('be.visible')
             .closest('li')
             .within(() => {
                 cy.contains('58 min').should('be.visible');
                 cy.contains('Walter White begins his journey.').should('be.visible');
             });
-        cy.contains('2. Cat\'s in the Bag...').should('be.visible');
+        cy.contains('Cat\'s in the Bag...').should('be.visible');
     });
 
     it('Can view show details with status', () => {
@@ -125,7 +125,7 @@ describe('Shows', () => {
 
         // Verify seasons and episodes are still there
         cy.contains('Season 1').should('be.visible');
-        cy.contains('1. Pilot').should('be.visible');
+        cy.contains('Pilot').should('be.visible');
     });
 
     it('Can delete a show', () => {

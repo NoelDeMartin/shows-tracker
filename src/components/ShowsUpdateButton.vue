@@ -6,7 +6,7 @@
         @click="updateShows"
     >
         <i-mdi-refresh class="size-4" :class="{ 'animate-spin': isUpdating }" />
-        {{ $t('shows.actions.update') }}
+        <span class="hidden md:block">{{ $t('shows.actions.update') }}</span>
     </Button>
 </template>
 

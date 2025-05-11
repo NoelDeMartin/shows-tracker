@@ -26,14 +26,14 @@ describe('Episodes', () => {
 
         // Season 1 should be expanded by default as it contains unwatched episodes
         cy.contains('Season 1').should('be.visible');
-        cy.contains('1. Pilot').should('be.visible');
+        cy.contains('Pilot').should('be.visible');
 
         // Mark all episodes in season 1 as watched
         cy.contains('Mark all as watched').click();
 
         // Now all episodes in season 1 should be marked as watched
-        cy.get('li').contains('1. Pilot').get('button[title*="Watched on"]').should('exist');
-        cy.get('li').contains('2. The Train Job').get('button[title*="Watched on"]').should('exist');
+        cy.get('li').contains('Pilot').get('button[title*="Watched on"]').should('exist');
+        cy.get('li').contains('The Train Job').get('button[title*="Watched on"]').should('exist');
 
         // Go back to index page
         cy.go('back');
@@ -64,7 +64,7 @@ describe('Episodes', () => {
         cy.contains('Firefly').click();
 
         // Season 1 should be expanded by default (because it has the next unwatched episode)
-        cy.contains('1. Pilot').should('be.visible');
+        cy.contains('Pilot').should('be.visible');
 
         // Season 2 should be collapsed
         cy.contains('Out of Gas').should('not.be.visible');
@@ -76,7 +76,7 @@ describe('Episodes', () => {
         cy.reload();
 
         // Now season 2 should be expanded automatically
-        cy.contains('1. Out of Gas').should('be.visible');
+        cy.contains('Out of Gas').should('be.visible');
     });
 
     it('Can toggle episode watch status by clicking on the check icon', () => {
@@ -84,16 +84,16 @@ describe('Episodes', () => {
         cy.contains('Firefly').click();
 
         // Mark episode 1 as watched by clicking the check icon
-        cy.contains('1. Pilot').parent().find('button').first().click();
+        cy.contains('Pilot').parent().find('button').first().click();
 
         // Verify the icon changes
-        cy.contains('1. Pilot').parent().get('button[title*="Watched on"]').should('exist');
+        cy.contains('Pilot').parent().get('button[title*="Watched on"]').should('exist');
 
         // Toggle it back to unwatched
-        cy.contains('1. Pilot').parent().find('button').first().click();
+        cy.contains('Pilot').parent().find('button').first().click();
 
         // Verify the icon changes back
-        cy.contains('1. Pilot').parent().get('button[title*="Watched on"]').should('not.exist');
+        cy.contains('Pilot').parent().get('button[title*="Watched on"]').should('not.exist');
     });
 
     it('Changes show status from "Plan to Watch" to "Watching" when marking an episode as watched', () => {
@@ -109,7 +109,7 @@ describe('Episodes', () => {
         cy.contains('Plan to Watch').should('be.visible');
 
         // Mark the episode as watched
-        cy.contains('1. Pilot').parent().find('button').first().click();
+        cy.contains('Pilot').parent().find('button').first().click();
 
         // Verify the status has changed to "Watching" (text is still visible on detail page)
         cy.contains('Watching').should('be.visible');

@@ -1,10 +1,13 @@
 <template>
     <Page>
-        <div class="mb-6 flex justify-between">
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-2">
             <h2 class="text-xl font-bold">
                 {{ $t('home.title') }}
             </h2>
-            <ShowsUpdateButton />
+            <div class="flex gap-2">
+                <ShowsSearchButton />
+                <ShowsUpdateButton />
+            </div>
         </div>
 
         <!-- Shows with new episodes section -->
@@ -42,7 +45,7 @@
                                 </h3>
                                 <!-- Watching badge -->
                                 <div
-                                    class="bg-status-watching flex h-6 w-6 items-center justify-center rounded-full text-white shadow-sm"
+                                    class="bg-status-watching flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-white shadow-sm"
                                 >
                                     <i-mdi-eye class="size-3.5" />
                                 </div>
@@ -67,7 +70,7 @@
                                         <p class="text-xs font-medium text-blue-700">
                                             {{ $t('shows.episode.next_to_watch') }}:
                                         </p>
-                                        <p class="text-xs text-blue-600">
+                                        <p class="text-xs break-words text-blue-600">
                                             {{ show.nextEpisode.shortName }}: {{ show.nextEpisode.name }}
                                         </p>
                                     </div>
