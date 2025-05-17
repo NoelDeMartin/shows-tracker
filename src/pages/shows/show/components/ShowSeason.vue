@@ -21,7 +21,7 @@
                 v-if="episodes.length && watchedEpisodesLength < episodes.length"
                 class="ml-2 shrink-0 rounded bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 hover:bg-green-100"
                 :title="$t('shows.season.mark_all_watched')"
-                @click.prevent="episodes.forEach((episode) => episode.watch())"
+                @click.prevent="season.watch()"
             >
                 {{ $t('shows.season.mark_all_watched') }}
             </button>

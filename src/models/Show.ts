@@ -73,6 +73,20 @@ export default class Show extends Model {
         return null;
     }
 
+    public async updateStatus(status: WatchStatus): Promise<void> {
+        if (status === this.status) {
+            await this.save();
+
+            return;
+        }
+
+        const watchAction = this.watchAction ?? this.relatedWatchAction.attach();
+
+        watchAction.status = status;
+
+        await this.save();
+    }
+
     public watchActionRelationship(): Relation {
         return this.hasOne(WatchAction, 'object').usingSameDocument().onDelete('cascade');
     }

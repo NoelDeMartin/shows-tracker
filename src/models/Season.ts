@@ -27,6 +27,23 @@ export default class Season extends Model {
         return arraySorted(this.episodes ?? [], 'number');
     }
 
+    public async watch(): Promise<void> {
+        if (!this.show || !this.episodes) {
+            return;
+        }
+
+        this.episodes.forEach((episode) => {
+            if (episode.watched) {
+                return;
+            }
+
+            episode.relatedWatchAction.attach({ date: new Date() });
+        });
+
+        await this.show.updateStatus('watching');
+        await this.emit('updated');
+    }
+
     public showRelationship(): Relation {
         return this.hasOne(Show, 'seasonUrls');
     }

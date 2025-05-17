@@ -25,18 +25,6 @@ export default class Episode extends Model {
 
             await Promise.all(episodes.map((episode) => emitModelEvent(episode, 'updated')));
         });
-        WatchAction.on(
-            'created',
-            (watchAction) => watchAction.episode && emitModelEvent(watchAction.episode, 'updated'),
-        );
-        WatchAction.on(
-            'deleted',
-            (watchAction) => watchAction.episode && emitModelEvent(watchAction.episode, 'updated'),
-        );
-        WatchAction.on(
-            'updated',
-            (watchAction) => watchAction.episode && emitModelEvent(watchAction.episode, 'updated'),
-        );
     }
 
     declare public season?: Season;
@@ -66,21 +54,18 @@ export default class Episode extends Model {
         }
 
         await this.relatedWatchAction.remove();
+        await this.emit('updated');
     }
 
     public async watch(): Promise<void> {
-        if (this.watched) {
+        if (this.watched || !this.show) {
             return;
         }
 
-        await this.relatedWatchAction.create({ date: new Date() });
+        this.relatedWatchAction.attach({ date: new Date() });
 
-        // Update show status if it's currently "pending"
-        if (this.show?.status === 'pending') {
-            const watchAction = this.show.watchAction ?? this.show.relatedWatchAction.attach();
-
-            await watchAction.update({ status: 'watching' });
-        }
+        await this.show.updateStatus('watching');
+        await this.emit('updated');
     }
 
     public seasonRelationship(): Relation {

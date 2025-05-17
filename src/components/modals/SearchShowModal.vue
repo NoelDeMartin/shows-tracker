@@ -2,7 +2,7 @@
     <HeadlessModal v-slot="{ close }" class="relative z-50">
         <HeadlessModalOverlay class="fixed inset-0 bg-black/30" />
         <HeadlessModalContent
-            class="fixed top-16 left-1/2 z-10 w-full max-w-md -translate-x-1/2 overflow-hidden rounded-lg bg-white shadow-md"
+            class="fixed top-16 left-1/2 z-10 w-full max-w-[calc(100vw-(--spacing(8)))] -translate-x-1/2 overflow-hidden rounded-lg bg-white shadow-md md:max-w-xl"
         >
             <div class="relative border-b border-gray-200">
                 <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">

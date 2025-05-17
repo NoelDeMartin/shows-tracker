@@ -121,26 +121,28 @@ describe('Episodes', () => {
 // Helper function to create a show with multiple seasons and episodes
 function createStubs() {
     cy.model('Show').then(async (Show) => {
-        const show = await Show.create({ name: 'Firefly', description: 'A space western set in the future.' });
-        const firstSeason = await show.relatedSeasons.create({ number: 1 });
-        const secondSeason = await show.relatedSeasons.create({ number: 2 });
+        const show = new Show({ name: 'Firefly', description: 'A space western set in the future.' });
+        const firstSeason = show.relatedSeasons.attach({ number: 1 });
+        const secondSeason = show.relatedSeasons.attach({ number: 2 });
 
-        await firstSeason.relatedEpisodes.create({
+        firstSeason.relatedEpisodes.attach({
             number: 1,
             name: 'Pilot',
             description: 'The crew of Serenity takes on passengers.',
         });
 
-        await firstSeason.relatedEpisodes.create({
+        firstSeason.relatedEpisodes.attach({
             number: 2,
             name: 'The Train Job',
             description: 'The crew takes on a job to steal cargo from a train.',
         });
 
-        await secondSeason.relatedEpisodes.create({
+        secondSeason.relatedEpisodes.attach({
             number: 1,
             name: 'Out of Gas',
             description: 'The ship suffers a catastrophe.',
         });
+
+        await show.save();
     });
 }
