@@ -2,3 +2,4 @@ onlyBuiltDependencies:
     - cypress
 patchedDependencies:
     reka-ui: patches/reka-ui.patch
+    eruda: patches/eruda.patch
