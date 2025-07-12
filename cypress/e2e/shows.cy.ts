@@ -212,6 +212,11 @@ describe('Shows', () => {
             fixture: 'tmdb/stranger-things.json',
         }).as('showDetails');
 
+        // Mock the external IDs request
+        cy.intercept('GET', 'https://api.themoviedb.org/3/tv/*/external_ids?*', {
+            fixture: 'tmdb/stranger-things-external-ids.json',
+        }).as('externalIds');
+
         // Mock the seasons request
         cy.intercept('GET', 'https://api.themoviedb.org/3/tv/*/season/*', {
             fixture: 'tmdb/stranger-things-s1.json',
@@ -234,6 +239,7 @@ describe('Shows', () => {
 
         // Wait for the details and seasons to be fetched
         cy.wait('@showDetails');
+        cy.wait('@externalIds');
         cy.wait('@seasonDetails');
 
         // The modal should close and the added show should be in my list
