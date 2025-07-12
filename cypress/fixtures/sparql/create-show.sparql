@@ -31,7 +31,7 @@ INSERT DATA {
     <#[[season][.*]]>
         a schema:TVSeason ;
         schema:seasonNumber 1 ;
-        schema:episode <#[[episode][.*]]> .
+        schema:episode <http://localhost:3000/alice/shows/breaking-bad/season-1/episode-1#it> .
 
     <#[[season][.*]]-metadata>
         a crdt:Metadata ;
@@ -39,16 +39,4 @@ INSERT DATA {
         crdt:createdAt "[[.*]]"^^xsd:dateTime ;
         crdt:updatedAt "[[.*]]"^^xsd:dateTime .
 
-    <#[[episode][.*]]>
-        a schema:TVEpisode ;
-        schema:episodeNumber 1 ;
-        schema:name "Pilot" ;
-        schema:description "Walter White begins his journey." ;
-        schema:duration "PT58M" .
-
-    <#[[episode][.*]]-metadata>
-        a crdt:Metadata ;
-        crdt:resource <#[[episode][.*]]> ;
-        crdt:createdAt "[[.*]]"^^xsd:dateTime ;
-        crdt:updatedAt "[[.*]]"^^xsd:dateTime .
 }

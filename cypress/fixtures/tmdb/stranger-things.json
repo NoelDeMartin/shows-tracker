@@ -123,6 +123,16 @@
             "poster_path": "/hb4KmdA4F1XMnf0vVjevPKKBEjV.jpg",
             "season_number": 1,
             "vote_average": 8.4
+        },
+        {
+            "air_date": "2017-10-27",
+            "episode_count": 8,
+            "id": 77680,
+            "name": "Season 2",
+            "overview": "Strange things are afoot in Hawkins, Indiana, where a young boy's sudden disappearance unearths a young girl with otherworldly powers.",
+            "poster_path": "/lXS60UzwDVnhwGxS27MqFeyuVNu.jpg",
+            "season_number": 2,
+            "vote_average": 8.3
         }
     ],
     "spoken_languages": [

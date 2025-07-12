@@ -262,6 +262,11 @@ async function save() {
             updatedShow.relatedSeasons.attach(season);
         }
 
+        if (!updatedShow.exists()) {
+            updatedShow.mintUrl();
+        }
+
+        await Promise.all(updatedShow.episodes?.map((episode) => episode.save()) ?? []);
         await updatedShow.save();
 
         emit('saved', updatedShow);

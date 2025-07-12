@@ -1,6 +1,6 @@
 import { emitModelEvent } from 'soukai';
 import type { Relation } from 'soukai';
-import type { Nullable } from '@noeldemartin/utils';
+import { type Nullable, urlParentDirectory } from '@noeldemartin/utils';
 import type { SolidHasOneRelation } from 'soukai-solid';
 
 import { isISO8601Duration, parseHumanReadableDuration, renderISO8601Duration } from '@/utils/iso8601';
@@ -62,9 +62,8 @@ export default class Episode extends Model {
             return;
         }
 
-        this.relatedWatchAction.attach({ date: new Date() });
-
         await this.show.updateStatus('watching');
+        await this.relatedWatchAction.create({ date: new Date() });
         await this.emit('updated');
     }
 
@@ -82,6 +81,19 @@ export default class Episode extends Model {
         if (this.duration && !isISO8601Duration(this.duration)) {
             this.duration = renderISO8601Duration(parseHumanReadableDuration(this.duration) ?? {});
         }
+    }
+
+    protected newUrl(documentUrl?: string, resourceHash?: string): string {
+        if (!this.show?.url || !this.season) {
+            return super.newUrl(documentUrl, resourceHash);
+        }
+
+        const containerUrl = urlParentDirectory(this.show.url);
+        const seasonSlug = `season-${this.season.number}`;
+        documentUrl = documentUrl ?? `${containerUrl}${seasonSlug}/episode-${this.number}`;
+        resourceHash = resourceHash ?? this.static().defaultResourceHash ?? 'it';
+
+        return `${documentUrl}#${resourceHash}`;
     }
 
 }

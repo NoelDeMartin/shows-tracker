@@ -99,8 +99,6 @@ export function parseISO8601Duration(text: string): ISO8601Duration | null {
 }
 
 export function renderHumanReadableDuration(duration: ISO8601Duration): string {
-    // TODO localize
-
     return arrayFilter([
         duration.years && (duration.years === 1 ? '1 year' : `${duration.years} years`),
         duration.months && (duration.months === 1 ? '1 month' : `${duration.months} months`),

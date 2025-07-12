@@ -122,6 +122,9 @@ describe('Episodes', () => {
 function createStubs() {
     cy.model('Show').then(async (Show) => {
         const show = new Show({ name: 'Firefly', description: 'A space western set in the future.' });
+
+        show.mintUrl();
+
         const firstSeason = show.relatedSeasons.attach({ number: 1 });
         const secondSeason = show.relatedSeasons.attach({ number: 2 });
 
@@ -143,6 +146,7 @@ function createStubs() {
             description: 'The ship suffers a catastrophe.',
         });
 
+        await Promise.all(show.episodes.map((episode) => episode.save()));
         await show.save();
     });
 }

@@ -1,0 +1,60 @@
+DELETE DATA {
+
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#[[episode-1][.*]]-metadata>
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+};
+
+INSERT DATA {
+
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#[[episode-1][.*]]>
+        schema:duration "PT39M" ;
+        schema:description "A Mandalorian bounty hunter tracks a target for a well-paying client." ;
+        schema:datePublished "2019-11-12T00:00:00.000Z"^^xsd:dateTime .
+
+    <[[episode-1][.*]]-metadata>
+        crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
+
+    <#[[episode-1][.*]]-operation-[[episode1Operation-1][.*]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[episode-1][.*]]> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:name ;
+        crdt:value "Chapter 1: The Mandalorian" .
+
+    <#[[episode-1][.*]]-operation-[[episode1Operation-2][.*]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[episode-1][.*]]> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:episodeNumber ;
+        crdt:value 1 .
+
+    <#[[episode-1][.*]]-operation-[[episode1Operation-3][.*]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[episode-1][.*]]> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:description ;
+        crdt:value "A Mandalorian bounty hunter tracks a target for a well-paying client." .
+
+    <#[[episode-1][.*]]-operation-[[episode1Operation-4][.*]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[episode-1][.*]]> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:datePublished ;
+        crdt:value "2019-11-12T00:00:00.000Z"^^xsd:dateTime .
+
+    <#[[episode-1][.*]]-operation-[[episode1Operation-5][.*]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[episode-1][.*]]> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:duration ;
+        crdt:value "PT39M" .
+
+}

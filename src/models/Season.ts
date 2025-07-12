@@ -40,6 +40,7 @@ export default class Season extends Model {
             episode.relatedWatchAction.attach({ date: new Date() });
         });
 
+        await Promise.all(this.show.episodes.map((episode) => episode.save()));
         await this.show.updateStatus('watching');
         await this.emit('updated');
     }
@@ -49,7 +50,7 @@ export default class Season extends Model {
     }
 
     public episodesRelationship(): Relation {
-        return this.belongsToMany(Episode).usingSameDocument().onDelete('cascade');
+        return this.belongsToMany(Episode);
     }
 
 }

@@ -1,4 +1,4 @@
-import { arraySorted, urlFileName } from '@noeldemartin/utils';
+import { arraySorted, stringToSlug, urlFileName, urlResolve, uuid } from '@noeldemartin/utils';
 import { emitModelEvent } from 'soukai';
 import type { Relation } from 'soukai';
 import type { SolidBelongsToManyRelation, SolidHasOneRelation } from 'soukai-solid';
@@ -33,7 +33,15 @@ export default class Show extends Model {
         return this.watchAction?.status ?? 'pending';
     }
 
-    public get slug(): string {
+    public get slug(): string | undefined {
+        if (!this.url) {
+            return;
+        }
+
+        if (this.url.endsWith('/info#it')) {
+            return urlFileName(this.url.slice(0, -8));
+        }
+
         return urlFileName(this.url);
     }
 
@@ -49,6 +57,20 @@ export default class Show extends Model {
         const match = tmdbUrl.match(/\/tv\/(\d+)/);
 
         return match && parseInt(match[1], 10);
+    }
+
+    public get imdbId(): string | null {
+        // Look for IMDB URL in the external URLs
+        const imdbUrl = this.externalUrls.find((url) => url.includes('imdb.com/title/'));
+
+        if (!imdbUrl) {
+            return null;
+        }
+
+        // Extract ID from URL like https://www.imdb.com/title/tt123456/
+        const match = imdbUrl.match(/\/title\/(tt\d+)/);
+
+        return match && match[1];
     }
 
     public get sortedSeasons(): Season[] {
@@ -73,6 +95,13 @@ export default class Show extends Model {
         return null;
     }
 
+    public async loadRelationsIfUnloaded(): Promise<void> {
+        await this.loadRelationIfUnloaded('seasons');
+        await Promise.all(this.seasons?.map((season) => season.loadRelationIfUnloaded('episodes')) ?? []);
+        await emitModelEvent(this, 'updated');
+        await Promise.all(this.seasons?.map((season) => emitModelEvent(season, 'updated')) ?? []);
+    }
+
     public async updateStatus(status: WatchStatus): Promise<void> {
         if (status === this.status) {
             await this.save();
@@ -93,6 +122,18 @@ export default class Show extends Model {
 
     public seasonsRelationship(): Relation {
         return this.belongsToMany(Season).usingSameDocument().onDelete('cascade');
+    }
+
+    protected newUrl(documentUrl?: string, resourceHash?: string): string {
+        const slug = this.name
+            ? this.startDate
+                ? `${stringToSlug(this.name)}-${this.startDate.getFullYear()}`
+                : stringToSlug(this.name)
+            : uuid();
+        documentUrl = documentUrl ?? urlResolve(this.static().collection, `${slug}/info`);
+        resourceHash = resourceHash ?? this.static().defaultResourceHash ?? 'it';
+
+        return `${documentUrl}#${resourceHash}`;
     }
 
 }

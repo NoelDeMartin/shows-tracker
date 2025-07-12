@@ -7,6 +7,7 @@ import Home from './Home.vue';
 import ShowsCreate from './shows/Create.vue';
 import ShowsEdit from './shows/Edit.vue';
 import ShowsIndex from './shows/Index.vue';
+import ShowsImport from './shows/Import.vue';
 import ShowsShow from './shows/show/Show.vue';
 
 export const bindings = defineRouteBindings({
@@ -21,6 +22,7 @@ export const bindings = defineRouteBindings({
 export default defineRoutes([
     { name: 'home', path: '/', component: Home },
     { name: 'shows.index', path: '/shows', component: ShowsIndex },
+    { name: 'shows.import', path: '/shows/import', component: ShowsImport },
     { name: 'shows.show', path: '/shows/:show', component: ShowsShow },
     { name: 'shows.create', path: '/shows/create', component: ShowsCreate },
     { name: 'shows.edit', path: '/shows/:show/edit', component: ShowsEdit },

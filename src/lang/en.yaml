@@ -77,6 +77,7 @@ shows:
         back: 'Back to Shows'
         search: 'Search Shows'
         update: 'Update Shows'
+        import: 'Import Collection'
     search:
         title: 'Search Shows'
         placeholder: 'Search for a show...'
@@ -91,6 +92,23 @@ shows:
         episode: 'Episode'
     update:
         success: 'Shows updated successfully!'
+    import:
+        title: 'Import Results'
+        results_title: 'Import Results'
+        description: 'Import your show collection from external sources like TViso. Upload a JSON file to get started.'
+        select_file: 'Select JSON file'
+        start_import: 'Import Collection'
+        importing: 'Importing...'
+        imported_shows: 'Imported Shows'
+        skipped_shows: 'Skipped Shows'
+        failed_shows: 'Failed Shows'
+        imported_count: 'Imported: {count}'
+        skipped_count: 'Skipped: {count}'
+        failed_count: 'Failed: {count}'
+        success: 'Successfully imported {count} shows!'
+        no_shows: 'No shows were imported. Please check the file format.'
+        partial_success: 'Import completed with some issues. {count} shows imported.'
+        error: 'Failed to import collection. Please check the file format.'
     episode:
         mark_as_watched: 'Mark as watched'
         watched_on: 'Watched on {date}'

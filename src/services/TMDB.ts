@@ -15,6 +15,10 @@ const TMDBShowSchema = object({
     vote_average: optional(number()),
 });
 
+const TMDBShowExternalIdsSchema = object({
+    imdb_id: optional(nullable(string())),
+});
+
 const TMDBSeasonSchema = object({
     id: number(),
     name: string(),
@@ -43,6 +47,10 @@ const TMDBShowDetailsSchema = extend(TMDBShowSchema, TMDBShowExtraSchema);
 const TMDBSeasonExtraSchema = object({ episodes: array(TMDBEpisodeSchema) });
 const TMDBSeasonDetailsSchema = extend(TMDBSeasonSchema, TMDBSeasonExtraSchema);
 
+const FindResponseSchema = object({
+    tv_results: array(TMDBShowSchema),
+});
+
 const SearchShowsResponseSchema = object({
     page: number(),
     total_results: number(),
@@ -55,6 +63,7 @@ export type TMDBSeason = ZodInfer<typeof TMDBSeasonSchema>;
 export type TMDBEpisode = ZodInfer<typeof TMDBEpisodeSchema>;
 export type TMDBShowDetails = ZodInfer<typeof TMDBShowSchema> & ZodInfer<typeof TMDBShowExtraSchema>;
 export type TMDBSeasonDetails = ZodInfer<typeof TMDBSeasonSchema> & ZodInfer<typeof TMDBSeasonExtraSchema>;
+export type TMDBShowExternalIds = ZodInfer<typeof TMDBShowExternalIdsSchema>;
 
 export class TMDBService extends Service {
 
@@ -73,7 +82,15 @@ export class TMDBService extends Service {
         return show.poster_path ? `https://image.tmdb.org/t/p/w500${show.poster_path}` : undefined;
     }
 
-    public async searchShows(query: string): Promise<TMDBShow[]> {
+    public async searchShows(query: string, imdb?: string | null): Promise<TMDBShow[]> {
+        if (imdb) {
+            const response = await this.request(FindResponseSchema, `find/${imdb}`, { external_source: 'imdb_id' });
+
+            if (response.tv_results.length > 0) {
+                return response.tv_results;
+            }
+        }
+
         const response = await this.request(SearchShowsResponseSchema, 'search/tv', { query });
 
         return response.results;
@@ -83,6 +100,12 @@ export class TMDBService extends Service {
         // https://github.com/colinhacks/zod/issues/4082
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return this.request(TMDBShowDetailsSchema as any, `tv/${id}`);
+    }
+
+    public async getShowExternalIds(id: number): Promise<TMDBShowExternalIds> {
+        // https://github.com/colinhacks/zod/issues/4082
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return this.request(TMDBShowExternalIdsSchema as any, `tv/${id}/external_ids`);
     }
 
     public async getSeasonDetails(showId: number, seasonNumber: number): Promise<TMDBSeasonDetails> {

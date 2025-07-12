@@ -159,7 +159,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { computedModel } from '@aerogel/plugin-soukai';
 import { Router } from '@aerogel/plugin-routing';
 import { UI, translate } from '@aerogel/core';
@@ -175,8 +175,6 @@ const DOMAINS = {
 
 const { show } = defineProps<{ show: Show }>();
 const watchedEpisodesLength = computed(() => show.episodes.filter((episode) => episode.watched).length);
-
-// TODO fix Aerogel so that route models are reactive out of the box.
 const computedShow = computedModel(() => show);
 
 function getDisplayUrl(url: string): string {
@@ -198,4 +196,6 @@ async function deleteShow() {
     await show.delete();
     await Router.push({ name: 'shows.index' });
 }
+
+onMounted(() => show.loadRelationsIfUnloaded());
 </script>

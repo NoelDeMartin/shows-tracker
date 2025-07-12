@@ -1,0 +1,34 @@
+[
+    {
+        "title": "Stranger Things",
+        "imdb": "tt4574334",
+        "type": 1,
+        "rating": null,
+        "status": "pending",
+        "checkedDate": "2022-08-16T05:55:33+00:00"
+    },
+    {
+        "title": "Breaking Bad",
+        "imdb": "tt0903747",
+        "type": 1,
+        "rating": null,
+        "status": "watching",
+        "checkedDate": "2022-07-31T15:40:05+00:00"
+    },
+    {
+        "title": "The Office",
+        "imdb": "tt0386676",
+        "type": 1,
+        "rating": null,
+        "status": "completed",
+        "checkedDate": "2022-07-31T15:37:26+00:00"
+    },
+    {
+        "title": "Lost",
+        "imdb": "tt0411008",
+        "type": 1,
+        "rating": null,
+        "status": "dropped",
+        "checkedDate": "2022-07-31T15:37:23+00:00"
+    }
+]

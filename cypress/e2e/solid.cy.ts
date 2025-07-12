@@ -9,7 +9,9 @@ describe('Solid', () => {
 
     it('Syncs new show creation', () => {
         // Intercept requests to detect synchronization
-        cy.intercept('PATCH', podUrl('/shows/*')).as('createShow');
+        cy.intercept('PATCH', podUrl('/shows/breaking-bad/info')).as('createShow');
+        cy.intercept('PATCH', podUrl('/shows/breaking-bad/season-1/*')).as('createEpisode');
+        cy.intercept('PATCH', podUrl('/shows/**/*')).as('createSomething');
 
         // Login to Solid
         cy.ariaLabel('Configuration').click();
@@ -44,10 +46,17 @@ describe('Solid', () => {
 
         // Assert requests
         cy.get('@createShow.all').should('have.length', 1);
+        cy.get('@createEpisode.all').should('have.length', 1);
+        cy.get('@createSomething.all').should('have.length', 2);
 
         cy.fixture('sparql/create-show.sparql').then((sparql) => {
             cy.get('@createShow').its('response.statusCode').should('eq', 201);
             cy.get('@createShow').its('request.body').should('be.sparql', sparql);
+        });
+
+        cy.fixture('sparql/create-episode.sparql').then((sparql) => {
+            cy.get('@createEpisode').its('response.statusCode').should('eq', 201);
+            cy.get('@createEpisode').its('request.body').should('be.sparql', sparql);
         });
 
         cy.fixture('turtle/type-index.ttl').then((expected) => {
@@ -55,6 +64,15 @@ describe('Solid', () => {
                 cy.wrap(actual).should('be.turtle', expected);
             });
         });
+
+        // Subsequent syncs should work
+        cy.ariaLabel('Open account').click();
+        cy.contains('button', 'Synchronize').click();
+        cy.waitSync();
+
+        cy.get('@createShow.all').should('have.length', 1);
+        cy.get('@createEpisode.all').should('have.length', 1);
+        cy.get('@createSomething.all').should('have.length', 2);
     });
 
     it('Syncs show status changes', () => {
@@ -71,14 +89,16 @@ describe('Solid', () => {
                 description: 'A group of kids encounter supernatural forces in their small town.',
             });
 
-            const season = show.relatedSeasons.attach({ number: 1 });
+            show.mintUrl();
 
+            const season = show.relatedSeasons.attach({ number: 1 });
             show.relatedWatchAction.attach({ status: 'pending' });
             season.relatedEpisodes.attach({
                 number: 1,
                 name: 'Chapter One: The Vanishing of Will Byers',
             });
 
+            await Promise.all(show.episodes.map((episode) => episode.save()));
             await show.save();
         });
         cy.waitSync();
@@ -88,7 +108,7 @@ describe('Solid', () => {
         cy.contains('Stranger Things').click();
 
         // Intercept PATCH requests for status updates
-        cy.intercept('PATCH', podUrl('/shows/*')).as('updateShowStatus');
+        cy.intercept('PATCH', podUrl('/shows/**/*')).as('updateShowStatus');
 
         // Act - Edit the show to change status
         cy.contains('Edit').click();
@@ -122,6 +142,8 @@ describe('Solid', () => {
             // Set status to pending
             show.relatedWatchAction.attach({ status: 'pending' });
 
+            show.mintUrl();
+
             // Add a season with episodes
             const season = show.relatedSeasons.attach({ number: 1 });
 
@@ -137,11 +159,13 @@ describe('Solid', () => {
                 description: 'Mal and his crew are forced to pull a train heist.',
             });
 
+            await Promise.all(show.episodes.map((episode) => episode.save()));
             await show.save();
         });
         cy.waitSync();
 
-        cy.intercept('PATCH', podUrl('/shows/*')).as('updateEpisodeStatus');
+        cy.intercept('PATCH', podUrl('/shows/**/info')).as('updateShowStatus');
+        cy.intercept('PATCH', podUrl('/shows/**/episode-1')).as('updateEpisodeStatus');
 
         // Navigate to show details
         cy.contains('My Shows').click();
@@ -152,7 +176,13 @@ describe('Solid', () => {
         cy.waitSync();
 
         // Assert - Verify the episode was synced
+        cy.get('@updateShowStatus.all').should('have.length', 1);
         cy.get('@updateEpisodeStatus.all').should('have.length', 1);
+
+        cy.fixture('sparql/update-show-status.sparql').then((sparql) => {
+            cy.get('@updateShowStatus').its('response.statusCode').should('eq', 205);
+            cy.get('@updateShowStatus').its('request.body').should('be.sparql', sparql);
+        });
 
         cy.fixture('sparql/update-episode-status.sparql').then((sparql) => {
             cy.get('@updateEpisodeStatus').its('response.statusCode').should('eq', 205);
@@ -164,12 +194,12 @@ describe('Solid', () => {
         // Mock TMDB API responses
         cy.intercept('GET', 'https://api.themoviedb.org/3/tv/82856**', {
             statusCode: 200,
-            fixture: 'tmdb/mandalorian-details.json',
+            fixture: 'tmdb/mandalorian.json',
         }).as('showDetails');
 
         cy.intercept('GET', 'https://api.themoviedb.org/3/tv/82856/season/1**', {
             statusCode: 200,
-            fixture: 'tmdb/mandalorian-season.json',
+            fixture: 'tmdb/mandalorian-s1.json',
         }).as('seasonDetails');
 
         cy.ariaLabel('Configuration').click();
@@ -189,6 +219,8 @@ describe('Solid', () => {
             // Set status to watching
             show.relatedWatchAction.attach({ status: 'watching' });
 
+            show.mintUrl();
+
             // Add a season with one episode
             const season = show.relatedSeasons.attach({ number: 1 });
 
@@ -197,12 +229,15 @@ describe('Solid', () => {
                 name: 'Chapter 1: The Mandalorian',
             });
 
+            await Promise.all(show.episodes.map((episode) => episode.save()));
             await show.save();
         });
         cy.waitSync();
 
         // Intercept PATCH requests for show updates
-        cy.intercept('PATCH', podUrl('/shows/*')).as('updateShow');
+        cy.intercept('PATCH', podUrl('/shows/**/info')).as('updateShow');
+        cy.intercept('PATCH', podUrl('/shows/**/**/episode-1')).as('updateEpisode1');
+        cy.intercept('PATCH', podUrl('/shows/**/**/episode-2')).as('createEpisode2');
 
         // Act - Update shows from TMDB
         cy.contains('Update Shows').click();
@@ -213,10 +248,22 @@ describe('Solid', () => {
 
         // Assert - Verify the show was synced
         cy.get('@updateShow.all').should('have.length', 1);
+        cy.get('@updateEpisode1.all').should('have.length', 1);
+        cy.get('@createEpisode2.all').should('have.length', 1);
 
         cy.fixture('sparql/update-show.sparql').then((sparql) => {
             cy.get('@updateShow').its('response.statusCode').should('eq', 205);
             cy.get('@updateShow').its('request.body').should('be.sparql', sparql);
+        });
+
+        cy.fixture('sparql/update-episode-1.sparql').then((sparql) => {
+            cy.get('@updateEpisode1').its('response.statusCode').should('eq', 205);
+            cy.get('@updateEpisode1').its('request.body').should('be.sparql', sparql);
+        });
+
+        cy.fixture('sparql/create-episode-2.sparql').then((sparql) => {
+            cy.get('@createEpisode2').its('response.statusCode').should('eq', 201);
+            cy.get('@createEpisode2').its('request.body').should('be.sparql', sparql);
         });
     });
 
