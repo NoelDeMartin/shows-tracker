@@ -459,9 +459,9 @@ describe('Solid', () => {
 
         // Assert - Verify the show was synced to Solid
         cy.get('@createShow.all').should('have.length', 1);
-        cy.get('@createS1Episode.all').should('have.length', 8); // 8 episodes in season 1
-        cy.get('@createS2Episode.all').should('have.length', 9); // 9 episodes in season 2
-        cy.get('@createSomething.all').should('have.length', 18); // 1 show + 8 episodes in season 1 + 9 episodes in season 2
+        cy.get('@createS1Episode.all').should('have.length', 8);
+        cy.get('@createS2Episode.all').should('have.length', 9);
+        cy.get('@createSomething.all').should('have.length', 18);
 
         // Verify the show still appears in the UI after sync
         cy.contains('Stranger Things').should('be.visible');
