@@ -381,4 +381,98 @@ describe('Solid', () => {
         });
     });
 
+    it('Syncs shows imported from TMDB search', () => {
+        // Mock TMDB API responses for search
+        cy.intercept('GET', 'https://api.themoviedb.org/3/search/tv*', {
+            statusCode: 200,
+            fixture: 'tmdb/search-results.json',
+        }).as('searchShows');
+
+        // Mock TMDB API responses for show details
+        cy.intercept('GET', 'https://api.themoviedb.org/3/tv/66732**', {
+            statusCode: 200,
+            fixture: 'tmdb/stranger-things.json',
+        }).as('showDetails');
+
+        // Mock TMDB API responses for external IDs
+        cy.intercept('GET', 'https://api.themoviedb.org/3/tv/66732/external_ids?*', {
+            statusCode: 200,
+            fixture: 'tmdb/stranger-things-external-ids.json',
+        }).as('externalIds');
+
+        // Mock TMDB API responses for season details
+        cy.intercept('GET', 'https://api.themoviedb.org/3/tv/66732/season/1**', {
+            statusCode: 200,
+            fixture: 'tmdb/stranger-things-s1.json',
+        }).as('seasonDetails');
+
+        // Intercept Solid sync requests
+        cy.intercept('PATCH', podUrl('/shows/stranger-things-2016/info')).as('createShow');
+        cy.intercept('PATCH', podUrl('/shows/stranger-things-2016/season-1/*')).as('createS1Episode');
+        cy.intercept('PATCH', podUrl('/shows/stranger-things-2016/season-2/*')).as('createS2Episode');
+        cy.intercept('PATCH', podUrl('/shows/**/*')).as('createSomething');
+
+        // Act - First, add a show WITHOUT being connected to Solid
+        cy.contains('My Shows').click();
+        cy.contains('Search Shows').click();
+
+        // Search for a show
+        cy.get('input[type="search"]').type('stranger');
+
+        // Wait for the search API call
+        cy.wait('@searchShows');
+
+        // Should see search results
+        cy.contains('Stranger Things').should('be.visible');
+
+        // Add the show to my list
+        cy.contains('Add to My Shows').click();
+
+        // Wait for the TMDB API calls
+        cy.wait('@showDetails');
+        cy.wait('@externalIds');
+        cy.wait('@seasonDetails');
+
+        // Verify the show appears in the UI (should be stored locally)
+        cy.contains('Stranger Things').should('be.visible');
+        cy.get('[title="Plan to Watch"]').should('be.visible');
+
+        // Navigate to show details and verify data
+        cy.contains('Stranger Things').click();
+        cy.contains('Plan to Watch').should('be.visible');
+        cy.contains('When a young boy vanishes, a small town uncovers a mystery').should('be.visible');
+        cy.contains('Season 1').should('be.visible');
+
+        // Verify episodes are loaded
+        cy.contains('Chapter One: The Vanishing of Will Byers').should('be.visible');
+        cy.contains('Chapter Two: The Weirdo on Maple Street').should('be.visible');
+
+        // Go back to shows list
+        cy.go('back');
+
+        // NOW connect to Solid account (this is where the bug should reproduce)
+        cy.ariaLabel('Configuration').click();
+        cy.contains('Connect account').click();
+        cy.ariaInput('Login url').type(`${webId()}{enter}`);
+        cy.solidLogin();
+        cy.waitSync();
+
+        // Assert - Verify the show was synced to Solid
+        cy.get('@createShow.all').should('have.length', 1);
+        cy.get('@createS1Episode.all').should('have.length', 8); // 8 episodes in season 1
+        cy.get('@createS2Episode.all').should('have.length', 9); // 9 episodes in season 2
+        cy.get('@createSomething.all').should('have.length', 18); // 1 show + 8 episodes in season 1 + 9 episodes in season 2
+
+        // Verify the show still appears in the UI after sync
+        cy.contains('Stranger Things').should('be.visible');
+        cy.get('[title="Plan to Watch"]').should('be.visible');
+
+        // Navigate to show details and verify data is still intact
+        cy.contains('Stranger Things').click();
+        cy.contains('Plan to Watch').should('be.visible');
+        cy.contains('When a young boy vanishes, a small town uncovers a mystery').should('be.visible');
+        cy.contains('Season 1').should('be.visible');
+        cy.url().should('include', '/shows/stranger-things-2016');
+    });
+
 });
