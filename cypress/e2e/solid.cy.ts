@@ -404,7 +404,13 @@ describe('Solid', () => {
         cy.intercept('GET', 'https://api.themoviedb.org/3/tv/66732/season/1**', {
             statusCode: 200,
             fixture: 'tmdb/stranger-things-s1.json',
-        }).as('seasonDetails');
+        }).as('season1Details');
+
+        // Mock TMDB API responses for season 2 details
+        cy.intercept('GET', 'https://api.themoviedb.org/3/tv/66732/season/2**', {
+            statusCode: 200,
+            fixture: 'tmdb/stranger-things-s2.json',
+        }).as('season2Details');
 
         // Intercept Solid sync requests
         cy.intercept('PATCH', podUrl('/shows/stranger-things-2016/info')).as('createShow');
@@ -431,7 +437,8 @@ describe('Solid', () => {
         // Wait for the TMDB API calls
         cy.wait('@showDetails');
         cy.wait('@externalIds');
-        cy.wait('@seasonDetails');
+        cy.wait('@season1Details');
+        cy.wait('@season2Details');
 
         // Verify the show appears in the UI (should be stored locally)
         cy.contains('Stranger Things').should('be.visible');
