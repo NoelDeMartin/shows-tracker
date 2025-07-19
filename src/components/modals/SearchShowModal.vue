@@ -43,8 +43,8 @@
                 </div>
 
                 <div v-else-if="searchResults.length > 0">
-                    <div class="divide-y divide-gray-100">
-                        <div v-for="show in searchResults" :key="show.id" class="p-3">
+                    <ul class="divide-y divide-gray-100">
+                        <li v-for="show in searchResults" :key="show.id" class="p-3">
                             <div class="flex items-start justify-between">
                                 <div class="flex gap-2">
                                     <img
@@ -93,8 +93,8 @@
                                     {{ new Date(show.first_air_date).getFullYear() }}
                                 </span>
                             </div>
-                        </div>
-                    </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </HeadlessModalContent>

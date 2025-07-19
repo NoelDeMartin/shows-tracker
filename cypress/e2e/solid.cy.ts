@@ -194,12 +194,12 @@ describe('Solid', () => {
         // Mock TMDB API responses
         cy.intercept('GET', 'https://api.themoviedb.org/3/tv/82856**', {
             statusCode: 200,
-            fixture: 'tmdb/mandalorian.json',
+            fixture: 'tmdb/the-mandalorian.json',
         }).as('showDetails');
 
         cy.intercept('GET', 'https://api.themoviedb.org/3/tv/82856/season/1**', {
             statusCode: 200,
-            fixture: 'tmdb/mandalorian-s1.json',
+            fixture: 'tmdb/the-mandalorian-s1.json',
         }).as('seasonDetails');
 
         cy.ariaLabel('Configuration').click();
@@ -480,6 +480,94 @@ describe('Solid', () => {
         cy.contains('When a young boy vanishes, a small town uncovers a mystery').should('be.visible');
         cy.contains('Season 1').should('be.visible');
         cy.url().should('include', '/shows/stranger-things-2016');
+    });
+
+    it('Creates a second show with the correct folder structure when connected to Solid', () => {
+        // Intercept requests to detect synchronization and verify folder structure
+        cy.intercept('PATCH', podUrl('/shows/friends/info')).as('createFirstShow');
+        cy.intercept('PATCH', podUrl('/shows/seinfeld/info')).as('createSecondShow');
+        cy.intercept('PATCH', podUrl('/shows/**/*')).as('createSomething');
+
+        // Login to Solid first
+        cy.ariaLabel('Configuration').click();
+        cy.contains('Connect account').click();
+        cy.ariaInput('Login url').type(`${webId()}{enter}`);
+        cy.solidLogin();
+        cy.waitSync();
+
+        // Act - Create first show using the form
+        cy.contains('My Shows').click();
+        cy.contains('Add Your First Show').click();
+        cy.comboboxSelect('Status', 'Watching');
+        cy.get('input[name="name"]').type('Friends');
+        cy.get('textarea[name="description"]').type(
+            'A group of friends living in Manhattan navigate life and love together.',
+        );
+
+        // Add a season with episodes
+        cy.contains('Add Season').click();
+        cy.contains('Season 1').click();
+        cy.contains('Add Episode').click();
+        cy.get('input[placeholder*="Episode name"]').first().type('The One Where Monica Gets a Roommate');
+        cy.get('textarea[placeholder*="Episode description"]')
+            .first()
+            .type('Rachel moves in with Monica after leaving her fiancé at the altar.');
+        cy.get('input[placeholder*="Episode duration"]').first().type('22m');
+
+        cy.contains('Create').click();
+        cy.waitSync();
+
+        // Verify first show was created with the correct folder
+        cy.get('@createFirstShow.all').should('have.length', 1);
+        cy.get('@createFirstShow').its('request.url').should('include', '/shows/friends/info');
+
+        // Reload the page
+        cy.reload();
+        cy.solidAuthorize();
+
+        // Now create second show using the form after reload
+        cy.contains('My Shows').click();
+        cy.contains('Add Show').click();
+        cy.comboboxSelect('Status', 'Completed');
+        cy.get('input[name="name"]').type('Seinfeld');
+        cy.get('textarea[name="description"]').type(
+            'A show about nothing, following the lives of four friends in New York City.',
+        );
+
+        // Add a season with episodes
+        cy.contains('Add Season').click();
+        cy.contains('Season 1').click();
+        cy.contains('Add Episode').click();
+        cy.get('input[placeholder*="Episode name"]').first().type('The Seinfeld Chronicles');
+        cy.get('textarea[placeholder*="Episode description"]')
+            .first()
+            .type('Jerry and George discuss the button on George\'s shirt.');
+        cy.get('input[placeholder*="Episode duration"]').first().type('23m');
+
+        cy.contains('Create').click();
+        cy.waitSync();
+
+        // Verify second show was created with the correct folder structure
+        cy.get('@createSecondShow.all').should('have.length', 1);
+        cy.get('@createSecondShow').its('request.url').should('include', '/shows/seinfeld/info');
+
+        // Verify both shows exist in the UI
+        cy.contains('Friends').should('be.visible');
+        cy.contains('Seinfeld').should('be.visible');
+
+        // Verify both shows are accessible via their URLs
+        cy.contains('Friends').click();
+        cy.url().should('include', '/shows/friends');
+        cy.go('back');
+
+        cy.contains('Seinfeld').click();
+        cy.url().should('include', '/shows/seinfeld');
+
+        // Verify the folder structure in the Solid pod
+        cy.solidReadDocument('/shows/friends/info').should('contain', 'Friends');
+        cy.solidReadDocument('/shows/friends/season-1/episode-1').should('contain', 'Monica Gets a Roommate');
+        cy.solidReadDocument('/shows/seinfeld/info').should('contain', 'Seinfeld');
+        cy.solidReadDocument('/shows/seinfeld/season-1/episode-1').should('contain', 'The Seinfeld Chronicles');
     });
 
 });

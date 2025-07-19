@@ -34,8 +34,25 @@
             "vote_count": 81,
             "number_of_seasons": 1,
             "number_of_episodes": 6
+        },
+        {
+            "backdrop_path": "/eU1i6eHXlzMOlEq0ku1Rzq19L3M.jpg",
+            "first_air_date": "2019-11-12",
+            "genre_ids": [10765, 10759, 37],
+            "id": 82856,
+            "name": "The Mandalorian",
+            "origin_country": ["US"],
+            "original_language": "en",
+            "original_name": "The Mandalorian",
+            "overview": "A lone bounty hunter travels the outer reaches of the galaxy.",
+            "popularity": 156.29,
+            "poster_path": "/eU1i6eHXlzMOlEq0ku1Rzq19L3M.jpg",
+            "vote_average": 8.5,
+            "vote_count": 5432,
+            "number_of_seasons": 1,
+            "number_of_episodes": 8
         }
     ],
     "total_pages": 1,
-    "total_results": 2
+    "total_results": 3
 }
