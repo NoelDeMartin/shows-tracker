@@ -200,7 +200,7 @@ describe('Shows', () => {
     it('Can search for shows and add them to my list with default pending status', () => {
         // Mock the TMDB API responses
         cy.intercept('GET', 'https://api.themoviedb.org/3/find/*', {
-            fixture: 'tmdb/search-results.json',
+            fixture: 'tmdb/find-results.json',
         }).as('findShows');
 
         cy.intercept('GET', 'https://api.themoviedb.org/3/search/tv*', {
@@ -276,7 +276,7 @@ describe('Shows', () => {
     it('Can import shows from TViso', () => {
         // Mock the TMDB API responses
         cy.intercept('GET', 'https://api.themoviedb.org/3/find/*', {
-            fixture: 'tmdb/search-results.json',
+            fixture: 'tmdb/find-results.json',
         }).as('findShows');
 
         // Mock the show details request
