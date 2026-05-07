@@ -38,6 +38,10 @@ export class CatalogService extends Service {
         });
 
         for (const tmdbSeason of details.seasons) {
+            if (tmdbSeason.season_number === 0) {
+                continue;
+            }
+
             const season = await createdShow.relatedSeasons.create({
                 number: tmdbSeason.season_number,
             });

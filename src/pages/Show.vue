@@ -17,6 +17,9 @@
                         {{ episode.watched ? 'Unwatch' : 'Watch' }}
                     </Button>
                 </li>
+                <li v-if="watched !== total" class="flex items-center justify-end">
+                    <Button @click="watchSeason(season)">Watch All</Button>
+                </li>
             </ul>
         </Details>
 
@@ -29,6 +32,7 @@ import { computedModel } from '@aerogel/plugin-solid';
 import { arraySorted } from '@noeldemartin/utils';
 import { computed, onMounted, ref, watch } from 'vue';
 
+import type Season from '@/models/Season';
 import type Show from '@/models/Show';
 import Catalog from '@/services/Catalog';
 
@@ -48,6 +52,10 @@ const sortedSeasons = computed(() => {
         })) ?? []
     );
 });
+
+async function watchSeason(season: Season) {
+    await Promise.all(season.episodes?.map((episode) => episode.watched || episode.toggleWatched()) ?? []);
+}
 
 watch(computedShow, () => (signal.value = Math.random()), { deep: true, immediate: true });
 
