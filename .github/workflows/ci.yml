@@ -26,7 +26,7 @@ jobs:
         needs: ci
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+            VITE_TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
         permissions:
             contents: write
         steps:
