@@ -2,7 +2,7 @@ import { defineRouteBindings, defineRoutes } from '@aerogel/plugin-routing';
 
 import ShowModel from '@/models/Show';
 
-import Home from './Home.vue';
+import Home from './home/Home.vue';
 import Search from './Search.vue';
 import Show from './Show.vue';
 

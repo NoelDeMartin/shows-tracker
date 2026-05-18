@@ -9,6 +9,7 @@ export default defineSchema({
     fields: {
         name: z.string(),
         number: z.number().rdfProperty('episodeNumber'),
+        publishedAt: z.date().optional().rdfProperty('datePublished'),
     },
     relations: {
         season: hasOne(() => requireBootedModel('Season'), 'episodeUrls'),

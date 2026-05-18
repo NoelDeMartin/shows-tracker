@@ -30,6 +30,7 @@
 <script setup lang="ts">
 import { computedModel } from '@aerogel/plugin-solid';
 import { arraySorted } from '@noeldemartin/utils';
+import { emitModelEvent } from 'soukai-bis';
 import { computed, onMounted, ref, watch } from 'vue';
 
 import type Season from '@/models/Season';
@@ -57,10 +58,25 @@ async function watchSeason(season: Season) {
     await Promise.all(season.episodes?.map((episode) => episode.watched || episode.toggleWatched()) ?? []);
 }
 
-watch(computedShow, () => (signal.value = Math.random()), { deep: true, immediate: true });
+watch(computedShow, () => (signal.value = Math.random()), {
+    deep: true,
+    immediate: true,
+});
 
 onMounted(async () => {
     await show.loadRelationIfUnloaded('seasons');
     await Promise.all(show.seasons?.map((season) => season.loadRelationIfUnloaded('episodes')) ?? []);
+
+    for (const season of show.seasons ?? []) {
+        for (const episode of season.episodes ?? []) {
+            if (episode.isRelationLoaded('watched')) {
+                continue;
+            }
+
+            episode.relatedWatched.related = null;
+
+            await emitModelEvent(episode, 'relation-loaded', episode.relatedWatched);
+        }
+    }
 });
 </script>

@@ -52,6 +52,7 @@ export class CatalogService extends Service {
                 await season.relatedEpisodes.create({
                     name: tmdbEpisode.name,
                     number: tmdbEpisode.episode_number,
+                    publishedAt: tmdbEpisode.air_date ? new Date(tmdbEpisode.air_date) : undefined,
                 });
             }
         }
