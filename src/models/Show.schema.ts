@@ -1,7 +1,8 @@
-import { belongsToMany, defineSchema } from 'soukai-bis';
+import { belongsToMany, defineSchema, hasOne } from 'soukai-bis';
 import { z } from 'zod';
 
 import Season from '@/models/Season';
+import ShowWatching from '@/models/ShowWatching';
 
 export default defineSchema({
     rdfContext: 'https://schema.org/',
@@ -17,5 +18,6 @@ export default defineSchema({
     },
     relations: {
         seasons: belongsToMany(Season, 'seasonUrls').usingSameDocument(),
+        watching: hasOne(ShowWatching, 'showUrl').usingSameDocument(),
     },
 });

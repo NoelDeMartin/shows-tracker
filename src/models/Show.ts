@@ -1,8 +1,15 @@
-import { stringToSlug, urlResolve, uuid } from '@noeldemartin/utils';
-import type { BelongsToManyRelation, ComputedAttribute, ComputedProxy, MintUrlOptions } from 'soukai-bis';
+import { stringToSlug, tap, urlResolve, uuid } from '@noeldemartin/utils';
+import type {
+    BelongsToManyRelation,
+    ComputedAttribute,
+    ComputedProxy,
+    HasOneRelation,
+    MintUrlOptions,
+} from 'soukai-bis';
 import { emitModelEvent } from 'soukai-bis';
 
 import type Season from '@/models/Season';
+import ShowWatching, { SHOW_WATCHING_STATUSES, type ShowWatchingStatus } from '@/models/ShowWatching';
 
 import Model from './Show.schema';
 
@@ -18,9 +25,14 @@ export default class Show extends Model {
 
     declare public readonly pendingEpisodeDates: ComputedAttribute<Date[]>;
     declare public readonly relatedSeasons: BelongsToManyRelation<this, Season, typeof Season>;
+    declare public readonly relatedWatching: HasOneRelation<this, ShowWatching, typeof ShowWatching>;
 
     public get slug(): string {
         return stringToSlug(this.name);
+    }
+
+    public get watchingStatus(): ShowWatchingStatus {
+        return this.watching?.status ?? 'pending';
     }
 
     public get tmdbId(): number | null {
@@ -47,6 +59,19 @@ export default class Show extends Model {
                 await emitModelEvent(episode, 'relation-loaded', episode.relatedWatched);
             }
         }
+    }
+
+    public async updateWatchingStatus(status: ShowWatchingStatus) {
+        if (this.watchingStatus === status) {
+            return;
+        }
+
+        const watching = tap(
+            this.watching ?? this.relatedWatching.attach({}),
+            (watching) => (watching.statusUrl = SHOW_WATCHING_STATUSES[status]),
+        );
+
+        await this.relatedWatching.save(watching);
     }
 
     protected newUrlDocumentUrl(options: MintUrlOptions = {}): string {

@@ -7,7 +7,7 @@ export default defineSchema({
     timestamps: false,
     history: true,
     fields: {
-        targetUrl: z.url().rdfProperty('object'),
+        episodeUrl: z.url().rdfProperty('object'),
         date: z.date().optional().rdfProperty('endTime'),
     },
 });

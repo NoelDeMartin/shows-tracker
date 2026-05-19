@@ -13,6 +13,6 @@ export default defineSchema({
     },
     relations: {
         season: hasOne(() => requireBootedModel('Season'), 'episodeUrls'),
-        watched: hasOne(EpisodeWatched, 'targetUrl').usingSameDocument(),
+        watched: hasOne(EpisodeWatched, 'episodeUrl').usingSameDocument(),
     },
 });
