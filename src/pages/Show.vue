@@ -24,13 +24,17 @@
         </Details>
 
         <p v-if="show.seasonUrls.length === 0" class="mt-4">No seasons yet</p>
+
+        <Button @click="sync()" :disabled="syncing" class="mt-4">
+            <i-lucide-refresh-cw class="size-4" :class="{ 'animate-spin': syncing }" />
+            Synchronize
+        </Button>
     </Page>
 </template>
 
 <script setup lang="ts">
 import { computedModel } from '@aerogel/plugin-solid';
-import { arraySorted } from '@noeldemartin/utils';
-import { emitModelEvent } from 'soukai-bis';
+import { after, arraySorted } from '@noeldemartin/utils';
 import { computed, onMounted, ref, watch } from 'vue';
 
 import type Season from '@/models/Season';
@@ -38,6 +42,7 @@ import type Show from '@/models/Show';
 import Catalog from '@/services/Catalog';
 
 const { show } = defineProps<{ show: Show }>();
+const syncing = ref(false);
 const signal = ref<unknown>(null);
 const computedShow = computedModel(() => Catalog.shows.find((s) => s.url === show.url));
 const sortedSeasons = computed(() => {
@@ -58,25 +63,20 @@ async function watchSeason(season: Season) {
     await Promise.all(season.episodes?.map((episode) => episode.watched || episode.toggleWatched()) ?? []);
 }
 
+async function sync() {
+    syncing.value = true;
+
+    try {
+        await Promise.all([after(1000), Catalog.sync(show)]);
+    } finally {
+        syncing.value = false;
+    }
+}
+
 watch(computedShow, () => (signal.value = Math.random()), {
     deep: true,
     immediate: true,
 });
 
-onMounted(async () => {
-    await show.loadRelationIfUnloaded('seasons');
-    await Promise.all(show.seasons?.map((season) => season.loadRelationIfUnloaded('episodes')) ?? []);
-
-    for (const season of show.seasons ?? []) {
-        for (const episode of season.episodes ?? []) {
-            if (episode.isRelationLoaded('watched')) {
-                continue;
-            }
-
-            episode.relatedWatched.related = null;
-
-            await emitModelEvent(episode, 'relation-loaded', episode.relatedWatched);
-        }
-    }
-});
+onMounted(() => show.loadAllRelations());
 </script>

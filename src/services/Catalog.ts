@@ -1,12 +1,64 @@
 import { trackModels } from '@aerogel/plugin-solid';
-import { facade } from '@noeldemartin/utils';
+import { arrayUnique, facade } from '@noeldemartin/utils';
+import type { GetModelInput } from 'soukai-bis';
 
+import type Episode from '@/models/Episode';
+import type Season from '@/models/Season';
 import Show from '@/models/Show';
-import TMDB, { type TMDBShow } from '@/services/TMDB';
+import TMDB, {
+    type TMDBEpisode,
+    type TMDBSeason,
+    type TMDBShow,
+    type TMDBShowDetails,
+    type TMDBShowExternalIds,
+} from '@/services/TMDB';
 
 import Service from './Catalog.state';
 
 export class CatalogService extends Service {
+    public async sync(show: Show): Promise<void> {
+        if (!show.tmdbId) {
+            return;
+        }
+
+        await show.loadAllRelations();
+
+        const [details, externalIds] = await Promise.all([
+            TMDB.getShowDetails(show.tmdbId),
+            TMDB.getShowExternalIds(show.tmdbId),
+        ]);
+
+        const attributes = this.getShowAttributes(details, externalIds);
+
+        show.setAttributes({
+            ...attributes,
+            externalUrls: arrayUnique([...show.externalUrls, ...(attributes.externalUrls ?? [])]),
+        });
+
+        for (const tmdbSeason of details.seasons) {
+            if (tmdbSeason.season_number === 0) {
+                continue;
+            }
+
+            const seasonDetails = await TMDB.getSeasonDetails(details.id, tmdbSeason.season_number);
+            const season =
+                show.seasons?.find((season) => season.number === tmdbSeason.season_number) ??
+                (await show.relatedSeasons.create({}));
+
+            season.setAttributes(this.getSeasonAttributes(tmdbSeason));
+
+            for (const tmdbEpisode of seasonDetails.episodes) {
+                const episode =
+                    season.episodes?.find((episode) => episode.number === tmdbEpisode.episode_number) ??
+                    (await season.relatedEpisodes.create({}));
+
+                episode.setAttributes(this.getEpisodeAttributes(tmdbEpisode));
+            }
+        }
+
+        await show.save();
+    }
+
     public async import(show: TMDBShow): Promise<void> {
         const tmdbUrl = TMDB.showUrl(show);
         const alreadyImported = this.shows.some((existingShow) => existingShow.externalUrls.includes(tmdbUrl));
@@ -20,40 +72,18 @@ export class CatalogService extends Service {
             TMDB.getShowExternalIds(show.id),
         ]);
 
-        const externalUrls = [tmdbUrl];
-        const startDate = details.first_air_date ? new Date(details.first_air_date) : undefined;
-        const endDate = details.last_air_date ? new Date(details.last_air_date) : undefined;
-
-        if (externalIds.imdb_id) {
-            externalUrls.push(`https://www.imdb.com/title/${externalIds.imdb_id}/`);
-        }
-
-        const createdShow = await Show.create({
-            name: details.name,
-            description: details.overview,
-            imageUrl: TMDB.showImageUrl(details),
-            startDate,
-            endDate,
-            externalUrls,
-        });
+        const createdShow = await Show.create(this.getShowAttributes(details, externalIds));
 
         for (const tmdbSeason of details.seasons) {
             if (tmdbSeason.season_number === 0) {
                 continue;
             }
 
-            const season = await createdShow.relatedSeasons.create({
-                number: tmdbSeason.season_number,
-            });
-
+            const season = await createdShow.relatedSeasons.create(this.getSeasonAttributes(tmdbSeason));
             const seasonDetails = await TMDB.getSeasonDetails(details.id, tmdbSeason.season_number);
 
             for (const tmdbEpisode of seasonDetails.episodes) {
-                await season.relatedEpisodes.create({
-                    name: tmdbEpisode.name,
-                    number: tmdbEpisode.episode_number,
-                    publishedAt: tmdbEpisode.air_date ? new Date(tmdbEpisode.air_date) : undefined,
-                });
+                await season.relatedEpisodes.create(this.getEpisodeAttributes(tmdbEpisode));
             }
         }
 
@@ -65,6 +95,40 @@ export class CatalogService extends Service {
             service: this,
             property: 'shows',
         });
+    }
+
+    protected getShowAttributes(
+        details: TMDBShowDetails,
+        externalIds: TMDBShowExternalIds,
+    ): GetModelInput<typeof Show> {
+        const externalUrls = [TMDB.showUrl(details)];
+
+        if (externalIds.imdb_id) {
+            externalUrls.push(`https://www.imdb.com/title/${externalIds.imdb_id}/`);
+        }
+
+        return {
+            name: details.name,
+            description: details.overview,
+            imageUrl: TMDB.showImageUrl(details),
+            startDate: details.first_air_date ? new Date(details.first_air_date) : undefined,
+            endDate: details.last_air_date ? new Date(details.last_air_date) : undefined,
+            externalUrls,
+        };
+    }
+
+    protected getSeasonAttributes(season: TMDBSeason): GetModelInput<typeof Season> {
+        return {
+            number: season.season_number,
+        };
+    }
+
+    protected getEpisodeAttributes(episode: TMDBEpisode): GetModelInput<typeof Episode> {
+        return {
+            name: episode.name,
+            number: episode.episode_number,
+            publishedAt: episode.air_date ? new Date(episode.air_date) : undefined,
+        };
     }
 }
 
