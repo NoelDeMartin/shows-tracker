@@ -9,18 +9,21 @@
             :key="season.url"
             :label="`Season ${season.number} (${watched}/${total})`"
             class="mt-4"
+            content-class="pl-8"
         >
-            <ul class="list-inside list-disc space-y-2">
-                <li v-for="episode of season.episodes" :key="episode.url" class="flex items-center justify-between">
-                    <span>{{ episode.name }}</span>
-                    <Button @click="episode.toggleWatched()">
-                        {{ episode.watched ? 'Unwatch' : 'Watch' }}
-                    </Button>
+            <ol class="list-decimal space-y-2">
+                <li v-for="episode of season.episodes" :key="episode.url">
+                    <div class="flex items-center justify-between">
+                        <span>{{ episode.name }}</span>
+                        <Button @click="episode.toggleWatched()">
+                            {{ episode.watched ? 'Unwatch' : 'Watch' }}
+                        </Button>
+                    </div>
                 </li>
                 <li v-if="watched !== total" class="flex items-center justify-end">
                     <Button @click="watchSeason(season)">Watch All</Button>
                 </li>
-            </ul>
+            </ol>
         </Details>
 
         <p v-if="show.seasonUrls.length === 0" class="mt-4">No seasons yet</p>
