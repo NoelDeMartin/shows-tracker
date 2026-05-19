@@ -14,7 +14,15 @@
             <ol class="list-decimal space-y-2">
                 <li v-for="episode of season.episodes" :key="episode.url">
                     <div class="flex items-center justify-between">
-                        <span>{{ episode.name }}</span>
+                        <div class="flex items-center gap-2">
+                            <span
+                                v-if="episode.publishedAt"
+                                class="rounded-full bg-gray-500 px-2 py-1 text-xs text-white"
+                            >
+                                {{ episode.publishedAt.toLocaleDateString() }}
+                            </span>
+                            <span>{{ episode.name }}</span>
+                        </div>
                         <Button @click="episode.toggleWatched()">
                             {{ episode.watched ? 'Unwatch' : 'Watch' }}
                         </Button>
