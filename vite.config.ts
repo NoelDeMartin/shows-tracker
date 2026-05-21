@@ -5,6 +5,7 @@ import I18n from '@intlify/unplugin-vue-i18n/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import Icons from 'unplugin-icons/vite';
 import Components from 'unplugin-vue-components/vite';
+import Workspace from 'vite-plugin-multi-root-workspace';
 import { defineConfig } from 'vite-plus';
 
 export default defineConfig({
@@ -28,6 +29,7 @@ export default defineConfig({
                 props['aria-hidden'] = 'true';
             },
         }),
+        Workspace(),
     ],
     fmt: {
         semi: true,
