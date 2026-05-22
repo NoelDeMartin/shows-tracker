@@ -41,18 +41,22 @@ export class CatalogService extends Service {
             }
 
             const seasonDetails = await TMDB.getSeasonDetails(details.id, tmdbSeason.season_number);
+            const seasonAttributes = this.getSeasonAttributes(tmdbSeason);
             const season =
                 show.seasons?.find((season) => season.number === tmdbSeason.season_number) ??
-                (await show.relatedSeasons.create({}));
+                (await show.relatedSeasons.create(seasonAttributes));
 
-            season.setAttributes(this.getSeasonAttributes(tmdbSeason));
+            season.setAttributes(seasonAttributes);
 
             for (const tmdbEpisode of seasonDetails.episodes) {
-                const episode =
-                    season.episodes?.find((episode) => episode.number === tmdbEpisode.episode_number) ??
-                    (await season.relatedEpisodes.create({}));
+                const episodeAttributes = this.getEpisodeAttributes(tmdbEpisode);
+                const episode = season.episodes?.find((episode) => episode.number === tmdbEpisode.episode_number);
 
-                episode.setAttributes(this.getEpisodeAttributes(tmdbEpisode));
+                if (episode) {
+                    await episode.update(episodeAttributes);
+                } else {
+                    await season.relatedEpisodes.create(episodeAttributes);
+                }
             }
         }
 
