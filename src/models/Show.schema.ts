@@ -7,6 +7,7 @@ import ShowWatching from '@/models/ShowWatching';
 export default defineSchema({
     rdfContext: 'https://schema.org/',
     rdfClass: 'TVSeries',
+    history: true,
     fields: {
         name: z.string().useAsSlug(),
         description: z.string().optional(),
