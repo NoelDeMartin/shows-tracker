@@ -21,7 +21,7 @@ export class CatalogService extends Service {
             return;
         }
 
-        await show.loadAllRelations();
+        await show.loadAllRelationsIfUnloaded();
 
         const [details, externalIds] = await Promise.all([
             TMDB.getShowDetails(show.tmdbId),

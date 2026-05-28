@@ -44,7 +44,7 @@ export default class Show extends Model {
         return id ? Number(id) : null;
     }
 
-    public async loadAllRelations(): Promise<void> {
+    public async loadAllRelationsIfUnloaded(): Promise<void> {
         await this.loadRelationIfUnloaded('seasons');
         await Promise.all(this.seasons?.map((season) => season.loadRelationIfUnloaded('episodes')) ?? []);
 

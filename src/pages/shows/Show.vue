@@ -111,10 +111,16 @@ async function sync() {
     }
 }
 
-watch(computedShow, () => (signal.value = Math.random()), {
-    deep: true,
-    immediate: true,
-});
+watch(
+    computedShow,
+    async (newShow) => {
+        signal.value = Math.random();
 
-onMounted(() => show.loadAllRelations());
+        await newShow?.loadAllRelationsIfUnloaded();
+    },
+    {
+        deep: true,
+        immediate: true,
+    },
+);
 </script>
