@@ -21,3 +21,7 @@ peerDependencyRules:
     allowedVersions:
         vite: '*'
         vitest: '*'
+minimumReleaseAgeExclude:
+    - '@aerogel/*'
+    - '@noeldemartin/*'
+    - soukai-bis
