@@ -2,7 +2,7 @@
     <Page>
         <h2 class="text-2xl font-bold">Search</h2>
         <form class="mt-2" @submit.prevent="search()">
-            <Input v-model="query" placeholder="Search for a show" class="mt-2" />
+            <Input v-model="query" label="Search" label-class="sr-only" placeholder="Search for a show" class="mt-2" />
             <Button class="mt-2 w-full" submit>Search</Button>
         </form>
 

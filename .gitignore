@@ -1,5 +1,8 @@
+.env
 /dist
 /node_modules
+/playwright
+/playwright-report/
 /solid
 /src/types/components.d.ts
-.env
+/test-results

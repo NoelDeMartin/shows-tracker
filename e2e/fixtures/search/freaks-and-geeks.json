@@ -1,0 +1,24 @@
+{
+    "page": 1,
+    "results": [
+        {
+            "adult": false,
+            "backdrop_path": "/1lOGkpGa9SjZ2uP1PxfxDkSXRNs.jpg",
+            "genre_ids": [18, 35],
+            "id": 2382,
+            "origin_country": ["US"],
+            "original_language": "en",
+            "original_name": "Freaks and Geeks",
+            "overview": "High school mathlete Lindsay Weir rebels and begins hanging out with a crowd of burnouts (the \"freaks\"), while her brother Sam Weir navigates a different part of the social universe with his nerdy friends (the \"geeks\").",
+            "popularity": 11.7038,
+            "poster_path": "/tPqV63zcW6ZV0Hd48DMGb5UzQIG.jpg",
+            "first_air_date": "1999-09-25",
+            "softcore": false,
+            "name": "Freaks and Geeks",
+            "vote_average": 8.177,
+            "vote_count": 883
+        }
+    ],
+    "total_pages": 1,
+    "total_results": 1
+}

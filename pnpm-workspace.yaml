@@ -24,4 +24,5 @@ peerDependencyRules:
 minimumReleaseAgeExclude:
     - '@aerogel/*'
     - '@noeldemartin/*'
+    - playwright-solid
     - soukai-bis
