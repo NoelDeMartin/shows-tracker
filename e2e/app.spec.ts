@@ -27,8 +27,7 @@ test('imports a show', async ({ page }) => {
     expect(createDocument.nth(1)?.body).toContain('"Freaks and Geeks"');
     expect(createDocument.nth(1)?.body).toContain('<https://www.imdb.com/title/tt0193676/>');
     expect(createDocument.nth(1)?.body).toContain('<https://schema.org/seasonNumber> 1');
-    expect(createDocument.nth(2)?.url).toEqual(podUrl('/shows/freaks-and-geeks-1999/season-1/episode-1'));
-    expect(createDocument.nth(2)?.body).toEqualSparql(
+    expect(createDocument.first(podUrl('/shows/freaks-and-geeks-1999/season-1/episode-1'))?.body).toEqualSparql(
         fixture('/sparql/episode.sparql', { name: 'Pilot', seasonNumber: 1 }) ?? '',
     );
 });
