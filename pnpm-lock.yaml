@@ -89,8 +89,8 @@ importers:
         specifier: ^1.60.0
         version: 1.60.0
       '@solid/community-server':
-        specifier: file:../../CommunitySolidServer/solid-community-server-7.1.6.tgz
-        version: file:../../CommunitySolidServer/solid-community-server-7.1.6.tgz(encoding@0.1.13)
+        specifier: 7.1.6
+        version: 7.1.6(encoding@0.1.13)
       '@total-typescript/ts-reset':
         specifier: ^0.4.2
         version: 0.4.2
@@ -1998,9 +1998,8 @@ packages:
   '@solid/access-token-verifier@2.1.1':
     resolution: {integrity: sha512-dGvu4xk3P74xl6XYsULWBY8F/fNCoi/EK07Iv3RT+0vDA21+3VEKk72sWmki0W59qJRTRDQZXkCOyo4b5Hd7zA==}
 
-  '@solid/community-server@file:../../CommunitySolidServer/solid-community-server-7.1.6.tgz':
-    resolution: {integrity: sha512-r2XsxcVX1o5PY+dYlr+oiPXz9wnChj8XvqEcIrbQQpqnsyJc0eZtP3WoC83b7RqgweTzs2My3xxtWufABD44gw==, tarball: file:../../CommunitySolidServer/solid-community-server-7.1.6.tgz}
-    version: 7.1.6
+  '@solid/community-server@7.1.6':
+    resolution: {integrity: sha512-nLBR3cSMcKb+wUjBgs0I/EDIPBvz4UAAzhynx1S6nP5bUSEr5ii95meVKlEnBcRI6b2jqdyHk9WRa8V4v8V8GA==}
     engines: {node: '>=18.0'}
     hasBin: true
 
@@ -6141,7 +6140,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -6243,7 +6242,7 @@ snapshots:
       '@comunica/logger-pretty': 2.10.0
       '@comunica/runner': 2.10.0(encoding@0.1.13)
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/yargs': 17.0.35
       asynciterator: 3.10.0
       negotiate: 1.0.1
@@ -6298,7 +6297,7 @@ snapshots:
       '@comunica/bus-query-operation': 2.10.1(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-terms: 1.11.0
@@ -6355,7 +6354,7 @@ snapshots:
       '@comunica/bus-query-operation': 2.10.1(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
       - encoding
@@ -6368,7 +6367,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/expression-evaluator': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       sparqlalgebrajs: 4.3.8
@@ -6518,7 +6517,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/data-factory': 2.7.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -6532,7 +6531,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -6587,7 +6586,7 @@ snapshots:
       '@comunica/mediatortype-httprequests': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       fetch-sparql-endpoint: 4.2.1(encoding@0.1.13)
       rdf-data-factory: 1.1.3
@@ -6601,7 +6600,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-terms: 1.11.0
       sparqlalgebrajs: 4.3.8
@@ -6624,7 +6623,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -6666,7 +6665,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -6678,7 +6677,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -6753,7 +6752,7 @@ snapshots:
     dependencies:
       '@comunica/bus-query-result-serialize': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-string: 1.6.3
       readable-stream: 4.7.0
 
@@ -6761,7 +6760,7 @@ snapshots:
     dependencies:
       '@comunica/bus-query-result-serialize': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
 
   '@comunica/actor-query-result-serialize-sparql-json@2.10.2':
@@ -6771,14 +6770,14 @@ snapshots:
       '@comunica/bus-query-result-serialize': 2.10.0
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
 
   '@comunica/actor-query-result-serialize-sparql-tsv@2.10.0':
     dependencies:
       '@comunica/bus-query-result-serialize': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-string-ttl: 1.3.2
       readable-stream: 4.7.0
 
@@ -6786,7 +6785,7 @@ snapshots:
     dependencies:
       '@comunica/bus-query-result-serialize': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
 
   '@comunica/actor-query-result-serialize-stats@2.10.2':
@@ -6803,7 +6802,7 @@ snapshots:
     dependencies:
       '@comunica/bus-query-result-serialize': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
       rdf-terms: 1.11.0
@@ -6909,7 +6908,7 @@ snapshots:
       '@comunica/bus-rdf-join': 2.10.1(encoding@0.1.13)
       '@comunica/mediatortype-join-coefficients': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-string: 1.6.3
     transitivePeerDependencies:
       - encoding
@@ -6920,7 +6919,7 @@ snapshots:
       '@comunica/bus-rdf-join': 2.10.1(encoding@0.1.13)
       '@comunica/mediatortype-join-coefficients': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
     transitivePeerDependencies:
       - encoding
 
@@ -6988,7 +6987,7 @@ snapshots:
     dependencies:
       '@comunica/bus-rdf-metadata-extract': 2.10.0
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/uritemplate': 0.3.6
       uritemplate: 0.3.4
 
@@ -7027,7 +7026,7 @@ snapshots:
     dependencies:
       '@comunica/bus-rdf-metadata': 2.10.0
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
 
   '@comunica/actor-rdf-parse-html-microdata@2.10.0':
@@ -7049,7 +7048,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
       relative-to-absolute-iri: 1.0.8
     transitivePeerDependencies:
@@ -7061,7 +7060,7 @@ snapshots:
       '@comunica/bus-rdf-parse-html': 2.10.0
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       htmlparser2: 9.1.0
       readable-stream: 4.7.0
 
@@ -7094,7 +7093,7 @@ snapshots:
     dependencies:
       '@comunica/bus-rdf-parse': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       readable-stream: 4.7.0
       shaclc-parse: 1.4.3
@@ -7134,7 +7133,7 @@ snapshots:
       '@comunica/bus-rdf-resolve-hypermedia': 2.10.0(encoding@0.1.13)
       '@comunica/bus-rdf-resolve-quad-pattern': 2.10.0(encoding@0.1.13)
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -7149,7 +7148,7 @@ snapshots:
       '@comunica/bus-rdf-resolve-hypermedia': 2.10.0(encoding@0.1.13)
       '@comunica/bus-rdf-resolve-quad-pattern': 2.10.0(encoding@0.1.13)
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       fetch-sparql-endpoint: 4.2.1(encoding@0.1.13)
       lru-cache: 10.4.3
@@ -7169,7 +7168,7 @@ snapshots:
       '@comunica/data-factory': 2.7.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-terms: 1.11.0
@@ -7193,7 +7192,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       lru-cache: 10.4.3
       rdf-data-factory: 1.1.3
@@ -7209,7 +7208,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-terms: 1.11.0
@@ -7223,7 +7222,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       lru-cache: 10.4.3
       rdf-store-stream: 2.0.1
       readable-stream: 4.7.0
@@ -7261,7 +7260,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       cross-fetch: 4.1.0(encoding@0.1.13)
       rdf-string-ttl: 1.3.2
@@ -7277,7 +7276,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       cross-fetch: 4.1.0(encoding@0.1.13)
     transitivePeerDependencies:
@@ -7290,7 +7289,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       fetch-sparql-endpoint: 4.2.1(encoding@0.1.13)
       rdf-string-ttl: 1.3.2
@@ -7317,7 +7316,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -7326,7 +7325,7 @@ snapshots:
 
   '@comunica/bindings-factory@2.10.1':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       immutable: 4.3.8
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -7341,7 +7340,7 @@ snapshots:
       '@comunica/bus-dereference': 2.10.0(encoding@0.1.13)
       '@comunica/bus-rdf-parse': 2.10.0
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
     transitivePeerDependencies:
       - encoding
 
@@ -7391,7 +7390,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/data-factory': 2.7.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-string: 1.6.3
       rdf-terms: 1.11.0
@@ -7402,7 +7401,7 @@ snapshots:
   '@comunica/bus-query-parse@2.10.0':
     dependencies:
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       sparqlalgebrajs: 4.3.8
 
   '@comunica/bus-query-result-serialize@2.10.0':
@@ -7431,7 +7430,7 @@ snapshots:
       '@comunica/mediatortype-join-coefficients': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
     transitivePeerDependencies:
@@ -7445,24 +7444,24 @@ snapshots:
   '@comunica/bus-rdf-metadata-extract@2.10.0':
     dependencies:
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/bus-rdf-metadata@2.10.0':
     dependencies:
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/bus-rdf-parse-html@2.10.0':
     dependencies:
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/bus-rdf-parse@2.10.0':
     dependencies:
       '@comunica/actor-abstract-mediatyped': 2.10.0
       '@comunica/actor-abstract-parse': 2.10.0
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/bus-rdf-resolve-hypermedia-links-queue@2.10.0':
     dependencies:
@@ -7473,13 +7472,13 @@ snapshots:
     dependencies:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/bus-rdf-resolve-hypermedia@2.10.0(encoding@0.1.13)':
     dependencies:
       '@comunica/bus-rdf-resolve-quad-pattern': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
     transitivePeerDependencies:
       - encoding
 
@@ -7488,7 +7487,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -7498,7 +7497,7 @@ snapshots:
     dependencies:
       '@comunica/actor-abstract-mediatyped': 2.10.0
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/bus-rdf-update-hypermedia@2.10.2(encoding@0.1.13)':
     dependencies:
@@ -7514,7 +7513,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       stream-to-string: 1.2.1
     transitivePeerDependencies:
@@ -7526,7 +7525,7 @@ snapshots:
     dependencies:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       jsonld-context-parser: 2.4.0(encoding@0.1.13)
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -7539,11 +7538,11 @@ snapshots:
 
   '@comunica/data-factory@2.7.0':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/expression-evaluator@2.10.0':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/spark-md5': 3.0.5
       '@types/uuid': 9.0.8
       bignumber.js: 9.3.1
@@ -7608,7 +7607,7 @@ snapshots:
   '@comunica/mediatortype-join-coefficients@2.10.0':
     dependencies:
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/mediatortype-time@2.10.0':
     dependencies:
@@ -7775,7 +7774,7 @@ snapshots:
 
   '@comunica/types@2.10.0':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/yargs': 17.0.35
       asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
@@ -8232,7 +8231,7 @@ snapshots:
 
   '@rdfjs/data-model@1.3.4':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@rdfjs/dataset@1.1.1':
     dependencies:
@@ -8408,7 +8407,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@solid/community-server@file:../../CommunitySolidServer/solid-community-server-7.1.6.tgz(encoding@0.1.13)':
+  '@solid/community-server@7.1.6(encoding@0.1.13)':
     dependencies:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/query-sparql': 2.10.2(encoding@0.1.13)
@@ -8653,7 +8652,7 @@ snapshots:
 
   '@types/clownface@2.0.10':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/rdfjs__environment': 1.0.0
 
   '@types/connect@3.4.38':
@@ -8750,7 +8749,7 @@ snapshots:
 
   '@types/n3@1.26.1':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/node': 24.13.1
 
   '@types/node@18.19.130':
@@ -8787,13 +8786,13 @@ snapshots:
 
   '@types/rdf-validate-shacl@0.4.9':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/clownface': 2.0.10
       '@types/node': 24.13.1
 
   '@types/rdfjs__environment@1.0.0':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/node': 24.13.1
 
   '@types/readable-stream@2.3.15':
@@ -8824,7 +8823,7 @@ snapshots:
 
   '@types/sparqljs@3.1.12':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@types/triple-beam@1.3.5': {}
 
@@ -9384,7 +9383,7 @@ snapshots:
 
   componentsjs@5.5.1(encoding@0.1.13):
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/minimist': 1.2.5
       '@types/node': 18.19.130
       '@types/semver': 7.7.1
@@ -9837,7 +9836,7 @@ snapshots:
 
   fetch-sparql-endpoint@4.2.1(encoding@0.1.13):
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@smessie/readable-web-to-node-stream': 3.0.3
       '@types/readable-stream': 2.3.15
       '@types/sparqljs': 3.1.12
@@ -10019,7 +10018,7 @@ snapshots:
 
   graphql-to-sparql@3.0.1(encoding@0.1.13):
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       graphql: 15.10.2
       jsonld-context-parser: 2.4.0(encoding@0.1.13)
       minimist: 1.2.8
@@ -10376,7 +10375,7 @@ snapshots:
   jsonld-streaming-parser@3.4.0(encoding@0.1.13):
     dependencies:
       '@bergos/jsonparse': 1.4.2
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/http-link-header': 1.0.7
       '@types/readable-stream': 2.3.15
       buffer: 6.0.3
@@ -10390,7 +10389,7 @@ snapshots:
 
   jsonld-streaming-serializer@2.1.0(encoding@0.1.13):
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/readable-stream': 2.3.15
       buffer: 6.0.3
       jsonld-context-parser: 2.4.0(encoding@0.1.13)
@@ -10593,7 +10592,7 @@ snapshots:
 
   microdata-rdf-streaming-parser@2.0.1:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       htmlparser2: 8.0.2
       rdf-data-factory: 1.1.3
       readable-stream: 4.7.0
@@ -11034,7 +11033,7 @@ snapshots:
       '@comunica/mediator-combine-union': 2.10.0
       '@comunica/mediator-number': 2.10.0
       '@comunica/mediator-race': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       process: 0.11.10
       rdf-string: 1.6.3
       stream-to-string: 1.2.1
@@ -11043,19 +11042,19 @@ snapshots:
 
   rdf-isomorphic@1.3.1:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       hash.js: 1.1.7
       rdf-string: 1.6.3
       rdf-terms: 1.11.0
 
   rdf-literal@1.3.2:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
 
   rdf-object@1.14.0(encoding@0.1.13):
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       jsonld-context-parser: 2.4.0(encoding@0.1.13)
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -11086,7 +11085,7 @@ snapshots:
       '@comunica/mediator-combine-union': 2.10.0
       '@comunica/mediator-number': 2.10.0
       '@comunica/mediator-race': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
       stream-to-string: 1.2.1
     transitivePeerDependencies:
@@ -11110,7 +11109,7 @@ snapshots:
       '@comunica/mediator-combine-pipeline': 2.10.0
       '@comunica/mediator-combine-union': 2.10.0
       '@comunica/mediator-race': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
       stream-to-string: 1.2.1
     transitivePeerDependencies:
@@ -11118,12 +11117,12 @@ snapshots:
 
   rdf-store-stream@2.0.1:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-stores: 1.0.0
 
   rdf-stores@1.0.0:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -11131,7 +11130,7 @@ snapshots:
 
   rdf-streaming-store@1.1.5:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/n3': 1.26.1
       '@types/readable-stream': 4.0.23
       n3: 1.26.0
@@ -11141,7 +11140,7 @@ snapshots:
 
   rdf-string-ttl@1.3.2:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
 
   rdf-string-ttl@2.0.1:
@@ -11150,12 +11149,12 @@ snapshots:
 
   rdf-string@1.6.3:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
 
   rdf-terms@1.11.0:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
 
@@ -11178,7 +11177,7 @@ snapshots:
 
   rdfa-streaming-parser@2.0.1:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       htmlparser2: 8.0.2
       rdf-data-factory: 1.1.3
       readable-stream: 4.7.0
@@ -11186,7 +11185,7 @@ snapshots:
 
   rdfxml-streaming-parser@2.4.0:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@rubensworks/saxes': 6.0.1
       '@types/readable-stream': 2.3.15
       buffer: 6.0.3
@@ -11510,7 +11509,7 @@ snapshots:
 
   sparqlalgebrajs@4.3.8:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/sparqljs': 3.1.12
       fast-deep-equal: 3.1.3
       minimist: 1.2.8
@@ -11527,20 +11526,20 @@ snapshots:
   sparqljson-parse@2.2.0:
     dependencies:
       '@bergos/jsonparse': 1.4.2
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/readable-stream': 2.3.15
       rdf-data-factory: 1.1.3
       readable-stream: 4.7.0
 
   sparqljson-to-tree@3.0.2:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-literal: 1.3.2
       sparqljson-parse: 2.2.0
 
   sparqlxml-parse@2.1.1:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@rubensworks/saxes': 6.0.1
       '@types/readable-stream': 2.3.15
       buffer: 6.0.3
