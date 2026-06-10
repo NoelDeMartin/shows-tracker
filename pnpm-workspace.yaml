@@ -26,3 +26,5 @@ minimumReleaseAgeExclude:
     - '@noeldemartin/*'
     - playwright-solid
     - soukai-bis
+patchedDependencies:
+    '@solid/community-server': patches/@solid__community-server.patch
