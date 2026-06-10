@@ -8,13 +8,15 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('imports a show', async ({ page }) => {
-    const createDocument = interceptRequests(page, 'PATCH', podUrl('/shows/*'));
-
+    // Log In
     await press(page, 'Configuration');
     await press(page, 'Connect account');
     await press(page, 'Log in to dev server');
     await solidLogin(page);
     await waitSync(page);
+
+    // Import
+    const createDocument = interceptRequests(page, 'PATCH', podUrl('/shows/*'));
 
     await press(page, 'Add Show');
     await input(page, 'Search').fill('freaks and geeks');
@@ -22,7 +24,7 @@ test('imports a show', async ({ page }) => {
     await press(page, 'Import', { within: page.getByRole('listitem').filter({ hasText: 'Freaks and Geeks (1999)' }) });
     await waitSync(page);
 
-    expect(createDocument.all.length).toBe(19);
+    expect(createDocument.all).toHaveLength(19);
     expect(createDocument.nth(1)?.url).toEqual(podUrl('/shows/freaks-and-geeks-1999/info'));
     expect(createDocument.nth(1)?.body).toContain('"Freaks and Geeks"');
     expect(createDocument.nth(1)?.body).toContain('<https://www.imdb.com/title/tt0193676/>');
@@ -30,4 +32,13 @@ test('imports a show', async ({ page }) => {
     expect(createDocument.first(podUrl('/shows/freaks-and-geeks-1999/season-1/episode-1'))?.body).toEqualSparql(
         fixture('/sparql/episode.sparql', { name: 'Pilot', seasonNumber: 1 }) ?? '',
     );
+
+    // First sync
+    const readDocument = interceptRequests(page, 'GET', podUrl('/shows/*'));
+
+    await press(page, 'Open account');
+    await press(page, 'Synchronize', { selector: 'button' });
+    await waitSync(page);
+
+    expect(readDocument.all).toHaveLength(2);
 });
