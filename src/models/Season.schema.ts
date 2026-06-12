@@ -1,4 +1,4 @@
-import { belongsToMany, defineSchema } from 'soukai-bis';
+import { belongsToMany, defineSchema, hasOne, requireBootedModel } from 'soukai-bis';
 import { z } from 'zod';
 
 import Episode from '@/models/Episode';
@@ -12,6 +12,7 @@ export default defineSchema({
         episodeUrls: z.array(z.url()).rdfProperty('episode').default([]),
     },
     relations: {
+        show: hasOne(() => requireBootedModel('Show'), 'seasonUrls'),
         episodes: belongsToMany(Episode, 'episodeUrls'),
     },
 });
