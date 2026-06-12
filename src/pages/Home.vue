@@ -8,12 +8,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computedModels } from '@aerogel/plugin-solid';
 
 import Episode from '@/models/Episode';
+import Show from '@/models/Show';
 import Catalog from '@/services/Catalog';
 
-const activeShows = computed(() =>
+const activeShows = computedModels(Show, () =>
     Catalog.shows.filter(
         (show) =>
             show.watchingStatus === 'watching' &&

@@ -42,7 +42,10 @@
                 Synchronize
             </Button>
 
-            <i-svg-spinners-180-ring-with-bg v-if="changingStatus" />
+            <div v-if="changingStatus">
+                <i-svg-spinners-180-ring-with-bg />
+                <span class="sr-only">Updating status...</span>
+            </div>
             <Select
                 v-else
                 label="Status"
