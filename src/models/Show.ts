@@ -9,7 +9,8 @@ import type {
 import { emitModelEvent } from 'soukai-bis';
 
 import type Season from '@/models/Season';
-import ShowWatching, { SHOW_WATCHING_STATUSES, type ShowWatchingStatus } from '@/models/ShowWatching';
+import ShowWatching, { SHOW_WATCHING_STATUSES } from '@/models/ShowWatching';
+import type { ShowWatchingStatus } from '@/models/ShowWatching';
 
 import Model from './Show.schema';
 
@@ -18,7 +19,7 @@ export default class Show extends Model {
     public static computed = {
         pendingEpisodeDates(show: ComputedProxy<Show>) {
             return show.seasons.flatMap((season) =>
-                season.episodes.filter((episode) => !episode.watched).map((episode) => episode.publishedAt),
+                season.episodes.filter((episode) => !episode.watched.exists()).map((episode) => episode.publishedAt),
             );
         },
     };

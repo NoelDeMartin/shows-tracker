@@ -13,7 +13,9 @@ export default class Episode extends Model {
         return date.getTime() < UPCOMING_THRESHOLD;
     }
 
+    declare public readonly watched?: EpisodeWatched;
     declare public readonly relatedWatched: HasOneRelation<this, EpisodeWatched, typeof EpisodeWatched>;
+    declare public readonly season?: Season;
     declare public readonly relatedSeason: HasOneRelation<this, Season, typeof Season>;
 
     public async toggleWatched(): Promise<void> {
