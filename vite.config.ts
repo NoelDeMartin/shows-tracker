@@ -10,7 +10,7 @@ import { defineConfig } from 'vite-plus';
 
 export default defineConfig({
     build: { sourcemap: true },
-    base: process.env.NODE_ENV === 'production' ? '/shows-tracker/' : '/',
+    base: process.env.NODE_ENV === 'staging' ? '/shows-tracker/' : '/',
     publicDir: fileURLToPath(new URL('./src/assets/public/', import.meta.url)),
     plugins: [
         Aerogel({
