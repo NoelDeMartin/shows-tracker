@@ -1,12 +1,6 @@
 import { stringToSlug, tap, urlResolve, uuid } from '@noeldemartin/utils';
-import type {
-    BelongsToManyRelation,
-    ComputedAttribute,
-    ComputedProxy,
-    HasOneRelation,
-    MintUrlOptions,
-} from 'soukai-bis';
-import { emitModelEvent } from 'soukai-bis';
+import { emitModelEvent, loaded } from 'soukai-bis';
+import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation, MintUrlOptions } from 'soukai-bis';
 
 import type Season from '@/models/Season';
 import ShowWatching, { SHOW_WATCHING_STATUSES } from '@/models/ShowWatching';
@@ -17,9 +11,11 @@ import Model from './Show.schema';
 export default class Show extends Model {
     public static cloud = { depth: 1 };
     public static computed = {
-        pendingEpisodeDates(show: ComputedProxy<Show>) {
-            return show.seasons.flatMap((season) =>
-                season.episodes.filter((episode) => !episode.watched.exists()).map((episode) => episode.publishedAt),
+        pendingEpisodeDates(show: Show) {
+            return loaded(show, 'seasons').flatMap((season) =>
+                loaded(season, 'episodes')
+                    .filter((episode) => !loaded(episode, 'watched'))
+                    .map((episode) => episode.publishedAt),
             );
         },
     };
