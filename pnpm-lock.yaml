@@ -75,7 +75,7 @@ importers:
         version: 0.1.2-next.7549906ad59826e1baff12cfa27149476ab58850
       '@aerogel/playwright':
         specifier: next
-        version: 0.1.2-next.b6924470b62583c8fa2b63b44cbf1ce547cbdaff(@playwright/test@1.60.0)(web-streams-polyfill@3.3.3)
+        version: 0.1.2-next.eeaca492b49ab28ab0fe92f818359b69fd965cee(@playwright/test@1.61.0)(web-streams-polyfill@3.3.3)
       '@aerogel/vite':
         specifier: next
         version: 0.1.2-next.6f0efe9a9cb892d3c7a585b32b8d0fd9b9e3626a(@babel/parser@7.29.7)(@voidzero-dev/vite-plus-core@0.1.24(@types/node@24.13.2)(jiti@2.7.0)(terser@5.48.0)(typescript@6.0.3)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))(workbox-window@7.4.1)
@@ -90,7 +90,7 @@ importers:
         version: 0.4.0-next.c4947cf24d83e9a211c2705b97f764039d7863ab
       '@playwright/test':
         specifier: ^1.60.0
-        version: 1.60.0
+        version: 1.61.0
       '@solid/community-server':
         specifier: 7.1.6
         version: 7.1.6(patch_hash=1628b3c34b026293281da874bb9ae0ee5963910463b108e81c36ec54ee8507e9)(encoding@0.1.13)
@@ -151,8 +151,8 @@ packages:
       tailwindcss: ^4.1.4
       vue: ^3.5.0
 
-  '@aerogel/playwright@0.1.2-next.b6924470b62583c8fa2b63b44cbf1ce547cbdaff':
-    resolution: {integrity: sha512-3f34ExGQD1v0z31jDmR8XFbQ/oxUYLqm672BNCUhPtyE9mHhx2lOpio7P4p3kYNI4XeOARe8q88Si+tX4mnDtg==}
+  '@aerogel/playwright@0.1.2-next.eeaca492b49ab28ab0fe92f818359b69fd965cee':
+    resolution: {integrity: sha512-nVi8UAnny9lB5CcRImoFTmbGE8wg0RcuU8yOYhqjVDHGogq9Xwb/DgoG4gHgBCybA7yEj46EG1ew7lie+vELcg==}
     peerDependencies:
       '@playwright/test': ^1.60.0
 
@@ -1755,8 +1755,8 @@ packages:
     resolution: {integrity: sha512-nkOyZEF1vH527CkdQtOp1HMrVFEM4ResURvI2JFeGoup+h+43J/k/FgdOR9b9Isxg+Yae7qVDa7y3nssE8b3TQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@playwright/test@1.60.0':
-    resolution: {integrity: sha512-O71yZIbAh/PxDMNGns37GHBIfrVkEVyn+AXyIa5dOTfb4/xNvRWV+Vv/NMbNCtODB/pO7vLlF2OTmMVLhmr7Ag==}
+  '@playwright/test@1.61.0':
+    resolution: {integrity: sha512-cKA5B6lpFEMyMGjxF54QihfYpB4FkEGH+qZhtArDEG+wezQAJY8Pq6C7T1SjWz+FFzt3TbyoXBQYk/0292TdJA==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -4313,16 +4313,16 @@ packages:
   pkg-types@2.3.1:
     resolution: {integrity: sha512-y+ichcgc2LrADuhLNAx8DFjVfgz91pRxfZdI3UDhxHvcVEZsenLO+7XaU5vOp0u/7V/wZ+plyuQxtrDlZJ+yeg==}
 
-  playwright-core@1.60.0:
-    resolution: {integrity: sha512-9bW6zvX/m0lEbgTKJ6YppOKx8H3VOPBMOCFh2irXFOT4BbHgrx5hPjwJYLT40Lu+4qtD36qKc/Hn56StUW57IA==}
+  playwright-core@1.61.0:
+    resolution: {integrity: sha512-caX7TrY3Ml6egyDX0WUcTHDxodl/b51y5wJOdCEA36QviK/s2g081hvmGs8eaE3DWb6NYZQ6BjO/QkNRPenoPA==}
     engines: {node: '>=18'}
     hasBin: true
 
   playwright-solid@0.0.0-next.4f571c3043b2158e53771282fcf8e53fb36fd50b:
     resolution: {integrity: sha512-M6qMwDKbQzuKb14H7SNiA94QT56wWK0yzAxvzv50dCtwERL7vczm2QQZKgIFcbRZ+aetxnbPC4hNmIHbztKrUw==}
 
-  playwright@1.60.0:
-    resolution: {integrity: sha512-hheHdokM8cdqCb0lcE3s+zT4t4W+vvjpGxsZlDnikarzx8tSzMebh3UiFtgqwFwnTnjYQcsyMF8ei2mCO/tpeA==}
+  playwright@1.61.0:
+    resolution: {integrity: sha512-Z+7BeeqQPRRzklHsVFP4KTGIyMxKUmfeRA4WisM6G3/XW6nwGeX6fX9qYaDa+CiUqpOkb2f6X3nar05R3kSuJQ==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -5383,10 +5383,11 @@ snapshots:
       - web-streams-polyfill
       - zod
 
-  '@aerogel/playwright@0.1.2-next.b6924470b62583c8fa2b63b44cbf1ce547cbdaff(@playwright/test@1.60.0)(web-streams-polyfill@3.3.3)':
+  '@aerogel/playwright@0.1.2-next.eeaca492b49ab28ab0fe92f818359b69fd965cee(@playwright/test@1.61.0)(web-streams-polyfill@3.3.3)':
     dependencies:
       '@noeldemartin/solid-utils': 0.6.1-next.4f19fa3a733afc3b173d049d4cb963a29879f23a(web-streams-polyfill@3.3.3)
-      '@playwright/test': 1.60.0
+      '@noeldemartin/utils': 0.7.3-next.a0ef3c875be6f86a88e67b4c3c2f2d770d053c19
+      '@playwright/test': 1.61.0
       playwright-solid: 0.0.0-next.4f571c3043b2158e53771282fcf8e53fb36fd50b(web-streams-polyfill@3.3.3)
     transitivePeerDependencies:
       - web-streams-polyfill
@@ -8230,9 +8231,9 @@ snapshots:
 
   '@oxlint/plugins@1.61.0': {}
 
-  '@playwright/test@1.60.0':
+  '@playwright/test@1.61.0':
     dependencies:
-      playwright: 1.60.0
+      playwright: 1.61.0
 
   '@polka/url@1.0.0-next.29': {}
 
@@ -10924,23 +10925,23 @@ snapshots:
       exsolve: 1.0.8
       pathe: 2.0.3
 
-  playwright-core@1.60.0: {}
+  playwright-core@1.61.0: {}
 
   playwright-solid@0.0.0-next.4f571c3043b2158e53771282fcf8e53fb36fd50b(web-streams-polyfill@3.3.3):
     dependencies:
       '@inrupt/solid-client-authn-core': 3.1.1
       '@noeldemartin/solid-utils': 0.6.1-next.4f19fa3a733afc3b173d049d4cb963a29879f23a(web-streams-polyfill@3.3.3)
       '@noeldemartin/utils': 0.7.3-next.a0ef3c875be6f86a88e67b4c3c2f2d770d053c19
-      '@playwright/test': 1.60.0
+      '@playwright/test': 1.61.0
       node-fetch: 3.3.2
       soukai-bis: 0.0.0-next.e09bcd6d67b0d4aca81e8759cb00607615abf220(web-streams-polyfill@3.3.3)(zod@4.4.3)
       zod: 4.4.3
     transitivePeerDependencies:
       - web-streams-polyfill
 
-  playwright@1.60.0:
+  playwright@1.61.0:
     dependencies:
-      playwright-core: 1.60.0
+      playwright-core: 1.61.0
     optionalDependencies:
       fsevents: 2.3.2
 

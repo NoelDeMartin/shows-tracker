@@ -1,20 +1,14 @@
-import { input, interceptRequests, podUrl, press, solidLogin, solidReset, waitSync } from '@aerogel/playwright';
+import { input, interceptRequests, podUrl, press, localFirstLogin, solidReset, waitSync } from '@aerogel/playwright';
 import { fixture } from '@e2e/lib/fixtures';
 import { test, expect } from '@e2e/lib/setup';
 
 test.beforeEach(async ({ page }) => {
     await solidReset();
     await page.goto('/');
+    await localFirstLogin(page);
 });
 
 test('imports a show', async ({ page }) => {
-    // Log In
-    await press(page, 'Configuration');
-    await press(page, 'Connect account');
-    await press(page, 'Log in to dev server');
-    await solidLogin(page);
-    await waitSync(page);
-
     // Import
     const createDocument = interceptRequests(page, 'PATCH', podUrl('/shows/*'));
 
@@ -33,7 +27,7 @@ test('imports a show', async ({ page }) => {
         fixture('/sparql/episode.sparql', { name: 'Pilot', seasonNumber: 1 }) ?? '',
     );
 
-    // First sync
+    // Sync
     const readDocument = interceptRequests(page, 'GET', podUrl('/shows/*'));
 
     await press(page, 'Open account');
