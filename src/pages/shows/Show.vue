@@ -71,6 +71,7 @@ import { SHOW_WATCHING_STATUSES, type ShowWatchingStatus } from '@/models/ShowWa
 import Catalog from '@/services/Catalog';
 
 const { show } = defineProps<{ show: Show }>();
+const loading = new Set<string>();
 const statusOptions = Object.keys(SHOW_WATCHING_STATUSES);
 const syncing = ref(false);
 const changingStatus = ref(false);
@@ -119,7 +120,17 @@ watch(
     async (newShow) => {
         signal.value = Math.random();
 
-        await newShow?.loadAllRelationsIfUnloaded();
+        if (!newShow?.hasUrl() || loading.has(newShow.url)) {
+            return;
+        }
+
+        loading.add(newShow.url);
+
+        try {
+            await newShow.loadAllRelationsIfUnloaded();
+        } finally {
+            loading.delete(newShow.url);
+        }
     },
     {
         deep: true,
