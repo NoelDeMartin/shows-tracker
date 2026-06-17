@@ -1,0 +1,15 @@
+@prefix schema: <https://schema.org/> .
+@prefix crdts: <https://vocab.noeldemartin.com/crdt/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<#it>
+  a schema:TVEpisode ;
+  schema:episodeNumber 1 ;
+  schema:name "Pilot" ;
+  schema:datePublished "1999-09-25T00:00:00.000Z"^^xsd:dateTime .
+
+<#it-metadata>
+  a crdts:Metadata ;
+  crdts:resource <#it> ;
+  crdts:createdAt "2026-06-01T17:27:18.424Z"^^xsd:dateTime ;
+  crdts:updatedAt "2026-06-01T17:27:18.424Z"^^xsd:dateTime .

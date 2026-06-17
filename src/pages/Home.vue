@@ -14,11 +14,14 @@ import Episode from '@/models/Episode';
 import Show from '@/models/Show';
 import Catalog from '@/services/Catalog';
 
-const activeShows = computedModels(Show, () =>
-    Catalog.shows.filter(
-        (show) =>
-            show.watchingStatus === 'watching' &&
-            show.pendingEpisodeDates.value?.some((date) => date && Episode.isUpcoming(date)),
-    ),
+const activeShows = computedModels(
+    Show,
+    () =>
+        Catalog.shows.filter(
+            (show) =>
+                show.watchingStatus === 'watching' &&
+                show.pendingEpisodeDates.value?.some((date) => date && Episode.isUpcoming(date)),
+        ),
+    { watch: ['pendingEpisodeDates'] },
 );
 </script>
