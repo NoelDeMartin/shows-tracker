@@ -15,7 +15,6 @@ jobs:
               with:
                   node-version-file: '.node-version'
                   cache: true
-            - run: vp install
             - run: vp check
             - run: vp run type-check
             - run: vp test
@@ -31,7 +30,6 @@ jobs:
               with:
                   node-version-file: '.node-version'
                   cache: true
-            - run: vp install
             - run: vpx playwright install --with-deps ${{ matrix.browser }}
             - run: vp run e2e:test:${{ matrix.browser }}
             - name: Upload Playwright artifacts
@@ -58,5 +56,4 @@ jobs:
               with:
                   node-version-file: '.node-version'
                   cache: true
-            - run: vp install
             - run: vp run deploy
