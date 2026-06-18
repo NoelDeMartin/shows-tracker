@@ -1,5 +1,6 @@
 import { trackModels } from '@aerogel/plugin-solid';
 import { arrayUnique, facade } from '@noeldemartin/utils';
+import { ComputedAttribute } from 'soukai-bis';
 import type { GetModelInput } from 'soukai-bis';
 
 import type Episode from '@/models/Episode';
@@ -35,32 +36,42 @@ export class CatalogService extends Service {
             externalUrls: arrayUnique([...show.externalUrls, ...(attributes.externalUrls ?? [])]),
         });
 
-        for (const tmdbSeason of details.seasons) {
-            if (tmdbSeason.season_number === 0) {
-                continue;
-            }
+        ComputedAttribute.disableRefreshes();
+        ComputedAttribute.disableLoadingRelations();
 
-            const seasonDetails = await TMDB.getSeasonDetails(details.id, tmdbSeason.season_number);
-            const seasonAttributes = this.getSeasonAttributes(tmdbSeason);
-            const season =
-                show.seasons?.find((season) => season.number === tmdbSeason.season_number) ??
-                (await show.relatedSeasons.create(seasonAttributes));
+        try {
+            for (const tmdbSeason of details.seasons) {
+                if (tmdbSeason.season_number === 0) {
+                    continue;
+                }
 
-            season.setAttributes(seasonAttributes);
+                const seasonDetails = await TMDB.getSeasonDetails(details.id, tmdbSeason.season_number);
+                const seasonAttributes = this.getSeasonAttributes(tmdbSeason);
+                const season =
+                    show.seasons?.find((season) => season.number === tmdbSeason.season_number) ??
+                    (await show.relatedSeasons.create(seasonAttributes));
 
-            for (const tmdbEpisode of seasonDetails.episodes) {
-                const episodeAttributes = this.getEpisodeAttributes(tmdbEpisode);
-                const episode = season.episodes?.find((episode) => episode.number === tmdbEpisode.episode_number);
+                season.setAttributes(seasonAttributes);
 
-                if (episode) {
-                    await episode.update(episodeAttributes);
-                } else {
-                    await season.relatedEpisodes.create(episodeAttributes);
+                for (const tmdbEpisode of seasonDetails.episodes) {
+                    const episodeAttributes = this.getEpisodeAttributes(tmdbEpisode);
+                    const episode = season.episodes?.find((episode) => episode.number === tmdbEpisode.episode_number);
+
+                    if (episode) {
+                        await episode.update(episodeAttributes);
+                    } else {
+                        await season.relatedEpisodes.create(episodeAttributes);
+                    }
                 }
             }
+
+            await show.save();
+        } finally {
+            ComputedAttribute.enableRefreshes();
+            ComputedAttribute.enableLoadingRelations();
         }
 
-        await show.save();
+        await show.pendingEpisodeDates.updateValue({ refresh: true, loadRelations: true });
     }
 
     public async import(show: TMDBShow): Promise<void> {
@@ -78,20 +89,30 @@ export class CatalogService extends Service {
 
         const createdShow = await Show.create(this.getShowAttributes(details, externalIds));
 
-        for (const tmdbSeason of details.seasons) {
-            if (tmdbSeason.season_number === 0) {
-                continue;
+        ComputedAttribute.disableRefreshes();
+        ComputedAttribute.disableLoadingRelations();
+
+        try {
+            for (const tmdbSeason of details.seasons) {
+                if (tmdbSeason.season_number === 0) {
+                    continue;
+                }
+
+                const season = await createdShow.relatedSeasons.create(this.getSeasonAttributes(tmdbSeason));
+                const seasonDetails = await TMDB.getSeasonDetails(details.id, tmdbSeason.season_number);
+
+                for (const tmdbEpisode of seasonDetails.episodes) {
+                    await season.relatedEpisodes.create(this.getEpisodeAttributes(tmdbEpisode));
+                }
             }
 
-            const season = await createdShow.relatedSeasons.create(this.getSeasonAttributes(tmdbSeason));
-            const seasonDetails = await TMDB.getSeasonDetails(details.id, tmdbSeason.season_number);
-
-            for (const tmdbEpisode of seasonDetails.episodes) {
-                await season.relatedEpisodes.create(this.getEpisodeAttributes(tmdbEpisode));
-            }
+            await createdShow.save();
+        } finally {
+            ComputedAttribute.enableRefreshes();
+            ComputedAttribute.enableLoadingRelations();
         }
 
-        await createdShow.save();
+        await createdShow.pendingEpisodeDates.updateValue({ refresh: true, loadRelations: true });
     }
 
     protected async boot(): Promise<void> {
