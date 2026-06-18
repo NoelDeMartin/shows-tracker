@@ -31,13 +31,13 @@ importers:
         version: 0.1.2-next.2c3536aed027b7db949ee77b64a6cf2dc1281eaf(@aerogel/core@0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3))
       '@aerogel/plugin-local-first':
         specifier: next
-        version: 0.1.2-next.0c7dc5e52458ec1161f1220e3832aba81a882a26(ff36b291e43b97eb3ef1408ef1d687aa)
+        version: 0.1.2-next.0c7dc5e52458ec1161f1220e3832aba81a882a26(f712c9d28c02850489bb4addfa4b269e)
       '@aerogel/plugin-routing':
         specifier: next
-        version: 0.1.2-next.bce6da4814f8ea261bef2c8423f60ad99ff1133f(427d8a674df1318ba4190f4fb9b84c06)
+        version: 0.1.2-next.bce6da4814f8ea261bef2c8423f60ad99ff1133f(2fece855d90e6cffff9569c748ec98d4)
       '@aerogel/plugin-solid':
         specifier: next
-        version: 0.1.2-next.90a4c04cd2ec31aee7e55a8a851f97dded499bc8(@aerogel/core@0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3))(@aerogel/vite@0.1.2-next.6f0efe9a9cb892d3c7a585b32b8d0fd9b9e3626a(@babel/parser@7.29.7)(@voidzero-dev/vite-plus-core@0.2.0(@types/node@24.13.2)(jiti@2.7.0)(terser@5.48.0)(typescript@6.0.3)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.06dffa6322cf7c0548d42e5868aa9b098d12b584(web-streams-polyfill@3.3.3)(zod@4.4.3))(web-streams-polyfill@3.3.3)
+        version: 0.1.2-next.90a4c04cd2ec31aee7e55a8a851f97dded499bc8(@aerogel/core@0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3))(@aerogel/vite@0.1.2-next.6f0efe9a9cb892d3c7a585b32b8d0fd9b9e3626a(@babel/parser@7.29.7)(@voidzero-dev/vite-plus-core@0.2.0(@types/node@24.13.2)(jiti@2.7.0)(terser@5.48.0)(typescript@6.0.3)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.9f674800362129a6b9e751a42c8fcf4ed751bb3b(web-streams-polyfill@3.3.3)(zod@4.4.3))(web-streams-polyfill@3.3.3)
       '@noeldemartin/solid-utils':
         specifier: next
         version: 0.6.1-next.4f19fa3a733afc3b173d049d4cb963a29879f23a(web-streams-polyfill@3.3.3)
@@ -52,7 +52,7 @@ importers:
         version: 0.5.20(tailwindcss@4.3.1)
       soukai-bis:
         specifier: next
-        version: 0.0.0-next.06dffa6322cf7c0548d42e5868aa9b098d12b584(web-streams-polyfill@3.3.3)(zod@4.4.3)
+        version: 0.0.0-next.9f674800362129a6b9e751a42c8fcf4ed751bb3b(web-streams-polyfill@3.3.3)(zod@4.4.3)
       tailwindcss:
         specifier: ^4.1.1
         version: 4.3.1
@@ -2772,8 +2772,8 @@ packages:
     resolution: {integrity: sha512-ir1UPr3dkwexU7FdV8qBBbNDRUhMmIekYMFZfi+C/sLNnRESKPl23nB9b2pltqfOQNnGzsDdId90AEtG5tCx4A==}
     engines: {node: '>=6.0.0'}
 
-  baseline-browser-mapping@2.10.37:
-    resolution: {integrity: sha512-girxaJ7WZssDOFhzCGZTDKoTa1gk6A1TbflaYTpykLJ4UU9Fz9kx1aREM8JCuoVHbL8X8T/mJg7w2oYSq72Oig==}
+  baseline-browser-mapping@2.10.38:
+    resolution: {integrity: sha512-31/02mVB4yuQU6adKk5SlY6m+mxDwUq5KZkyYgnLrrKl7TEm1+3PyDtDBz2kOv/wxZz41GHsvV1A/u6RmiyBvw==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -3777,8 +3777,8 @@ packages:
     resolution: {integrity: sha512-AC/7JofJvZGrrneWNaEnJeOLUx+JlGt7tNa0wZiRPT4MY1wmfKjt2+6O2p2uz2+skll8OZZmJMNqeke7kKbNgQ==}
     hasBin: true
 
-  joi@18.2.2:
-    resolution: {integrity: sha512-STrV933NPLPME2nfPo+lFIfgCff9T/vhObpoRtFb/vNlLQynrUJPBCS3OePJ4Lunu/Egw9lqtNms72xbPbxrxw==}
+  joi@18.2.3:
+    resolution: {integrity: sha512-N5A3KTWQpPWT4ExxxPlUx7WmykGXRzhNidWhV41d6Abu9YfI2NyWCJuxdPnslJCPWtbRpSVOWSnSS6GakLM/Rg==}
     engines: {node: '>= 20'}
 
   jose@4.15.9:
@@ -4739,8 +4739,8 @@ packages:
     engines: {node: '>=10.0.0'}
     hasBin: true
 
-  soukai-bis@0.0.0-next.06dffa6322cf7c0548d42e5868aa9b098d12b584:
-    resolution: {integrity: sha512-4W5ncN1ck6WLfWURJRXC15moNmus/DucOyODC2zEO8czMvoKQv9zYPCyY2D5OFjJOh8e6ZHTwPW0k28KlV1K+w==}
+  soukai-bis@0.0.0-next.9f674800362129a6b9e751a42c8fcf4ed751bb3b:
+    resolution: {integrity: sha512-uYBHcOUCPD0mU69HMtycrbXs4F1ain19iA+8Elk7agQb73hH4VMCoC3dY66Cxb0nQ1Avdd3eLxTBzLe7oj0b7Q==}
     peerDependencies:
       zod: ^4.3.4
 
@@ -5495,7 +5495,7 @@ snapshots:
       marked: 15.0.12
       pinia: 2.3.1(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))
       reka-ui: 2.9.10(vue@3.5.38(typescript@6.0.3))
-      soukai-bis: 0.0.0-next.06dffa6322cf7c0548d42e5868aa9b098d12b584(web-streams-polyfill@3.3.3)(zod@4.4.3)
+      soukai-bis: 0.0.0-next.9f674800362129a6b9e751a42c8fcf4ed751bb3b(web-streams-polyfill@3.3.3)(zod@4.4.3)
       tailwind-merge: 3.6.0
       tailwindcss: 4.3.1
       vue: 3.5.38(typescript@6.0.3)
@@ -5520,27 +5520,27 @@ snapshots:
       '@aerogel/core': 0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3)
       '@noeldemartin/utils': 0.7.3-next.a0ef3c875be6f86a88e67b4c3c2f2d770d053c19
 
-  '@aerogel/plugin-local-first@0.1.2-next.0c7dc5e52458ec1161f1220e3832aba81a882a26(ff36b291e43b97eb3ef1408ef1d687aa)':
+  '@aerogel/plugin-local-first@0.1.2-next.0c7dc5e52458ec1161f1220e3832aba81a882a26(f712c9d28c02850489bb4addfa4b269e)':
     dependencies:
       '@aerogel/core': 0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3)
-      '@aerogel/plugin-solid': 0.1.2-next.90a4c04cd2ec31aee7e55a8a851f97dded499bc8(@aerogel/core@0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3))(@aerogel/vite@0.1.2-next.6f0efe9a9cb892d3c7a585b32b8d0fd9b9e3626a(@babel/parser@7.29.7)(@voidzero-dev/vite-plus-core@0.2.0(@types/node@24.13.2)(jiti@2.7.0)(terser@5.48.0)(typescript@6.0.3)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.06dffa6322cf7c0548d42e5868aa9b098d12b584(web-streams-polyfill@3.3.3)(zod@4.4.3))(web-streams-polyfill@3.3.3)
+      '@aerogel/plugin-solid': 0.1.2-next.90a4c04cd2ec31aee7e55a8a851f97dded499bc8(@aerogel/core@0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3))(@aerogel/vite@0.1.2-next.6f0efe9a9cb892d3c7a585b32b8d0fd9b9e3626a(@babel/parser@7.29.7)(@voidzero-dev/vite-plus-core@0.2.0(@types/node@24.13.2)(jiti@2.7.0)(terser@5.48.0)(typescript@6.0.3)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.9f674800362129a6b9e751a42c8fcf4ed751bb3b(web-streams-polyfill@3.3.3)(zod@4.4.3))(web-streams-polyfill@3.3.3)
       '@noeldemartin/solid-utils': 0.6.1-next.4f19fa3a733afc3b173d049d4cb963a29879f23a(web-streams-polyfill@3.3.3)
       '@noeldemartin/utils': 0.7.3-next.a0ef3c875be6f86a88e67b4c3c2f2d770d053c19
       idb: 8.0.3
-      soukai-bis: 0.0.0-next.06dffa6322cf7c0548d42e5868aa9b098d12b584(web-streams-polyfill@3.3.3)(zod@4.4.3)
+      soukai-bis: 0.0.0-next.9f674800362129a6b9e751a42c8fcf4ed751bb3b(web-streams-polyfill@3.3.3)(zod@4.4.3)
     transitivePeerDependencies:
       - web-streams-polyfill
 
-  '@aerogel/plugin-routing@0.1.2-next.bce6da4814f8ea261bef2c8423f60ad99ff1133f(427d8a674df1318ba4190f4fb9b84c06)':
+  '@aerogel/plugin-routing@0.1.2-next.bce6da4814f8ea261bef2c8423f60ad99ff1133f(2fece855d90e6cffff9569c748ec98d4)':
     dependencies:
       '@aerogel/core': 0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3)
-      '@aerogel/plugin-solid': 0.1.2-next.90a4c04cd2ec31aee7e55a8a851f97dded499bc8(@aerogel/core@0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3))(@aerogel/vite@0.1.2-next.6f0efe9a9cb892d3c7a585b32b8d0fd9b9e3626a(@babel/parser@7.29.7)(@voidzero-dev/vite-plus-core@0.2.0(@types/node@24.13.2)(jiti@2.7.0)(terser@5.48.0)(typescript@6.0.3)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.06dffa6322cf7c0548d42e5868aa9b098d12b584(web-streams-polyfill@3.3.3)(zod@4.4.3))(web-streams-polyfill@3.3.3)
+      '@aerogel/plugin-solid': 0.1.2-next.90a4c04cd2ec31aee7e55a8a851f97dded499bc8(@aerogel/core@0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3))(@aerogel/vite@0.1.2-next.6f0efe9a9cb892d3c7a585b32b8d0fd9b9e3626a(@babel/parser@7.29.7)(@voidzero-dev/vite-plus-core@0.2.0(@types/node@24.13.2)(jiti@2.7.0)(terser@5.48.0)(typescript@6.0.3)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.9f674800362129a6b9e751a42c8fcf4ed751bb3b(web-streams-polyfill@3.3.3)(zod@4.4.3))(web-streams-polyfill@3.3.3)
       '@aerogel/vite': 0.1.2-next.6f0efe9a9cb892d3c7a585b32b8d0fd9b9e3626a(@babel/parser@7.29.7)(@voidzero-dev/vite-plus-core@0.2.0(@types/node@24.13.2)(jiti@2.7.0)(terser@5.48.0)(typescript@6.0.3)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))(workbox-window@7.4.1)
       '@noeldemartin/utils': 0.7.3-next.a0ef3c875be6f86a88e67b4c3c2f2d770d053c19
-      soukai-bis: 0.0.0-next.06dffa6322cf7c0548d42e5868aa9b098d12b584(web-streams-polyfill@3.3.3)(zod@4.4.3)
+      soukai-bis: 0.0.0-next.9f674800362129a6b9e751a42c8fcf4ed751bb3b(web-streams-polyfill@3.3.3)(zod@4.4.3)
       vue-router: 4.6.4(vue@3.5.38(typescript@6.0.3))
 
-  '@aerogel/plugin-solid@0.1.2-next.90a4c04cd2ec31aee7e55a8a851f97dded499bc8(@aerogel/core@0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3))(@aerogel/vite@0.1.2-next.6f0efe9a9cb892d3c7a585b32b8d0fd9b9e3626a(@babel/parser@7.29.7)(@voidzero-dev/vite-plus-core@0.2.0(@types/node@24.13.2)(jiti@2.7.0)(terser@5.48.0)(typescript@6.0.3)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.06dffa6322cf7c0548d42e5868aa9b098d12b584(web-streams-polyfill@3.3.3)(zod@4.4.3))(web-streams-polyfill@3.3.3)':
+  '@aerogel/plugin-solid@0.1.2-next.90a4c04cd2ec31aee7e55a8a851f97dded499bc8(@aerogel/core@0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3))(@aerogel/vite@0.1.2-next.6f0efe9a9cb892d3c7a585b32b8d0fd9b9e3626a(@babel/parser@7.29.7)(@voidzero-dev/vite-plus-core@0.2.0(@types/node@24.13.2)(jiti@2.7.0)(terser@5.48.0)(typescript@6.0.3)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.9f674800362129a6b9e751a42c8fcf4ed751bb3b(web-streams-polyfill@3.3.3)(zod@4.4.3))(web-streams-polyfill@3.3.3)':
     dependencies:
       '@aerogel/core': 0.1.2-next.215f3d3abc8c466e7680565590c7e9635693960d(@tailwindcss/forms@0.5.11(tailwindcss@4.3.1))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.1))(tailwindcss@4.3.1)(typescript@6.0.3)(vue@3.5.38(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.4.3)
       '@aerogel/vite': 0.1.2-next.6f0efe9a9cb892d3c7a585b32b8d0fd9b9e3626a(@babel/parser@7.29.7)(@voidzero-dev/vite-plus-core@0.2.0(@types/node@24.13.2)(jiti@2.7.0)(terser@5.48.0)(typescript@6.0.3)(yaml@2.9.0))(vue@3.5.38(typescript@6.0.3))(workbox-window@7.4.1)
@@ -5548,7 +5548,7 @@ snapshots:
       '@noeldemartin/solid-utils': 0.6.1-next.4f19fa3a733afc3b173d049d4cb963a29879f23a(web-streams-polyfill@3.3.3)
       '@noeldemartin/utils': 0.7.3-next.a0ef3c875be6f86a88e67b4c3c2f2d770d053c19
       solid-auth-client: 2.4.1(encoding@0.1.13)
-      soukai-bis: 0.0.0-next.06dffa6322cf7c0548d42e5868aa9b098d12b584(web-streams-polyfill@3.3.3)(zod@4.4.3)
+      soukai-bis: 0.0.0-next.9f674800362129a6b9e751a42c8fcf4ed751bb3b(web-streams-polyfill@3.3.3)(zod@4.4.3)
     transitivePeerDependencies:
       - encoding
       - web-streams-polyfill
@@ -9408,7 +9408,7 @@ snapshots:
 
   base64url@3.0.1: {}
 
-  baseline-browser-mapping@2.10.37: {}
+  baseline-browser-mapping@2.10.38: {}
 
   bcryptjs@2.4.3: {}
 
@@ -9434,7 +9434,7 @@ snapshots:
 
   browserslist@4.28.2:
     dependencies:
-      baseline-browser-mapping: 2.10.37
+      baseline-browser-mapping: 2.10.38
       caniuse-lite: 1.0.30001799
       electron-to-chromium: 1.5.375
       node-releases: 2.0.47
@@ -10529,7 +10529,7 @@ snapshots:
 
   jiti@2.7.0: {}
 
-  joi@18.2.2:
+  joi@18.2.3:
     dependencies:
       '@hapi/address': 5.1.1
       '@hapi/formula': 3.0.2
@@ -11131,7 +11131,7 @@ snapshots:
       '@noeldemartin/utils': 0.7.3-next.a0ef3c875be6f86a88e67b4c3c2f2d770d053c19
       '@playwright/test': 1.61.0
       node-fetch: 3.3.2
-      soukai-bis: 0.0.0-next.06dffa6322cf7c0548d42e5868aa9b098d12b584(web-streams-polyfill@3.3.3)(zod@4.4.3)
+      soukai-bis: 0.0.0-next.9f674800362129a6b9e751a42c8fcf4ed751bb3b(web-streams-polyfill@3.3.3)(zod@4.4.3)
       zod: 4.4.3
     transitivePeerDependencies:
       - web-streams-polyfill
@@ -11705,7 +11705,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  soukai-bis@0.0.0-next.06dffa6322cf7c0548d42e5868aa9b098d12b584(web-streams-polyfill@3.3.3)(zod@4.4.3):
+  soukai-bis@0.0.0-next.9f674800362129a6b9e751a42c8fcf4ed751bb3b(web-streams-polyfill@3.3.3)(zod@4.4.3):
     dependencies:
       '@noeldemartin/solid-utils': 0.6.1-next.4f19fa3a733afc3b173d049d4cb963a29879f23a(web-streams-polyfill@3.3.3)
       '@noeldemartin/utils': 0.7.3-next.a0ef3c875be6f86a88e67b4c3c2f2d770d053c19
@@ -12269,7 +12269,7 @@ snapshots:
   wait-on@9.0.10(debug@4.4.3):
     dependencies:
       axios: 1.18.0(debug@4.4.3)
-      joi: 18.2.2
+      joi: 18.2.3
       lodash: 4.18.1
       minimist: 1.2.8
       rxjs: 7.8.2

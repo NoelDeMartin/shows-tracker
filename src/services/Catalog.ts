@@ -58,11 +58,14 @@ export class CatalogService extends Service {
                     const episode = season.episodes?.find((episode) => episode.number === tmdbEpisode.episode_number);
 
                     if (episode) {
-                        await episode.update(episodeAttributes);
+                        episode.setAttributes(episodeAttributes);
                     } else {
-                        await season.relatedEpisodes.create(episodeAttributes);
+                        season.relatedEpisodes.attach(episodeAttributes);
                     }
                 }
+
+                await Promise.all(season.relatedEpisodes.getLoadedModels().map((episode) => episode.save()));
+                await season.save();
             }
 
             await show.save();
@@ -102,8 +105,11 @@ export class CatalogService extends Service {
                 const seasonDetails = await TMDB.getSeasonDetails(details.id, tmdbSeason.season_number);
 
                 for (const tmdbEpisode of seasonDetails.episodes) {
-                    await season.relatedEpisodes.create(this.getEpisodeAttributes(tmdbEpisode));
+                    season.relatedEpisodes.attach(this.getEpisodeAttributes(tmdbEpisode));
                 }
+
+                await Promise.all(season.relatedEpisodes.getLoadedModels().map((episode) => episode.save()));
+                await season.save();
             }
 
             await createdShow.save();
