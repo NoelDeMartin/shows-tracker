@@ -1,5 +1,5 @@
 import { stringToSlug, tap, urlResolve, uuid } from '@noeldemartin/utils';
-import { emitModelEvent, loaded } from 'soukai-bis';
+import { emitModelEvent, InvalidationStrategies, loaded } from 'soukai-bis';
 import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation, MintUrlOptions } from 'soukai-bis';
 
 import type Season from '@/models/Season';
@@ -11,12 +11,15 @@ import Model from './Show.schema';
 export default class Show extends Model {
     public static cloud = { depth: 1 };
     public static computed = {
-        pendingEpisodeDates(show: Show) {
-            return loaded(show, 'seasons').flatMap((season) =>
-                loaded(season, 'episodes')
-                    .filter((episode) => !loaded(episode, 'watched'))
-                    .map((episode) => episode.publishedAt),
-            );
+        pendingEpisodeDates: {
+            invalidationStrategy: InvalidationStrategies.CONTAINER,
+            compute(show: Show) {
+                return loaded(show, 'seasons').flatMap((season) =>
+                    loaded(season, 'episodes')
+                        .filter((episode) => !loaded(episode, 'watched'))
+                        .map((episode) => episode.publishedAt),
+                );
+            },
         },
     };
 

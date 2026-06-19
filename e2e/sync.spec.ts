@@ -37,7 +37,7 @@ test('imports a show from tmdb', async ({ page }) => {
     expect(createDocument.nth(1)?.body).toContain('<https://www.imdb.com/title/tt0193676/>');
     expect(createDocument.nth(1)?.body).toContain('<https://schema.org/seasonNumber> 1');
     expect(createDocument.first(podUrl('/shows/freaks-and-geeks-1999/season-1/episode-1'))?.body).toEqualSparql(
-        requiredFixture('/sparql/episode.sparql', { name: 'Pilot', seasonNumber: 1 }),
+        requiredFixture('/sparql/create-episode.sparql', { name: 'Pilot', seasonNumber: 1 }),
     );
 
     // Sync
@@ -50,7 +50,7 @@ test('imports a show from tmdb', async ({ page }) => {
     expect(readDocument.all).toHaveLength(2);
 });
 
-test('pulls in existing shows', async ({ page }) => {
+test('pulls in existing shows & updates', async ({ page }) => {
     // Populate POD & Log in
     await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-type-index.sparql'));
     await solidCreateDocument('/settings/privateTypeIndex', requiredFixture('/turtle/type-index.ttl'));
@@ -59,8 +59,25 @@ test('pulls in existing shows', async ({ page }) => {
         '/shows/freaks-and-geeks-1999/season-1/episode-1',
         requiredFixture('/turtle/freaks-and-geeks-s01e01.ttl'),
     );
+    await solidCreateDocument(
+        '/shows/freaks-and-geeks-1999/season-1/episode-2',
+        requiredFixture('/turtle/freaks-and-geeks-s01e02.ttl'),
+    );
     await localFirstLogin(page);
 
     // See shows
-    await see(page, 'Freaks and Geeks');
+    await see(page, 'Freaks and Geeks (2)');
+
+    // Prepare updates
+    await solidUpdateDocument(
+        '/shows/freaks-and-geeks-1999/season-1/episode-1',
+        requiredFixture('/sparql/watch-episode.sparql'),
+    );
+
+    // Pull updates
+    await press(page, 'Open account');
+    await press(page, 'Synchronize', { role: 'button' });
+    await waitSync(page);
+
+    await see(page, 'Freaks and Geeks (1)');
 });

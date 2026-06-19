@@ -1,0 +1,15 @@
+@prefix schema: <https://schema.org/> .
+@prefix crdts: <https://vocab.noeldemartin.com/crdt/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<#it>
+  a schema:TVEpisode ;
+  schema:episodeNumber 2 ;
+  schema:name "Beers and Weirs" ;
+  schema:datePublished "1999-10-02T00:00:00.000Z"^^xsd:dateTime .
+
+<#it-metadata>
+  a crdts:Metadata ;
+  crdts:resource <#it> ;
+  crdts:createdAt "2026-06-19T07:12:00.000Z"^^xsd:dateTime ;
+  crdts:updatedAt "2026-06-19T07:12:00.000Z"^^xsd:dateTime .

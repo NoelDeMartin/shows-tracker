@@ -26,7 +26,7 @@
 
 <#season-1>
   a schema:TVSeason ;
-  schema:episode <./season-1/episode-1#it> ;
+  schema:episode <./season-1/episode-1#it>, <./season-1/episode-2#it> ;
   schema:seasonNumber 1 .
 
 <#season-1-metadata>
