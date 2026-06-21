@@ -145,7 +145,7 @@ test('skips containers with deep last modified dates', async ({ page }) => {
     // Assert
     expect(requests).toEqual({
         'shows/': 2,
-        'shows/freaks-and-geeks-1999/': 2,
+        'shows/freaks-and-geeks-1999/': 1,
         'shows/freaks-and-geeks-1999/info': 1,
         'shows/freaks-and-geeks-1999/season-1/': 1,
         'shows/freaks-and-geeks-1999/season-1/episode-1': 1,
