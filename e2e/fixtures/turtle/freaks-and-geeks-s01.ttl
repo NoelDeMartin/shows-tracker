@@ -7,16 +7,15 @@
 
 <>
     a ldp:Container ;
-    ldp:contains <./season-1/>, <./info> ;
+    ldp:contains <./episode-1>, <./episode-2> ;
     fs:deepLastModified "2026-06-19T07:17:00.000Z"^^xsd:dateTime .
 
-<./season-1/>
-    a ldp:Resource, ldp:Container, ldp:BasicContainer ;
-    purl:modified "2026-06-13T07:00:59.000000Z"^^xsd:dateTime ;
-    posix:mtime 1781334059 ;
-    fs:deepLastModified "2026-06-19T07:17:00.000Z"^^xsd:dateTime .
+<./episode-1>
+    a ldp:Resource, turtle:Resource ;
+    purl:modified "2026-06-19T07:17:00.000Z"^^xsd:dateTime ;
+    posix:mtime 1781853420 .
 
-<./info>
+<./episode-2>
     a ldp:Resource, turtle:Resource ;
     purl:modified "2026-06-13T07:00:59.000000Z"^^xsd:dateTime ;
     posix:mtime 1781334059 .

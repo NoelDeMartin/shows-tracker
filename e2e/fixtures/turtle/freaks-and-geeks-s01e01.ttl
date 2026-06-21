@@ -11,5 +11,5 @@
 <#it-metadata>
   a crdts:Metadata ;
   crdts:resource <#it> ;
-  crdts:createdAt "2026-06-01T17:27:18.424Z"^^xsd:dateTime ;
-  crdts:updatedAt "2026-06-01T17:27:18.424Z"^^xsd:dateTime .
+  crdts:createdAt "2026-06-13T07:00:59.000Z"^^xsd:dateTime ;
+  crdts:updatedAt "2026-06-13T07:00:59.000Z"^^xsd:dateTime .

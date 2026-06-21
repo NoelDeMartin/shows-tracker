@@ -12,6 +12,8 @@ import {
 } from '@aerogel/playwright';
 import { requiredFixture } from '@e2e/lib/fixtures';
 import { test, expect } from '@e2e/lib/setup';
+import { SolidStore, turtleToQuads } from '@noeldemartin/solid-utils';
+import { objectWithoutEmpty } from '@noeldemartin/utils';
 
 test.beforeEach(async ({ page }) => {
     await solidReset();
@@ -54,7 +56,10 @@ test('pulls in existing shows & updates', async ({ page }) => {
     // Populate POD & Log in
     await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-type-index.sparql'));
     await solidCreateDocument('/settings/privateTypeIndex', requiredFixture('/turtle/type-index.ttl'));
-    await solidCreateDocument('/shows/freaks-and-geeks-1999/info', requiredFixture('/turtle/freaks-and-geeks.ttl'));
+    await solidCreateDocument(
+        '/shows/freaks-and-geeks-1999/info',
+        requiredFixture('/turtle/freaks-and-geeks-info.ttl'),
+    );
     await solidCreateDocument(
         '/shows/freaks-and-geeks-1999/season-1/episode-1',
         requiredFixture('/turtle/freaks-and-geeks-s01e01.ttl'),
@@ -80,4 +85,70 @@ test('pulls in existing shows & updates', async ({ page }) => {
     await waitSync(page);
 
     await see(page, 'Freaks and Geeks (1)');
+});
+
+test('skips containers with deep last modified dates', async ({ page }) => {
+    // Arrange
+    const requests: Record<string, number> = {};
+    const fixtures = {
+        'shows/': '/turtle/shows.ttl',
+        'shows/freaks-and-geeks-1999/': '/turtle/freaks-and-geeks.ttl',
+        'shows/freaks-and-geeks-1999/info': '/turtle/freaks-and-geeks-info.ttl',
+        'shows/freaks-and-geeks-1999/season-1/': '/turtle/freaks-and-geeks-s01.ttl',
+        'shows/freaks-and-geeks-1999/season-1/episode-1': '/turtle/freaks-and-geeks-s01e01-watched.ttl',
+        'shows/freaks-and-geeks-1999/season-1/episode-2': '/turtle/freaks-and-geeks-s01e02.ttl',
+    };
+
+    await page.route(podUrl('/shows/**/*'), async (route) => {
+        const url = route.request().url();
+        const path = url.slice(podUrl().length) as keyof typeof fixtures;
+
+        requests[path] ??= 0;
+        requests[path]++;
+
+        if (!(path in fixtures)) {
+            return route.fulfill({
+                status: 404,
+                headers: { 'Content-Type': 'text/plain' },
+                body: `${path} not found`,
+            });
+        }
+
+        const body = requiredFixture(fixtures[path]);
+        const store = new SolidStore(await turtleToQuads(body, { baseIRI: url }));
+        const deepLastModified = store.statement(url, 'fs:deepLastModified');
+        const lastModified =
+            store.statement(`${url}#watched`, 'schema:endTime') ??
+            store.statement(`${url}#it-metadata`, 'crdt:updatedAt');
+
+        return route.fulfill({
+            status: 200,
+            headers: objectWithoutEmpty({
+                'Content-Type': 'text/turtle',
+                'Last-Modified': lastModified && new Date(lastModified.object.value).toUTCString(),
+                'Deep-Last-Modified': deepLastModified && new Date(deepLastModified.object.value).toUTCString(),
+                'Access-Control-Expose-Headers': 'Deep-Last-Modified, Last-Modified',
+            }),
+            body,
+        });
+    });
+
+    await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-type-index.sparql'));
+    await solidCreateDocument('/settings/privateTypeIndex', requiredFixture('/turtle/type-index.ttl'));
+    await localFirstLogin(page);
+
+    // Act
+    await press(page, 'Open account');
+    await press(page, 'Synchronize', { role: 'button' });
+    await waitSync(page);
+
+    // Assert
+    expect(requests).toEqual({
+        'shows/': 2,
+        'shows/freaks-and-geeks-1999/': 2,
+        'shows/freaks-and-geeks-1999/info': 1,
+        'shows/freaks-and-geeks-1999/season-1/': 1,
+        'shows/freaks-and-geeks-1999/season-1/episode-1': 1,
+        'shows/freaks-and-geeks-1999/season-1/episode-2': 1,
+    });
 });

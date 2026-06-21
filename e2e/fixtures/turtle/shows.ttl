@@ -1,22 +1,16 @@
 @prefix ldp: <http://www.w3.org/ns/ldp#> .
 @prefix purl: <http://purl.org/dc/terms/> .
 @prefix fs: <https://vocab.noeldemartin.com/fs/> .
-@prefix turtle: <http://www.w3.org/ns/iana/media-types/text/turtle#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix posix: <http://www.w3.org/ns/posix/stat#> .
 
 <>
     a ldp:Container ;
-    ldp:contains <./season-1/>, <./info> ;
+    ldp:contains <./freaks-and-geeks-1999/> ;
     fs:deepLastModified "2026-06-19T07:17:00.000Z"^^xsd:dateTime .
 
-<./season-1/>
+<./freaks-and-geeks-1999/>
     a ldp:Resource, ldp:Container, ldp:BasicContainer ;
     purl:modified "2026-06-13T07:00:59.000000Z"^^xsd:dateTime ;
     posix:mtime 1781334059 ;
     fs:deepLastModified "2026-06-19T07:17:00.000Z"^^xsd:dateTime .
-
-<./info>
-    a ldp:Resource, turtle:Resource ;
-    purl:modified "2026-06-13T07:00:59.000000Z"^^xsd:dateTime ;
-    posix:mtime 1781334059 .

@@ -1,0 +1,36 @@
+@prefix schema: <https://schema.org/> .
+@prefix crdts: <https://vocab.noeldemartin.com/crdt/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<#it>
+  a schema:TVSeries ;
+  schema:containsSeason <#season-1> ;
+  schema:name "Freaks and Geeks" .
+
+<#it-metadata>
+  a crdts:Metadata ;
+  crdts:resource <#it> ;
+  crdts:createdAt "2026-06-13T07:00:59.000Z"^^xsd:dateTime ;
+  crdts:updatedAt "2026-06-13T07:00:59.000Z"^^xsd:dateTime .
+
+<#watching>
+  a schema:WatchAction ;
+  schema:object <#it> ;
+  schema:actionStatus schema:ActiveActionStatus .
+
+<#watching-metadata>
+  a crdts:Metadata ;
+  crdts:resource <#watching> ;
+  crdts:createdAt "2026-06-13T07:00:59.000Z"^^xsd:dateTime ;
+  crdts:updatedAt "2026-06-13T07:00:59.000Z"^^xsd:dateTime .
+
+<#season-1>
+  a schema:TVSeason ;
+  schema:episode <./season-1/episode-1#it>, <./season-1/episode-2#it> ;
+  schema:seasonNumber 1 .
+
+<#season-1-metadata>
+  a crdts:Metadata ;
+  crdts:resource <#season-1> ;
+  crdts:createdAt "2026-06-13T07:00:59.000Z"^^xsd:dateTime ;
+  crdts:updatedAt "2026-06-13T07:00:59.000Z"^^xsd:dateTime .

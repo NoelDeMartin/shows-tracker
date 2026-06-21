@@ -4,12 +4,17 @@
 
 <#it>
   a schema:TVEpisode ;
-  schema:episodeNumber 2 ;
-  schema:name "Beers and Weirs" ;
-  schema:datePublished "1999-10-02T00:00:00.000Z"^^xsd:dateTime .
+  schema:episodeNumber 1 ;
+  schema:name "Pilot" ;
+  schema:datePublished "1999-09-25T00:00:00.000Z"^^xsd:dateTime .
 
 <#it-metadata>
   a crdts:Metadata ;
   crdts:resource <#it> ;
   crdts:createdAt "2026-06-13T07:00:59.000Z"^^xsd:dateTime ;
   crdts:updatedAt "2026-06-13T07:00:59.000Z"^^xsd:dateTime .
+
+<#watched>
+    a schema:WatchAction ;
+    schema:endTime "2026-06-19T07:17:00.000Z"^^xsd:dateTime ;
+    schema:object <#it> .
