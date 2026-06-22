@@ -26,6 +26,7 @@ test('imports a show from tmdb', async ({ page }) => {
 
     // Import
     const createDocument = interceptRequests(page, 'PATCH', podUrl('/shows/*'));
+    const registerContainer = interceptRequests(page, 'PATCH', podUrl('/settings/privateTypeIndex'));
 
     await press(page, 'Add Show');
     await input(page, 'Search').fill('freaks and geeks');
@@ -33,6 +34,9 @@ test('imports a show from tmdb', async ({ page }) => {
     await press(page, 'Import', { within: page.getByRole('listitem').filter({ hasText: 'Freaks and Geeks (1999)' }) });
     await waitSync(page);
 
+    expect(registerContainer.all).toHaveLength(1);
+    expect(registerContainer.nth(1)?.body).toContain(podUrl('/shows/'));
+    expect(registerContainer.nth(1)?.body).not.toContain(podUrl('/shows/freaks-and-geeks-1999/'));
     expect(createDocument.all).toHaveLength(19);
     expect(createDocument.nth(1)?.url).toEqual(podUrl('/shows/freaks-and-geeks-1999/info'));
     expect(createDocument.nth(1)?.body).toContain('"Freaks and Geeks"');
@@ -49,7 +53,7 @@ test('imports a show from tmdb', async ({ page }) => {
     await press(page, 'Synchronize', { role: 'button' });
     await waitSync(page);
 
-    expect(readDocument.all).toHaveLength(2);
+    expect(readDocument.all).toHaveLength(3);
 });
 
 test('pulls in existing shows & updates', async ({ page }) => {
