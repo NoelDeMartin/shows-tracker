@@ -139,14 +139,16 @@ test('skips containers with deep last modified dates', async ({ page }) => {
 
     await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-type-index.sparql'));
     await solidCreateDocument('/settings/privateTypeIndex', requiredFixture('/turtle/type-index.ttl'));
+
+    // Log in
     await localFirstLogin(page);
 
-    // Act
+    // First Sync
     await press(page, 'Open account');
     await press(page, 'Synchronize', { role: 'button' });
     await waitSync(page);
+    await page.keyboard.press('Escape');
 
-    // Assert
     expect(requests).toEqual({
         'shows/': 2,
         'shows/freaks-and-geeks-1999/': 1,
@@ -154,5 +156,20 @@ test('skips containers with deep last modified dates', async ({ page }) => {
         'shows/freaks-and-geeks-1999/season-1/': 1,
         'shows/freaks-and-geeks-1999/season-1/episode-1': 1,
         'shows/freaks-and-geeks-1999/season-1/episode-2': 1,
+    });
+
+    // Watch episode
+    await press(page, 'Freaks and Geeks');
+    await press(page, 'Season 1', { selector: 'summary' });
+    await press(page, 'Watch', { within: page.getByRole('listitem').filter({ hasText: 'Beers and Weirs' }) });
+    await waitSync(page);
+
+    expect(requests).toEqual({
+        'shows/': 3,
+        'shows/freaks-and-geeks-1999/': 1,
+        'shows/freaks-and-geeks-1999/info': 1,
+        'shows/freaks-and-geeks-1999/season-1/': 1,
+        'shows/freaks-and-geeks-1999/season-1/episode-1': 1,
+        'shows/freaks-and-geeks-1999/season-1/episode-2': 4,
     });
 });
