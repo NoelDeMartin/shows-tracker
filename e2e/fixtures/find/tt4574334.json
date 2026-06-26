@@ -1,0 +1,25 @@
+{
+    "movie_results": [],
+    "person_results": [],
+    "tv_results": [
+        {
+            "backdrop_path": "/56v2KjBlU4XaOv9rVYEQypROD7P.jpg",
+            "first_air_date": "2016-07-15",
+            "genre_ids": [18, 10765, 9648],
+            "id": 66732,
+            "name": "Stranger Things",
+            "origin_country": ["US"],
+            "original_language": "en",
+            "original_name": "Stranger Things",
+            "overview": "When a young boy disappears, his mother, a police chief, and his friends must confront terrifying supernatural forces in order to get him back.",
+            "popularity": 261.29,
+            "poster_path": "/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
+            "vote_average": 8.6,
+            "vote_count": 14990,
+            "number_of_seasons": 4,
+            "number_of_episodes": 34
+        }
+    ],
+    "tv_episode_results": [],
+    "tv_season_results": []
+}

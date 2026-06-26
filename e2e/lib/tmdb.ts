@@ -13,6 +13,10 @@ function handleRequest(url: URL) {
         return handleSearch(url.searchParams.get('query') ?? '');
     }
 
+    if (url.pathname.startsWith('/3/find/')) {
+        return handleFind(url.pathname.split('/').pop() ?? '');
+    }
+
     const showPathRegex =
         /^\/3\/tv\/(?<showId>\d+)(?:\/(?:(?<externalIds>external_ids)|season\/(?<seasonNumber>\d+)))?$/;
 
@@ -29,6 +33,12 @@ function handleSearch(query: string) {
     const slug = stringToSlug(query);
 
     return fixture(`/search/${slug}.json`);
+}
+
+export function handleFind(id: string) {
+    const response = fixture(`/find/${id}.json`);
+
+    return response ?? JSON.stringify({ tv_results: [] });
 }
 
 function handleShow({ showId, externalIds, seasonNumber }: ShowParams) {

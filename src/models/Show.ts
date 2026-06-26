@@ -44,6 +44,16 @@ export default class Show extends Model {
         return id ? Number(id) : null;
     }
 
+    public get imdbId(): string | null {
+        const id = this.externalUrls
+            .find((url) => url.includes('imdb.com/title/'))
+            ?.split('/')
+            .filter(Boolean)
+            .pop();
+
+        return id?.split(/[?#]/)[0] ?? null;
+    }
+
     public async loadAllRelationsIfUnloaded(): Promise<void> {
         await this.loadRelationIfUnloaded('seasons');
         await Promise.all(this.seasons?.map((season) => season.loadRelationIfUnloaded('episodes')) ?? []);

@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 
 test('computes pending episodes', async ({ page }) => {
     // Start watching a show
-    await press(page, 'Add Show');
+    await press(page, 'Search Shows');
     await input(page, 'Search').fill('freaks and geeks');
     await input(page, 'Search').press('Enter');
     await press(page, 'Import', { within: page.getByRole('listitem').filter({ hasText: 'Freaks and Geeks (1999)' }) });
@@ -23,4 +23,28 @@ test('computes pending episodes', async ({ page }) => {
     // See pending episodes
     await page.goto('/');
     await see(page, 'Freaks and Geeks (17)');
+});
+
+test('imports from TViso', async ({ page }) => {
+    // Arrange
+    await press(page, 'Import Shows');
+
+    // Act
+    await page.setInputFiles('input[type="file"]', 'e2e/fixtures/tviso-small.json');
+    await press(page, 'Import Collection', { role: 'button' });
+
+    // Assert
+    await see(page, 'Stranger Things', { within: page.getByRole('list', { name: 'Imported:' }) });
+    await see(page, 'Breaking Bad (Validation or import error)', {
+        within: page.getByRole('list', { name: 'Failed:' }),
+    });
+    await see(page, 'The Office (Validation or import error)', { within: page.getByRole('list', { name: 'Failed:' }) });
+    await see(page, 'Lost (Validation or import error)', { within: page.getByRole('list', { name: 'Failed:' }) });
+
+    await press(page, 'Back to Shows');
+    await see(page, 'Stranger Things');
+    await press(page, 'Stranger Things');
+    await see(page, 'Stranger Things');
+    await see(page, 'Pending');
+    await see(page, 'Season 1');
 });

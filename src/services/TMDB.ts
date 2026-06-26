@@ -77,6 +77,10 @@ export class TMDBService extends Service {
         return show.poster_path ? `https://image.tmdb.org/t/p/w500${show.poster_path}` : undefined;
     }
 
+    public isTmdbShow(show: unknown): show is TMDBShow {
+        return TMDBShowSchema.safeParse(show).success;
+    }
+
     public async searchShows(query: string, imdb?: string | null): Promise<TMDBShow[]> {
         if (imdb) {
             const response = await this.request(FindResponseSchema, `find/${imdb}`, { external_source: 'imdb_id' });

@@ -28,7 +28,7 @@ test('imports a show from tmdb', async ({ page }) => {
     const createDocument = interceptRequests(page, 'PATCH', podUrl('/shows/*'));
     const registerContainer = interceptRequests(page, 'PATCH', podUrl('/settings/privateTypeIndex'));
 
-    await press(page, 'Add Show');
+    await press(page, 'Search Shows');
     await input(page, 'Search').fill('freaks and geeks');
     await input(page, 'Search').press('Enter');
     await press(page, 'Import', { within: page.getByRole('listitem').filter({ hasText: 'Freaks and Geeks (1999)' }) });
