@@ -95,15 +95,34 @@ export class TMDBService extends Service {
         return response.results;
     }
 
-    public async getShowDetails(id: number): Promise<TMDBShowDetails> {
+    public async getShow(id: number): Promise<{
+        details: TMDBShowDetails;
+        externalIds: TMDBShowExternalIds;
+        seasons: { season: TMDBShowDetails['seasons'][number]; details: TMDBSeasonDetails }[];
+    }> {
+        const [details, externalIds] = await Promise.all([this.getShowDetails(id), this.getShowExternalIds(id)]);
+
+        const seasons = await Promise.all(
+            details.seasons
+                .filter((season) => season.season_number !== 0)
+                .map(async (season) => ({
+                    season,
+                    details: await this.getSeasonDetails(details.id, season.season_number),
+                })),
+        );
+
+        return { details, externalIds, seasons };
+    }
+
+    private async getShowDetails(id: number): Promise<TMDBShowDetails> {
         return this.request(TMDBShowDetailsSchema, `tv/${id}`);
     }
 
-    public async getShowExternalIds(id: number): Promise<TMDBShowExternalIds> {
+    private async getShowExternalIds(id: number): Promise<TMDBShowExternalIds> {
         return this.request(TMDBShowExternalIdsSchema, `tv/${id}/external_ids`);
     }
 
-    public async getSeasonDetails(showId: number, seasonNumber: number): Promise<TMDBSeasonDetails> {
+    private async getSeasonDetails(showId: number, seasonNumber: number): Promise<TMDBSeasonDetails> {
         return this.request(TMDBSeasonDetailsSchema, `tv/${showId}/season/${seasonNumber}`);
     }
 

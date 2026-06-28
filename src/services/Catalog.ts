@@ -33,11 +33,7 @@ export class CatalogService extends Service {
 
         await show.loadAllRelationsIfUnloaded();
 
-        const [details, externalIds] = await Promise.all([
-            TMDB.getShowDetails(show.tmdbId),
-            TMDB.getShowExternalIds(show.tmdbId),
-        ]);
-
+        const { details, externalIds, seasons } = await TMDB.getShow(show.tmdbId);
         const attributes = this.getShowAttributes(details, externalIds);
 
         show.setAttributes({
@@ -49,20 +45,15 @@ export class CatalogService extends Service {
         ComputedAttribute.disableLoadingRelations();
 
         try {
-            for (const tmdbSeason of details.seasons) {
-                if (tmdbSeason.season_number === 0) {
-                    continue;
-                }
-
-                const seasonDetails = await TMDB.getSeasonDetails(details.id, tmdbSeason.season_number);
-                const seasonAttributes = this.getSeasonAttributes(tmdbSeason);
+            for (const tmdbSeason of seasons) {
+                const seasonAttributes = this.getSeasonAttributes(tmdbSeason.season);
                 const season =
-                    show.seasons?.find((season) => season.number === tmdbSeason.season_number) ??
+                    show.seasons?.find((season) => season.number === tmdbSeason.season.season_number) ??
                     (await show.relatedSeasons.create(seasonAttributes));
 
                 season.setAttributes(seasonAttributes);
 
-                for (const tmdbEpisode of seasonDetails.episodes) {
+                for (const tmdbEpisode of tmdbSeason.details.episodes) {
                     const episodeAttributes = this.getEpisodeAttributes(tmdbEpisode);
                     const episode = season.episodes?.find((episode) => episode.number === tmdbEpisode.episode_number);
 
@@ -164,11 +155,7 @@ export class CatalogService extends Service {
         tmdbShow: TMDBShow,
         options: { imdbId?: Nullable<string>; watchingStatus?: Nullable<ShowWatchingStatus> },
     ): Promise<Show> {
-        const [details, externalIds] = await Promise.all([
-            TMDB.getShowDetails(tmdbShow.id),
-            TMDB.getShowExternalIds(tmdbShow.id),
-        ]);
-
+        const { details, externalIds, seasons } = await TMDB.getShow(tmdbShow.id);
         const showAttributes = this.getShowAttributes(details, externalIds);
 
         if (options.imdbId && !showAttributes.externalUrls?.some((url) => url.includes(`/title/${options.imdbId}`))) {
@@ -181,15 +168,10 @@ export class CatalogService extends Service {
         ComputedAttribute.disableLoadingRelations();
 
         try {
-            for (const tmdbSeason of details.seasons) {
-                if (tmdbSeason.season_number === 0) {
-                    continue;
-                }
+            for (const tmdbSeason of seasons) {
+                const season = await show.relatedSeasons.create(this.getSeasonAttributes(tmdbSeason.season));
 
-                const season = await show.relatedSeasons.create(this.getSeasonAttributes(tmdbSeason));
-                const seasonDetails = await TMDB.getSeasonDetails(details.id, tmdbSeason.season_number);
-
-                for (const tmdbEpisode of seasonDetails.episodes) {
+                for (const tmdbEpisode of tmdbSeason.details.episodes) {
                     season.relatedEpisodes.attach(this.getEpisodeAttributes(tmdbEpisode));
                 }
 
