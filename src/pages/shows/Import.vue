@@ -97,7 +97,7 @@ async function startImport() {
             throw new Error('Backup file must be a JSON array');
         }
 
-        results.value = await Catalog.import(rawData, {
+        results.value = await Catalog.importFromTViso(rawData, {
             signal: abortController.signal,
             onProgress: (current, total) => {
                 progress.value = total > 0 ? current / total : 0;

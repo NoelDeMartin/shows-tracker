@@ -77,7 +77,11 @@ export class CatalogService extends Service {
         await show.pendingEpisodeDates.updateValue({ refresh: true, loadRelations: true });
     }
 
-    public async import(
+    public async importFromTMDB(tmdbShow: TMDBShow): Promise<void> {
+        await this.importShow(tmdbShow);
+    }
+
+    public async importFromTViso(
         shows: unknown,
         options: { onProgress?(current: number, total: number): void; signal?: AbortSignal } = {},
     ): Promise<ImportResults> {
@@ -153,7 +157,7 @@ export class CatalogService extends Service {
 
     private async importShow(
         tmdbShow: TMDBShow,
-        options: { imdbId?: Nullable<string>; watchingStatus?: Nullable<ShowWatchingStatus> },
+        options: { imdbId?: Nullable<string>; watchingStatus?: Nullable<ShowWatchingStatus> } = {},
     ): Promise<Show> {
         const { details, externalIds, seasons } = await TMDB.getShow(tmdbShow.id);
         const showAttributes = this.getShowAttributes(details, externalIds);

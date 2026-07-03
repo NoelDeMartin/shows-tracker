@@ -66,7 +66,7 @@ async function search() {
 
 async function importShow(show: TMDBShow) {
     importingShowId.value = show.id;
-    await Catalog.import(show);
+    await Catalog.importFromTMDB(show);
     importingShowId.value = null;
 
     results.value =
