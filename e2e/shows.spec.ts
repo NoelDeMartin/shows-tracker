@@ -45,6 +45,6 @@ test('imports from TViso', async ({ page }) => {
     await see(page, 'Stranger Things');
     await press(page, 'Stranger Things');
     await see(page, 'Stranger Things');
-    await see(page, 'Pending');
+    await see(page, 'Watching');
     await see(page, 'Season 1');
 });

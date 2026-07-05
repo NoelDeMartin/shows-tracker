@@ -95,21 +95,28 @@ export class TMDBService extends Service {
         return response.results;
     }
 
-    public async getShow(id: number): Promise<{
+    public async getShow(
+        id: number,
+        options: { includeExternalIds: boolean; includeSeasons: boolean },
+    ): Promise<{
         details: TMDBShowDetails;
         externalIds: TMDBShowExternalIds;
         seasons: { season: TMDBShowDetails['seasons'][number]; details: TMDBSeasonDetails }[];
     }> {
-        const [details, externalIds] = await Promise.all([this.getShowDetails(id), this.getShowExternalIds(id)]);
-
-        const seasons = await Promise.all(
-            details.seasons
-                .filter((season) => season.season_number !== 0)
-                .map(async (season) => ({
-                    season,
-                    details: await this.getSeasonDetails(details.id, season.season_number),
-                })),
-        );
+        const [details, externalIds] = await Promise.all([
+            this.getShowDetails(id),
+            options.includeExternalIds ? this.getShowExternalIds(id) : {},
+        ]);
+        const seasons = options.includeSeasons
+            ? await Promise.all(
+                  details.seasons
+                      .filter((season) => season.season_number !== 0)
+                      .map(async (season) => ({
+                          season,
+                          details: await this.getSeasonDetails(details.id, season.season_number),
+                      })),
+              )
+            : [];
 
         return { details, externalIds, seasons };
     }

@@ -19,6 +19,8 @@ import TViso from '@/services/TViso';
 
 import Service from './Catalog.state';
 
+const WATCHING_STATUSES_WITHOUT_SEASONS = ['dropped', 'pending'] satisfies ShowWatchingStatus[];
+
 export interface ImportResults {
     imported: Array<{ title: string }>;
     skipped: Array<{ title: string; reason: string }>;
@@ -33,7 +35,10 @@ export class CatalogService extends Service {
 
         await show.loadAllRelationsIfUnloaded();
 
-        const { details, externalIds, seasons } = await TMDB.getShow(show.tmdbId);
+        const { details, externalIds, seasons } = await TMDB.getShow(show.tmdbId, {
+            includeExternalIds: true,
+            includeSeasons: !WATCHING_STATUSES_WITHOUT_SEASONS.includes(show.watchingStatus),
+        });
         const attributes = this.getShowAttributes(details, externalIds);
 
         show.setAttributes({
@@ -77,8 +82,11 @@ export class CatalogService extends Service {
         await show.pendingEpisodeDates.updateValue({ refresh: true, loadRelations: true });
     }
 
-    public async importFromTMDB(tmdbShow: TMDBShow): Promise<void> {
-        await this.importShow(tmdbShow);
+    public async importFromTMDB(
+        tmdbShow: TMDBShow,
+        options: { watchingStatus?: Nullable<ShowWatchingStatus> } = {},
+    ): Promise<void> {
+        await this.importShow(tmdbShow, options);
     }
 
     public async importFromTViso(
@@ -159,7 +167,12 @@ export class CatalogService extends Service {
         tmdbShow: TMDBShow,
         options: { imdbId?: Nullable<string>; watchingStatus?: Nullable<ShowWatchingStatus> } = {},
     ): Promise<Show> {
-        const { details, externalIds, seasons } = await TMDB.getShow(tmdbShow.id);
+        const { details, externalIds, seasons } = await TMDB.getShow(tmdbShow.id, {
+            includeExternalIds: !options.imdbId,
+            includeSeasons:
+                !!options.watchingStatus && !WATCHING_STATUSES_WITHOUT_SEASONS.includes(options.watchingStatus),
+        });
+
         const showAttributes = this.getShowAttributes(details, externalIds);
 
         if (options.imdbId && !showAttributes.externalUrls?.some((url) => url.includes(`/title/${options.imdbId}`))) {
