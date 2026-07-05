@@ -48,3 +48,26 @@ test('imports from TViso', async ({ page }) => {
     await see(page, 'Watching');
     await see(page, 'Season 1');
 });
+
+test('fetches seasons when you start watching a show', async ({ page }) => {
+    // Arrange
+    await press(page, 'Import Shows');
+
+    // Act
+    await page.setInputFiles('input[type="file"]', 'e2e/fixtures/tviso-pending.json');
+    await press(page, 'Import Collection', { role: 'button' });
+
+    // Assert
+    await see(page, 'Stranger Things', { within: page.getByRole('list', { name: 'Imported:' }) });
+
+    await press(page, 'Back to Shows');
+    await see(page, 'Stranger Things');
+    await press(page, 'Stranger Things');
+    await see(page, 'Stranger Things');
+    await see(page, 'Pending');
+    await see(page, 'No seasons yet');
+
+    await comboboxSelect(page, 'Status', 'Watching');
+    await dontSee(page, 'Updating status...');
+    await see(page, 'Season 1');
+});

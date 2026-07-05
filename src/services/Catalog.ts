@@ -28,6 +28,26 @@ export interface ImportResults {
 }
 
 export class CatalogService extends Service {
+    public async needsSync(show: Show): Promise<boolean> {
+        if (WATCHING_STATUSES_WITHOUT_SEASONS.includes(show.watchingStatus)) {
+            return false;
+        }
+
+        await show.loadRelationIfUnloaded('seasons');
+
+        return !show.seasons || show.seasons.length === 0;
+    }
+
+    public async syncIfNeeded(show: Show): Promise<void> {
+        const needsSync = await this.needsSync(show);
+
+        if (!needsSync) {
+            return;
+        }
+
+        await this.sync(show);
+    }
+
     public async sync(show: Show): Promise<void> {
         if (!show.tmdbId) {
             return;

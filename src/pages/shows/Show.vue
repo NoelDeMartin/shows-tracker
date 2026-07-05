@@ -100,6 +100,7 @@ async function updateWatchingStatus(status: ShowWatchingStatus) {
 
     try {
         await Promise.all([after(1000), toRaw(show).updateWatchingStatus(status)]);
+        await Catalog.syncIfNeeded(show);
     } finally {
         changingStatus.value = false;
     }
