@@ -11,5 +11,6 @@ export default defineServiceState({
     }),
     computed: {
         showsBySlug: ({ shows }) => objectFromEntries(Object.values(shows).map((show) => [show.slug, show])),
+        showsWithUrl: ({ shows }) => shows.filter((show) => show.hasUrl()),
     },
 });
