@@ -5,7 +5,10 @@
                 {{ show.name }}
             </h2>
 
-            <Button v-if="$app.devMode" variant="secondary" @click="clearCache()">Clear Cache</Button>
+            <div v-if="$app.devMode" class="flex items-center gap-2">
+                <Button variant="secondary" @click="clearCache()">Clear Cache</Button>
+                <Button variant="secondary" @click="syncOperations()">Sync CRDTs</Button>
+            </div>
         </div>
 
         <Details
@@ -149,6 +152,26 @@ async function clearCache() {
     await ComputedAttributesCache.invalidate({ documentUrls });
 
     UI.toast('Cache cleared!');
+}
+
+async function syncOperations() {
+    if (!computedShow.value) {
+        return;
+    }
+
+    const models = computedShow.value
+        .getDocumentModels()
+        .concat(
+            computedShow.value.seasons
+                ?.flatMap((season) => season.episodes?.map((episode) => episode.getDocumentModels()) ?? [])
+                ?.flat() ?? [],
+        );
+    const documentUrls = arrayUnique(arrayFilter(models.map((model) => model.getDocumentUrl())));
+
+    await Promise.all(models.map((model) => model.syncOperations()));
+    await ComputedAttributesCache.invalidate({ documentUrls });
+
+    UI.toast('Synced CRDT Operations!');
 }
 
 watch(
