@@ -1,8 +1,12 @@
 <template>
     <Page>
-        <h2 class="text-2xl font-bold">
-            {{ show.name }}
-        </h2>
+        <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold">
+                {{ show.name }}
+            </h2>
+
+            <Button v-if="$app.devMode" variant="secondary" @click="clearCache()">Clear Cache</Button>
+        </div>
 
         <Details
             v-for="{ season, watched, total } of sortedSeasons"
@@ -60,9 +64,11 @@
 </template>
 
 <script setup lang="ts">
+import { UI } from '@aerogel/core';
 import { computedModel } from '@aerogel/plugin-solid';
-import { after, arraySorted, stringToStudlyCase } from '@noeldemartin/utils';
-import { computed, onMounted, ref, watch } from 'vue';
+import { after, arrayFilter, arraySorted, arrayUnique, stringToStudlyCase } from '@noeldemartin/utils';
+import { ComputedAttributesCache, engineFulfillsContract, requireEngine } from 'soukai-bis';
+import { computed, ref, watch } from 'vue';
 import { toRaw } from 'vue';
 
 import type Season from '@/models/Season';
@@ -114,6 +120,35 @@ async function sync() {
     } finally {
         syncing.value = false;
     }
+}
+
+async function clearCache() {
+    if (!computedShow.value) {
+        return;
+    }
+
+    const engine = requireEngine();
+    const documentUrls = arrayUnique(
+        arrayFilter([
+            computedShow.value.getDocumentUrl(),
+            computedShow.value.getContainerUrl(),
+            ...(computedShow.value.seasons?.map((season) => season.getDocumentUrl()) ?? []),
+            ...(computedShow.value.seasons?.flatMap((season) =>
+                season.episodes?.map((episode) => episode.getDocumentUrl()),
+            ) ?? []),
+            ...(computedShow.value.seasons?.flatMap((season) =>
+                season.episodes?.map((episode) => episode.getContainerUrl()),
+            ) ?? []),
+        ]),
+    );
+
+    if (engineFulfillsContract(engine, 'PurgesMetadata')) {
+        await engine.purgeMetadata({ documentUrls });
+    }
+
+    await ComputedAttributesCache.invalidate({ documentUrls });
+
+    UI.toast('Cache cleared!');
 }
 
 watch(
