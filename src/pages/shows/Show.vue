@@ -44,7 +44,7 @@
         <p v-if="show.seasonUrls.length === 0" class="mt-4">No seasons yet</p>
 
         <div class="mt-4 flex items-center gap-2">
-            <Button @click="watchShow()" :disabled="syncing"> Watch All </Button>
+            <Button @click="watchShow()" :disabled="syncing" :loading="watchingAll">Watch All</Button>
 
             <Button @click="sync()" :disabled="syncing">
                 <i-lucide-refresh-cw class="size-4" :class="{ 'animate-spin': syncing }" />
@@ -84,6 +84,7 @@ import Catalog from '@/services/Catalog';
 const { show } = defineProps<{ show: Show }>();
 const { loading: clearingCache, run: runClearCache } = useLoading();
 const { loading: syncingOperations, run: runSyncOperations } = useLoading();
+const { loading: watchingAll, run: runWatchAll } = useLoading();
 const loading = new Set<string>();
 const statusOptions = Object.keys(SHOW_WATCHING_STATUSES);
 const syncing = ref(false);
@@ -105,7 +106,7 @@ const sortedSeasons = computed(() => {
 });
 
 async function watchShow() {
-    await Promise.all(computedShow.value?.seasons?.flatMap((season) => watchSeason(season)) ?? []);
+    await runWatchAll(computedShow.value?.seasons?.flatMap((season) => watchSeason(season)) ?? []);
 }
 
 async function watchSeason(season: Season) {
