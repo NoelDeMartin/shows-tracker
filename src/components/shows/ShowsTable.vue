@@ -72,7 +72,9 @@
                     @update:modelValue="toggleSelected(show.url, $event as boolean)"
                 />
                 <span class="flex-1">
-                    <Link route="shows.show" :route-params="{ show: show.slug }">{{ show.name }}</Link>
+                    <Link route="shows.show" :route-params="{ show: show.slug }">
+                        {{ show.name }} (<ShowUpcomingEpisodes :show />)
+                    </Link>
                 </span>
                 <span class="w-24 text-right text-gray-600">{{ show.watchingStatus }}</span>
             </li>
