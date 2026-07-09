@@ -6,8 +6,8 @@
             </h2>
 
             <div v-if="$app.devMode" class="flex items-center gap-2">
-                <Button variant="secondary" @click="clearCache()">Clear Cache</Button>
-                <Button variant="secondary" @click="syncOperations()">Sync CRDTs</Button>
+                <Button variant="secondary" @click="clearCache()" :loading="clearingCache">Clear Cache</Button>
+                <Button variant="secondary" @click="syncOperations()" :loading="syncingOperations">Sync CRDTs</Button>
             </div>
         </div>
 
@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { UI } from '@aerogel/core';
+import { UI, useLoading } from '@aerogel/core';
 import { computedModel } from '@aerogel/plugin-solid';
 import { after, arrayFilter, arraySorted, arrayUnique, stringToStudlyCase } from '@noeldemartin/utils';
 import { ComputedAttributesCache, engineFulfillsContract, requireEngine } from 'soukai-bis';
@@ -82,6 +82,8 @@ import { SHOW_WATCHING_STATUSES, type ShowWatchingStatus } from '@/models/ShowWa
 import Catalog from '@/services/Catalog';
 
 const { show } = defineProps<{ show: Show }>();
+const { loading: clearingCache, run: runClearCache } = useLoading();
+const { loading: syncingOperations, run: runSyncOperations } = useLoading();
 const loading = new Set<string>();
 const statusOptions = Object.keys(SHOW_WATCHING_STATUSES);
 const syncing = ref(false);
@@ -132,50 +134,56 @@ async function sync() {
 }
 
 async function clearCache() {
-    if (!computedShow.value) {
+    const show = computedShow.value;
+
+    if (!show) {
         return;
     }
 
-    const engine = requireEngine();
-    const documentUrls = arrayUnique(
-        arrayFilter([
-            computedShow.value.getDocumentUrl(),
-            computedShow.value.getContainerUrl(),
-            ...(computedShow.value.seasons?.map((season) => season.getDocumentUrl()) ?? []),
-            ...(computedShow.value.seasons?.flatMap((season) =>
-                season.episodes?.map((episode) => episode.getDocumentUrl()),
-            ) ?? []),
-            ...(computedShow.value.seasons?.flatMap((season) =>
-                season.episodes?.map((episode) => episode.getContainerUrl()),
-            ) ?? []),
-        ]),
-    );
+    await runClearCache(async () => {
+        const engine = requireEngine();
+        const documentUrls = arrayUnique(
+            arrayFilter([
+                show.getDocumentUrl(),
+                show.getContainerUrl(),
+                ...(show.seasons?.map((season) => season.getDocumentUrl()) ?? []),
+                ...(show.seasons?.flatMap((season) => season.episodes?.map((episode) => episode.getDocumentUrl())) ??
+                    []),
+                ...(show.seasons?.flatMap((season) => season.episodes?.map((episode) => episode.getContainerUrl())) ??
+                    []),
+            ]),
+        );
 
-    if (engineFulfillsContract(engine, 'PurgesMetadata')) {
-        await engine.purgeMetadata({ documentUrls });
-    }
+        if (engineFulfillsContract(engine, 'PurgesMetadata')) {
+            await engine.purgeMetadata({ documentUrls });
+        }
 
-    await ComputedAttributesCache.invalidate({ documentUrls });
+        await ComputedAttributesCache.invalidate({ documentUrls });
+    });
 
     UI.toast('Cache cleared!');
 }
 
 async function syncOperations() {
-    if (!computedShow.value) {
+    const show = computedShow.value;
+
+    if (!show) {
         return;
     }
 
-    const models = computedShow.value
-        .getDocumentModels()
-        .concat(
-            computedShow.value.seasons
-                ?.flatMap((season) => season.episodes?.map((episode) => episode.getDocumentModels()) ?? [])
-                ?.flat() ?? [],
-        );
-    const documentUrls = arrayUnique(arrayFilter(models.map((model) => model.getDocumentUrl())));
+    await runSyncOperations(async () => {
+        const models = show
+            .getDocumentModels()
+            .concat(
+                show.seasons
+                    ?.flatMap((season) => season.episodes?.map((episode) => episode.getDocumentModels()) ?? [])
+                    ?.flat() ?? [],
+            );
+        const documentUrls = arrayUnique(arrayFilter(models.map((model) => model.getDocumentUrl())));
 
-    await Promise.all(models.map((model) => model.syncOperations()));
-    await ComputedAttributesCache.invalidate({ documentUrls });
+        await Promise.all(models.map((model) => model.syncOperations()));
+        await ComputedAttributesCache.invalidate({ documentUrls });
+    });
 
     UI.toast('Synced CRDT Operations!');
 }
