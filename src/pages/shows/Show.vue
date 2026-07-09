@@ -71,7 +71,7 @@
 <script setup lang="ts">
 import { UI, useLoading } from '@aerogel/core';
 import { computedModel } from '@aerogel/plugin-solid';
-import { after, arrayFilter, arraySorted, arrayUnique, stringToStudlyCase } from '@noeldemartin/utils';
+import { after, arrayChunk, arrayFilter, arraySorted, arrayUnique, stringToStudlyCase } from '@noeldemartin/utils';
 import { ComputedAttributesCache, engineFulfillsContract, requireEngine } from 'soukai-bis';
 import { computed, ref, watch } from 'vue';
 import { toRaw } from 'vue';
@@ -106,11 +106,19 @@ const sortedSeasons = computed(() => {
 });
 
 async function watchShow() {
-    await runWatchAll(computedShow.value?.seasons?.flatMap((season) => watchSeason(season)) ?? []);
+    await runWatchAll(async () => {
+        for (const season of computedShow.value?.seasons ?? []) {
+            await watchSeason(season);
+        }
+    });
 }
 
 async function watchSeason(season: Season) {
-    await Promise.all(season.episodes?.map((episode) => episode.watched || episode.toggleWatched()) ?? []);
+    const chunks = arrayChunk(season.episodes ?? [], 10);
+
+    for (const chunk of chunks) {
+        await Promise.all(chunk.map((episode) => episode.watched || episode.toggleWatched()));
+    }
 }
 
 async function updateWatchingStatus(status: ShowWatchingStatus) {
