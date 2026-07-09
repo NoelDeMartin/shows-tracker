@@ -44,6 +44,8 @@
         <p v-if="show.seasonUrls.length === 0" class="mt-4">No seasons yet</p>
 
         <div class="mt-4 flex items-center gap-2">
+            <Button @click="watchShow()" :disabled="syncing"> Watch All </Button>
+
             <Button @click="sync()" :disabled="syncing">
                 <i-lucide-refresh-cw class="size-4" :class="{ 'animate-spin': syncing }" />
                 Synchronize
@@ -99,6 +101,10 @@ const sortedSeasons = computed(() => {
         })) ?? []
     );
 });
+
+async function watchShow() {
+    await Promise.all(computedShow.value?.seasons?.flatMap((season) => watchSeason(season)) ?? []);
+}
 
 async function watchSeason(season: Season) {
     await Promise.all(season.episodes?.map((episode) => episode.watched || episode.toggleWatched()) ?? []);
