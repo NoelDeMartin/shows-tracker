@@ -1,6 +1,6 @@
 <template>
     <Page>
-        <ShowsList v-if="activeShows.length > 0" :shows="activeShows" />
+        <ShowsList v-if="upcomingShows.length > 0" :shows="upcomingShows" />
         <p v-else>No shows found</p>
         <div class="mt-4 flex flex-col gap-2">
             <Button route="shows.search">Search Shows</Button>
@@ -17,13 +17,12 @@ import Episode from '@/models/Episode';
 import Show from '@/models/Show';
 import Catalog from '@/services/Catalog';
 
-const activeShows = computedModels(
+const activeShows = computedModels(Show, () => Catalog.shows.filter((show) => show.watchingStatus === 'watching'));
+const upcomingShows = computedModels(
     Show,
     () =>
-        Catalog.shows.filter(
-            (show) =>
-                show.watchingStatus === 'watching' &&
-                show.pendingEpisodeDates.value?.some((date) => date && Episode.isUpcoming(date)),
+        activeShows.value.filter((show) =>
+            show.pendingEpisodeDates.value?.some((date) => date && Episode.isUpcoming(date)),
         ),
     { watch: ['pendingEpisodeDates'] },
 );
