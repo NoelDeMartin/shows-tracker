@@ -72,7 +72,7 @@
 import { UI, useLoading } from '@aerogel/core';
 import { computedModel } from '@aerogel/plugin-solid';
 import { after, arrayChunk, arrayFilter, arraySorted, arrayUnique, stringToStudlyCase } from '@noeldemartin/utils';
-import { ComputedAttributesCache, engineFulfillsContract, requireEngine } from 'soukai-bis';
+import { ComputedAttributesCache, ComputedAttribute, engineFulfillsContract, requireEngine } from 'soukai-bis';
 import { computed, ref, watch } from 'vue';
 import { toRaw } from 'vue';
 
@@ -107,17 +107,38 @@ const sortedSeasons = computed(() => {
 
 async function watchShow() {
     await runWatchAll(async () => {
+        ComputedAttribute.disableRefreshes();
+        ComputedAttribute.disableLoadingRelations();
+
         for (const season of computedShow.value?.seasons ?? []) {
-            await watchSeason(season);
+            await watchSeason(season, { disableComputedAttributes: false });
         }
+
+        ComputedAttribute.enableRefreshes();
+        ComputedAttribute.enableLoadingRelations();
+
+        await computedShow.value?.pendingEpisodeDates.updateValue({ refresh: true, loadRelations: true });
     });
 }
 
-async function watchSeason(season: Season) {
+async function watchSeason(season: Season, options: { disableComputedAttributes?: boolean } = {}) {
+    const disableComputedAttributes = options.disableComputedAttributes ?? true;
     const chunks = arrayChunk(season.episodes ?? [], 10);
+
+    if (disableComputedAttributes) {
+        ComputedAttribute.disableRefreshes();
+        ComputedAttribute.disableLoadingRelations();
+    }
 
     for (const chunk of chunks) {
         await Promise.all(chunk.map((episode) => episode.watched || episode.toggleWatched()));
+    }
+
+    if (disableComputedAttributes) {
+        ComputedAttribute.enableRefreshes();
+        ComputedAttribute.enableLoadingRelations();
+
+        await computedShow.value?.pendingEpisodeDates.updateValue({ refresh: true, loadRelations: true });
     }
 }
 
