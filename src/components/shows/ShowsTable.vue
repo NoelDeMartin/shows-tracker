@@ -1,4 +1,5 @@
 <template>
+    <Teleport to="#shows-count">&nbsp;({{ visibleShows.length }})</Teleport>
     <div>
         <div v-if="selected.size > 0" class="mb-4 flex flex-wrap items-center gap-2 rounded-lg bg-gray-100 p-3">
             <span class="text-sm text-gray-700">{{ selected.size }} selected</span>

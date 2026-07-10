@@ -1,7 +1,7 @@
 <template>
     <Page>
         <div class="mb-4 flex w-full items-center justify-between">
-            <h2 class="text-2xl font-bold">Shows</h2>
+            <h2 class="text-2xl font-bold">Shows<span id="shows-count"></span></h2>
             <Button variant="secondary" @click="view = view === 'grid' ? 'table' : 'grid'">
                 <i-mdi-view-grid v-if="view === 'grid'" class="size-5" />
                 <i-mdi-view-list v-else class="size-5" />
