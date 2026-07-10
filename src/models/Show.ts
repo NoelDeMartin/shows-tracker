@@ -28,7 +28,7 @@ export default class Show extends Model {
     declare public readonly relatedWatching: HasOneRelation<this, ShowWatching, typeof ShowWatching>;
 
     public get slug(): string {
-        return stringToSlug(this.name);
+        return this.requireSlug();
     }
 
     public get watchingStatus(): ShowWatchingStatus {
@@ -52,6 +52,18 @@ export default class Show extends Model {
             .pop();
 
         return id?.split(/[?#]/)[0] ?? null;
+    }
+
+    public getSlug(): string | null {
+        if (!this.name) {
+            return null;
+        }
+
+        if (!this.startDate) {
+            return stringToSlug(this.name);
+        }
+
+        return `${stringToSlug(this.name)}-${this.startDate.getFullYear()}`;
     }
 
     public async loadAllRelationsIfUnloaded(): Promise<void> {
@@ -85,16 +97,8 @@ export default class Show extends Model {
     }
 
     protected newUrlDocumentUrl(options: MintUrlOptions = {}): string {
-        const slug = this.newUrlDocumentUrlSlug() ?? uuid();
+        const slug = this.getSlug() ?? uuid();
 
         return urlResolve(options.containerUrl ?? this.static('defaultContainerUrl'), `${slug}/info`);
-    }
-
-    protected newUrlDocumentUrlSlug(): string | null {
-        if (!this.name || !this.startDate) {
-            return null;
-        }
-
-        return `${stringToSlug(this.name)}-${this.startDate.getFullYear()}`;
     }
 }

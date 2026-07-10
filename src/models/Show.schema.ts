@@ -9,7 +9,7 @@ export default defineSchema({
     rdfClass: 'TVSeries',
     history: true,
     fields: {
-        name: z.string().useAsSlug(),
+        name: z.string(),
         description: z.string().optional(),
         startDate: z.date().optional(),
         endDate: z.date().optional(),
