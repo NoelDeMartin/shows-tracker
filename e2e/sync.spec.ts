@@ -120,7 +120,6 @@ test('skips containers with deep last modified dates', async ({ page }) => {
 
         const body = requiredFixture(fixtures[path]);
         const store = new SolidStore(await turtleToQuads(body, { baseIRI: url }));
-        const deepLastModified = store.statement(url, 'fs:deepLastModified');
         const lastModified =
             store.statement(`${url}#watched`, 'schema:endTime') ??
             store.statement(`${url}#it-metadata`, 'crdt:updatedAt');
@@ -130,8 +129,7 @@ test('skips containers with deep last modified dates', async ({ page }) => {
             headers: objectWithoutEmpty({
                 'Content-Type': 'text/turtle',
                 'Last-Modified': lastModified && new Date(lastModified.object.value).toUTCString(),
-                'Deep-Last-Modified': deepLastModified && new Date(deepLastModified.object.value).toUTCString(),
-                'Access-Control-Expose-Headers': 'Deep-Last-Modified, Last-Modified',
+                'Access-Control-Expose-Headers': 'Last-Modified',
             }),
             body,
         });

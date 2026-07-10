@@ -1,6 +1,6 @@
 @prefix ldp: <http://www.w3.org/ns/ldp#> .
 @prefix purl: <http://purl.org/dc/terms/> .
-@prefix fs: <https://vocab.noeldemartin.com/fs/> .
+@prefix extra: <https://vocab.noeldemartin.com/solid-extra/> .
 @prefix turtle: <http://www.w3.org/ns/iana/media-types/text/turtle#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix posix: <http://www.w3.org/ns/posix/stat#> .
@@ -8,7 +8,7 @@
 <>
     a ldp:Container ;
     ldp:contains <./episode-1>, <./episode-2> ;
-    fs:deepLastModified "2026-06-19T07:17:00.000Z"^^xsd:dateTime .
+    extra:deepLastModified "2026-06-19T07:17:00.000Z"^^xsd:dateTime .
 
 <./episode-1>
     a ldp:Resource, turtle:Resource ;
