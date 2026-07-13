@@ -4,14 +4,18 @@ INSERT DATA {
     @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
     <#it>
-        a schema:TVEpisode ;
+        a schema:TVSeries ;
         schema:name "{{ name }}" ;
-        schema:episodeNumber {{ seasonNumber }} ;
-        schema:datePublished "[[.*]]"^^xsd:dateTime .
+        schema:description "[[.*]]" ;
+        schema:image <[[.*]]> ;
+        schema:sameAs <[[.*]]>, <[[.*]]> ;
+        schema:startDate "[[.*]]"^^xsd:dateTime ;
+        schema:endDate "[[.*]]"^^xsd:dateTime .
 
     <#it-metadata>
         a crdt:Metadata ;
         crdt:resource <#it> ;
         crdt:createdAt "[[.*]]"^^xsd:dateTime ;
         crdt:updatedAt "[[.*]]"^^xsd:dateTime .
+
 }

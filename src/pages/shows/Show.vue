@@ -85,10 +85,10 @@ const { show } = defineProps<{ show: Show }>();
 const { loading: clearingCache, run: runClearCache } = useLoading();
 const { loading: syncingOperations, run: runSyncOperations } = useLoading();
 const { loading: watchingAll, run: runWatchAll } = useLoading();
+const { loading: syncing, run: runSyncing } = useLoading();
+const { loading: changingStatus, run: runChangingStatus } = useLoading();
 const loading = new Set<string>();
 const statusOptions = Object.keys(SHOW_WATCHING_STATUSES);
-const syncing = ref(false);
-const changingStatus = ref(false);
 const signal = ref<unknown>(null);
 const computedShow = computedModel(() => Catalog.shows.find((s) => s.url === show.url));
 const sortedSeasons = computed(() => {
@@ -143,24 +143,16 @@ async function watchSeason(season: Season, options: { disableComputedAttributes?
 }
 
 async function updateWatchingStatus(status: ShowWatchingStatus) {
-    changingStatus.value = true;
+    await runChangingStatus(async () => {
+        const rawShow = toRaw(show);
 
-    try {
-        await Promise.all([after(1000), toRaw(show).updateWatchingStatus(status)]);
-        await Catalog.syncIfNeeded(show);
-    } finally {
-        changingStatus.value = false;
-    }
+        await rawShow.updateWatchingStatus(status);
+        await Catalog.syncIfNeeded(rawShow);
+    });
 }
 
 async function sync() {
-    syncing.value = true;
-
-    try {
-        await Promise.all([after(1000), Catalog.sync(show)]);
-    } finally {
-        syncing.value = false;
-    }
+    await runSyncing(Catalog.sync(toRaw(show)));
 }
 
 async function clearCache() {

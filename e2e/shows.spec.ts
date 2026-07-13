@@ -10,7 +10,9 @@ test('computes pending episodes', async ({ page }) => {
     await press(page, 'Search Shows');
     await input(page, 'Search').fill('freaks and geeks');
     await input(page, 'Search').press('Enter');
-    await press(page, 'Import', { within: page.getByRole('listitem').filter({ hasText: 'Freaks and Geeks (1999)' }) });
+    await press(page, 'Import Watching', {
+        within: page.getByRole('listitem').filter({ hasText: 'Freaks and Geeks (1999)' }),
+    });
     await see(page, '[Imported]');
 
     await page.goto('/shows');

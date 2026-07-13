@@ -9,11 +9,12 @@ import {
     solidCreateDocument,
     see,
     solidUpdateDocument,
+    comboboxSelect,
 } from '@aerogel/playwright';
 import { requiredFixture } from '@e2e/lib/fixtures';
 import { test, expect } from '@e2e/lib/setup';
 import { SolidStore, turtleToQuads } from '@noeldemartin/solid-utils';
-import { objectWithoutEmpty } from '@noeldemartin/utils';
+import { objectWithoutEmpty, range } from '@noeldemartin/utils';
 
 test.beforeEach(async ({ page }) => {
     await solidReset();
@@ -31,7 +32,9 @@ test('imports a show from tmdb', async ({ page }) => {
     await press(page, 'Search Shows');
     await input(page, 'Search').fill('freaks and geeks');
     await input(page, 'Search').press('Enter');
-    await press(page, 'Import', { within: page.getByRole('listitem').filter({ hasText: 'Freaks and Geeks (1999)' }) });
+    await press(page, 'Import Watching', {
+        within: page.getByRole('listitem').filter({ hasText: 'Freaks and Geeks (1999)' }),
+    });
     await waitSync(page);
 
     expect(registerContainer.all).toHaveLength(1);
@@ -54,6 +57,52 @@ test('imports a show from tmdb', async ({ page }) => {
     await waitSync(page);
 
     expect(readDocument.all).toHaveLength(3);
+});
+
+test('imports a pending show from tmdb and starts watching', async ({ page }) => {
+    // Log in
+    await localFirstLogin(page);
+
+    // Import
+    const updateDocument = interceptRequests(page, 'PATCH', podUrl('/shows/*'));
+    const registerContainer = interceptRequests(page, 'PATCH', podUrl('/settings/privateTypeIndex'));
+
+    await press(page, 'Search Shows');
+    await input(page, 'Search').fill('freaks and geeks');
+    await input(page, 'Search').press('Enter');
+    await press(page, 'Import Pending', {
+        within: page.getByRole('listitem').filter({ hasText: 'Freaks and Geeks (1999)' }),
+    });
+    await waitSync(page);
+
+    expect(registerContainer.all).toHaveLength(1);
+    expect(registerContainer.nth(1)?.body).toContain(podUrl('/shows/'));
+    expect(registerContainer.nth(1)?.body).not.toContain(podUrl('/shows/freaks-and-geeks-1999/'));
+    expect(updateDocument.all).toHaveLength(1);
+    expect(updateDocument.nth(1)?.url).toEqual(podUrl('/shows/freaks-and-geeks-1999/info'));
+    expect(updateDocument.nth(1)?.body).toContain('"Freaks and Geeks"');
+    expect(updateDocument.nth(1)?.body).toContain('<https://www.imdb.com/title/tt0193676/>');
+    expect(updateDocument.nth(1)?.body).not.toContain('<https://schema.org/seasonNumber> 1');
+    expect(updateDocument.nth(1)?.body).toEqualSparql(
+        requiredFixture('/sparql/create-pending-show.sparql', { name: 'Freaks and Geeks' }),
+    );
+
+    // Start watching
+    await press(page, 'Shows Tracker');
+    await press(page, 'View all shows');
+    await press(page, 'Freaks and Geeks');
+    await comboboxSelect(page, 'Status', 'Watching');
+    await waitSync(page);
+
+    expect(updateDocument.all).toHaveLength(20);
+    expect(updateDocument.matching(podUrl('/shows/freaks-and-geeks-1999/info'))[1].body).toEqualSparql(
+        requiredFixture('/sparql/start-watching-show.sparql', {
+            name: 'Freaks and Geeks',
+            episodes: range(18)
+                .map(() => `<${podUrl('/shows/freaks-and-geeks-1999/season-1/episode-')}[[.*]]#it>`)
+                .join(', '),
+        }),
+    );
 });
 
 test('pulls in existing shows & updates', async ({ page }) => {

@@ -11,14 +11,16 @@
             <ul v-if="results.length > 0" class="mt-2 list-inside list-disc space-y-2">
                 <li v-for="result in results" :key="result.id">
                     <div class="inline-flex items-center justify-between gap-2">
-                        <Button
-                            v-if="!result.imported"
-                            @click="importShow(result)"
-                            :disabled="importingShowId === result.id"
-                        >
-                            <i-svg-spinners-180-ring-with-bg class="size-4" v-if="importingShowId === result.id" />
-                            Import
-                        </Button>
+                        <template v-if="!result.imported">
+                            <Button @click="importShow(result, 'watching')" :disabled="importingShowId === result.id">
+                                <i-svg-spinners-180-ring-with-bg class="size-4" v-if="importingShowId === result.id" />
+                                Import Watching
+                            </Button>
+                            <Button @click="importShow(result, 'pending')" :disabled="importingShowId === result.id">
+                                <i-svg-spinners-180-ring-with-bg class="size-4" v-if="importingShowId === result.id" />
+                                Import Pending
+                            </Button>
+                        </template>
                         <span v-else>[Imported]</span>
                         <a
                             :href="TMDB.showUrl(result)"
@@ -41,6 +43,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+import type { ShowWatchingStatus } from '@/models/ShowWatching';
 import Catalog from '@/services/Catalog';
 import type { TMDBShow } from '@/services/TMDB';
 import TMDB from '@/services/TMDB';
@@ -64,9 +67,9 @@ async function search() {
     }));
 }
 
-async function importShow(show: TMDBShow) {
+async function importShow(show: TMDBShow, watchingStatus: ShowWatchingStatus) {
     importingShowId.value = show.id;
-    await Catalog.importFromTMDB(show, { watchingStatus: 'watching' });
+    await Catalog.importFromTMDB(show, { watchingStatus });
     importingShowId.value = null;
 
     results.value =

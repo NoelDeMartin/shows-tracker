@@ -74,7 +74,7 @@ export class CatalogService extends Service {
                 const seasonAttributes = this.getSeasonAttributes(tmdbSeason.season);
                 const season =
                     show.seasons?.find((season) => season.number === tmdbSeason.season.season_number) ??
-                    (await show.relatedSeasons.create(seasonAttributes));
+                    show.relatedSeasons.attach(seasonAttributes, { mintUrl: true });
 
                 season.setAttributes(seasonAttributes);
 
