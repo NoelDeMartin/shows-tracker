@@ -5,9 +5,17 @@
                 {{ show.name }}
             </h2>
 
-            <div v-if="$app.devMode" class="flex items-center gap-2">
-                <Button variant="secondary" @click="clearCache()" :loading="clearingCache">Clear Cache</Button>
-                <Button variant="secondary" @click="syncOperations()" :loading="syncingOperations">Sync CRDTs</Button>
+            <div class="flex items-center gap-2">
+                <Button variant="secondary" @click="$ui.modal(ShowEditModal, { show })">
+                    <i-lucide-edit class="size-4" />
+                    Edit
+                </Button>
+                <template v-if="$app.devMode">
+                    <Button variant="secondary" @click="clearCache()" :loading="clearingCache">Clear Cache</Button>
+                    <Button variant="secondary" @click="syncOperations()" :loading="syncingOperations">
+                        Sync CRDTs
+                    </Button>
+                </template>
             </div>
         </div>
 
@@ -76,6 +84,7 @@ import { ComputedAttributesCache, ComputedAttribute, engineFulfillsContract, req
 import { computed, ref, watch } from 'vue';
 import { toRaw } from 'vue';
 
+import ShowEditModal from '@/components/shows/ShowEditModal.vue';
 import type Season from '@/models/Season';
 import type Show from '@/models/Show';
 import { SHOW_WATCHING_STATUSES, type ShowWatchingStatus } from '@/models/ShowWatching';
