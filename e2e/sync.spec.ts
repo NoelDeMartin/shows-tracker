@@ -65,7 +65,7 @@ test('imports a pending show from tmdb and starts watching', async ({ page }) =>
 
     // Import
     const updateDocument = interceptRequests(page, 'PATCH', podUrl('/shows/*'));
-    const registerContainer = interceptRequests(page, 'PATCH', podUrl('/settings/privateTypeIndex'));
+    const registerContainer = interceptRequests(page, 'PATCH', podUrl('/settings/privateTypeIndex*'));
 
     await press(page, 'Search Shows');
     await input(page, 'Search').fill('freaks and geeks');
@@ -94,6 +94,7 @@ test('imports a pending show from tmdb and starts watching', async ({ page }) =>
     await comboboxSelect(page, 'Status', 'Watching');
     await waitSync(page);
 
+    expect(registerContainer.all).toHaveLength(1);
     expect(updateDocument.all).toHaveLength(20);
     expect(updateDocument.matching(podUrl('/shows/freaks-and-geeks-1999/info'))[1].body).toEqualSparql(
         requiredFixture('/sparql/start-watching-show.sparql', {
