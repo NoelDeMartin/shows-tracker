@@ -1,5 +1,8 @@
 # 📺 Shows Tracker
 
+> [!WARNING]
+> The live version of the app is deployed from the [soukai-bis](https://github.com/NoelDeMartin/shows-tracker/tree/soukai-bis) branch. That branch is a full rewrite, you can learn more about it in [my development journal](https://noeldemartin.com/tasks/making-a-web-application-framework#comment-16).
+
 Shows Tracker is a _Personal App_, powered by [Aerogel](https://aerogel.js.org) and the [Solid Protocol](https://solidproject.org).
 
 ## What is a "Personal App"?
