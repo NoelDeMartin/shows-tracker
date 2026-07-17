@@ -39,7 +39,9 @@ export default class Show extends Model {
         const id = this.externalUrls
             .find((url) => url.startsWith('https://www.themoviedb.org/tv/'))
             ?.split('/')
-            .pop();
+            .pop()
+            ?.replace(/\D/g, '')
+            .trim();
 
         return id ? Number(id) : null;
     }

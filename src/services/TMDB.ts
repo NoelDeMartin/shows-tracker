@@ -15,7 +15,7 @@ const TMDBShowSchema = z.object({
 });
 
 const TMDBShowExternalIdsSchema = z.object({
-    imdb_id: z.string().optional(),
+    imdb_id: z.string().nullable(),
 });
 
 const TMDBSeasonSchema = z.object({
