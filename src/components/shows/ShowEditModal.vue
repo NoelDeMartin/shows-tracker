@@ -56,7 +56,7 @@ const form = useForm({
     startDate: dateInput(props.show.startDate),
     endDate: dateInput(props.show.endDate),
     imageUrl: stringInput(props.show.imageUrl),
-    externalUrls: objectInput<string[]>(props.show.externalUrls ?? []),
+    externalUrls: objectInput<string[]>([...(props.show.externalUrls ?? [])]),
 });
 
 function addExternalUrl() {

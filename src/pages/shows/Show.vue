@@ -54,7 +54,12 @@
         <div class="mt-4 flex items-center gap-2">
             <Button @click="watchShow()" :disabled="syncing" :loading="watchingAll">Watch All</Button>
 
-            <Button @click="sync()" :disabled="syncing">
+            <Button v-if="!show.tmdbId" @click="$ui.modal(ShowIdentifyModal, { show })">
+                <i-lucide-search class="size-4" />
+                Identify
+            </Button>
+
+            <Button v-else @click="sync()" :disabled="syncing">
                 <i-lucide-refresh-cw class="size-4" :class="{ 'animate-spin': syncing }" />
                 Synchronize
             </Button>
@@ -85,6 +90,7 @@ import { computed, ref, watch } from 'vue';
 import { toRaw } from 'vue';
 
 import ShowEditModal from '@/components/shows/ShowEditModal.vue';
+import ShowIdentifyModal from '@/components/shows/ShowIdentifyModal.vue';
 import type Season from '@/models/Season';
 import type Show from '@/models/Show';
 import { SHOW_WATCHING_STATUSES, type ShowWatchingStatus } from '@/models/ShowWatching';

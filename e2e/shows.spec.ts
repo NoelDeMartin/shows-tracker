@@ -1,5 +1,5 @@
 import { comboboxSelect, dontSee, input, press, see } from '@aerogel/playwright';
-import { test } from '@e2e/lib/setup';
+import { test, expect } from '@e2e/lib/setup';
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
@@ -72,4 +72,30 @@ test('fetches seasons when you start watching a show', async ({ page }) => {
     await comboboxSelect(page, 'Status', 'Watching');
     await dontSee(page, 'Updating status...');
     await see(page, 'Season 1');
+});
+
+test('edits external URLs', async ({ page }) => {
+    // Arrange
+    await press(page, 'Import Shows');
+    await page.setInputFiles('input[type="file"]', 'e2e/fixtures/tviso-small.json');
+    await press(page, 'Import Collection', { role: 'button' });
+    await press(page, 'Back to Shows');
+    await see(page, 'Stranger Things');
+    await press(page, 'Stranger Things');
+
+    // Act
+    await press(page, 'Edit');
+
+    const inputs = page.getByPlaceholder('https://example.com');
+    await expect(inputs).toHaveCount(2);
+
+    await press(page, 'Remove', { selector: 'button' });
+    await expect(inputs).toHaveCount(1);
+
+    await press(page, 'Save');
+    await dontSee(page, 'Edit Show');
+
+    // Assert
+    await press(page, 'Edit');
+    await expect(inputs).toHaveCount(1);
 });

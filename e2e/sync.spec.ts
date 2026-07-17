@@ -8,6 +8,7 @@ import {
     waitSync,
     solidCreateDocument,
     see,
+    dontSee,
     solidUpdateDocument,
     comboboxSelect,
 } from '@aerogel/playwright';
@@ -220,4 +221,56 @@ test('skips containers with deep last modified dates', async ({ page }) => {
         'shows/freaks-and-geeks-1999/season-1/episode-1': 1,
         'shows/freaks-and-geeks-1999/season-1/episode-2': 4,
     });
+});
+
+test('identifies and synchronizes a show missing tmdbId', async ({ page }) => {
+    // Populate POD & Log in
+    await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-type-index.sparql'));
+    await solidCreateDocument('/settings/privateTypeIndex', requiredFixture('/turtle/type-index.ttl'));
+    await solidCreateDocument(
+        '/shows/freaks-and-geeks-1999/info',
+        requiredFixture('/turtle/freaks-and-geeks-info.ttl'),
+    );
+
+    const updateDocument = interceptRequests(page, 'PATCH', podUrl('/shows/*'));
+
+    await localFirstLogin(page);
+
+    // Go to show page
+    await press(page, 'View all shows');
+    await see(page, 'Freaks and Geeks');
+    await press(page, 'Freaks and Geeks');
+
+    // See identify button (since tmdbId/sameAs is missing) and NOT synchronize button
+    await see(page, 'Identify');
+    await dontSee(page, 'Synchronize');
+
+    // Click Identify
+    await press(page, 'Identify');
+
+    // See identify modal open with "Identify Freaks and Geeks" title
+    await see(page, 'Identify Freaks and Geeks');
+
+    // The modal search input should be prefilled with "Freaks and Geeks"
+    await see(page, 'Freaks and Geeks (1999)', { within: page.getByRole('dialog') });
+
+    // Click Match
+    await press(page, 'Match', { within: page.getByRole('listitem').filter({ hasText: 'Freaks and Geeks (1999)' }) });
+    await waitSync(page);
+
+    // Modal should close, and we should now see the Synchronize button instead of Identify button
+    await see(page, 'Synchronize');
+    await dontSee(page, 'Identify');
+
+    // Click Synchronize to update metadata
+    await press(page, 'Synchronize');
+    await waitSync(page);
+
+    // Verify it updated the show's document to include the TMDB external URL and other metadata
+    const matches = updateDocument.matching(podUrl('/shows/freaks-and-geeks-1999/info'));
+    expect(matches).not.toHaveLength(0);
+
+    const lastMatch = matches[matches.length - 1];
+    expect(lastMatch.body).toContain('<https://www.themoviedb.org/tv/2382>');
+    expect(lastMatch.body).toContain('<https://www.imdb.com/title/tt0193676/>');
 });
