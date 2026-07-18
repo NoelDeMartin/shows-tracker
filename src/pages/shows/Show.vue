@@ -44,7 +44,7 @@
                     </div>
                 </li>
                 <li v-if="watched !== total" class="flex items-center justify-end">
-                    <Button @click="watchSeason(season)">Watch All</Button>
+                    <Button :loading="watchingSeason" @click="watchSeason(season)">Watch All</Button>
                 </li>
             </ol>
         </Details>
@@ -100,6 +100,7 @@ const { show } = defineProps<{ show: Show }>();
 const { loading: clearingCache, run: runClearCache } = useLoading();
 const { loading: syncingOperations, run: runSyncOperations } = useLoading();
 const { loading: watchingAll, run: runWatchAll } = useLoading();
+const { loading: watchingSeason, run: runWatchSeason } = useLoading();
 const { loading: syncing, run: runSyncing } = useLoading();
 const { loading: changingStatus, run: runChangingStatus } = useLoading();
 const loading = new Set<string>();
@@ -137,24 +138,26 @@ async function watchShow() {
 }
 
 async function watchSeason(season: Season, options: { disableComputedAttributes?: boolean } = {}) {
-    const disableComputedAttributes = options.disableComputedAttributes ?? true;
-    const chunks = arrayChunk(season.episodes ?? [], 10);
+    await runWatchSeason(async () => {
+        const disableComputedAttributes = options.disableComputedAttributes ?? true;
+        const chunks = arrayChunk(season.episodes ?? [], 10);
 
-    if (disableComputedAttributes) {
-        ComputedAttribute.disableRefreshes();
-        ComputedAttribute.disableLoadingRelations();
-    }
+        if (disableComputedAttributes) {
+            ComputedAttribute.disableRefreshes();
+            ComputedAttribute.disableLoadingRelations();
+        }
 
-    for (const chunk of chunks) {
-        await Promise.all(chunk.map((episode) => episode.watched || episode.toggleWatched()));
-    }
+        for (const chunk of chunks) {
+            await Promise.all(chunk.map((episode) => episode.watched || episode.toggleWatched()));
+        }
 
-    if (disableComputedAttributes) {
-        ComputedAttribute.enableRefreshes();
-        ComputedAttribute.enableLoadingRelations();
+        if (disableComputedAttributes) {
+            ComputedAttribute.enableRefreshes();
+            ComputedAttribute.enableLoadingRelations();
 
-        await computedShow.value?.pendingEpisodeDates.updateValue({ refresh: true, loadRelations: true });
-    }
+            await computedShow.value?.pendingEpisodeDates.updateValue({ refresh: true, loadRelations: true });
+        }
+    });
 }
 
 async function updateWatchingStatus(status: ShowWatchingStatus) {
